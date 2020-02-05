@@ -60,7 +60,7 @@ public class HomeController {
 	 * Controller permettant de logguer la personne en fonction de son type de profil, admin ou utilisateur
 	 * @param login de la personne
 	 * @param password de la personne
-	 * @return un model contenant l'utilisateur ou l'admin et la redirection vers les menus associés
+	 * @return un model contenant l'utilisateur ou l'admin et la redirection vers les menus associï¿½s
 	 */
 	@RequestMapping(value = "/SAP", method = RequestMethod.POST)
 	public ModelAndView authentificationPersonne(@RequestParam(value = "login") String login,
@@ -127,7 +127,7 @@ public class HomeController {
 	}
 
 	/**
-	 * Controller permettant de créer une personne
+	 * Controller permettant de crï¿½er une personne
 	 * @param nom
 	 * @param prenom
 	 * @param mail
@@ -295,7 +295,7 @@ public class HomeController {
 	}
 
 	/**
-	 * Redirection sur le formulaire créationutilisateur
+	 * Redirection sur le formulaire crï¿½ationutilisateur
 	 * @return
 	 */
 	@RequestMapping(value = "/SRC", method = RequestMethod.GET)
@@ -337,7 +337,7 @@ public class HomeController {
 	}
 
 	/**
-	 * Redirection à la création du compte utilisateur
+	 * Redirection ï¿½ la crï¿½ation du compte utilisateur
 	 * @return
 	 */
 	@RequestMapping(value = "/CCPU", method = RequestMethod.GET)
@@ -346,7 +346,7 @@ public class HomeController {
 	}
 
 	/**
-	 * Redirection à la création du message
+	 * Redirection ï¿½ la crï¿½ation du message
 	 * @return
 	 */
 	@RequestMapping(value = "/NM", method = RequestMethod.GET)
@@ -385,8 +385,8 @@ public class HomeController {
 	
 	/**
 	 * Controller permettant d'achiver un message
-	 * @param id récupèration de l'id pour mettre à true l'archivage du message dans la base de donnée
-	 * @return redirection vers boite de réception
+	 * @param id rï¿½cupï¿½ration de l'id pour mettre ï¿½ true l'archivage du message dans la base de donnï¿½e
+	 * @return redirection vers boite de rï¿½ception
 	 */
 	@RequestMapping(value = "/ARC", method = RequestMethod.POST)
 	public ModelAndView archivage(@RequestParam(value="id") int id, @RequestParam(value="page") String page) {
@@ -405,8 +405,8 @@ public class HomeController {
 	}
 	
 	/**
-	 * Controller permettant d'afficher la liste des messages archiver dans la page Messages archivés
-	 * @return le model contenant la liste des messages archivés et la redirection
+	 * Controller permettant d'afficher la liste des messages archiver dans la page Messages archivï¿½s
+	 * @return le model contenant la liste des messages archivï¿½s et la redirection
 	 */
 	@RequestMapping(value = "/MA", method = RequestMethod.GET)
 	public ModelAndView boiteArchive() {
@@ -421,8 +421,8 @@ public class HomeController {
 	
 	
 	/**
-	 * Controller permettant d'afficher la liste des messages dans la boite de réception
-	 * @return les données du model et la vue
+	 * Controller permettant d'afficher la liste des messages dans la boite de rï¿½ception
+	 * @return les donnï¿½es du model et la vue
 	 */
 	@RequestMapping(value = "/BR", method = RequestMethod.GET)
 	public ModelAndView boiteReception() {
@@ -440,8 +440,8 @@ public class HomeController {
 	
 	
 	/**
-	 * Controller qui permet d'afficher la liste des messages envoyés
-	 * @return les données du model et la redirection
+	 * Controller qui permet d'afficher la liste des messages envoyï¿½s
+	 * @return les donnï¿½es du model et la redirection
 	 */
 	@RequestMapping(value = "/ME", method = RequestMethod.GET)
 	public ModelAndView messageEnvoye() {
@@ -456,7 +456,7 @@ public class HomeController {
 	}
 	
 	/**
-	 * Controller permettant de visualiser un message envoyé
+	 * Controller permettant de visualiser un message envoyï¿½
 	 * @param destinataire
 	 * @param objet
 	 * @param contenu
@@ -475,7 +475,7 @@ public class HomeController {
 	}
 
 	/**
-	 * Controller permettant de visualiser un message recu dans la boite de réception
+	 * Controller permettant de visualiser un message recu dans la boite de rï¿½ception
 	 * @param expediteur
 	 * @param objet
 	 * @param contenu
@@ -493,5 +493,20 @@ public class HomeController {
 		return mv;
 	}
 	
+	/**
+	 * Return la vue choix de la salle
+	 */
+	@RequestMapping(value = "/cs", method = RequestMethod.GET)
+	public String choixSalle() {
+		return "choixsalle";
+	}
+	
+	/**
+	 * Return la vue modification de la salle
+	 */
+	@RequestMapping(value = "/ms", method = RequestMethod.GET)
+	public String modifSalle() {
+		return "modifiersalle";
+	}
 
 }
