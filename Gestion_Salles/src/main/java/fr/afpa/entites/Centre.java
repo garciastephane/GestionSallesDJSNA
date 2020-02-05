@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class Centre {
-
+	private Integer id;
 	private String nom;
 	private List<Batiment> listeBatiments;
 

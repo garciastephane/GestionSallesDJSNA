@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class Materiel {
-
+	private Integer id;
 	private TypeMateriel type;
 	private int quantite;
 

@@ -9,6 +9,7 @@ public enum TypeSalle {
 
 	BUREAU("bureau"), FORMATION("formation"), INFIRMERIE("infirmerie"), REUNION("reunion");
 
+	private Integer id;
 	private String type;
 
 	TypeSalle(String type) {

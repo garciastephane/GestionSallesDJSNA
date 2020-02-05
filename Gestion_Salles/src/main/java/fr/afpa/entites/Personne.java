@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public abstract class Personne {
-
+	protected int id_personne;
 	protected String nom;
 	protected String prenom;
 	protected LocalDate dateNaissance;
