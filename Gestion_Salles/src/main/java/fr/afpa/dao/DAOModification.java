@@ -5,15 +5,13 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import fr.afpa.entites.Message;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
-import fr.afpa.interfaces.dao.IDAOModification;
 import fr.afpa.utils.HibernateUtils;
 
 @Service()
 @Qualifier("modification")
-public class DAOModification implements IDAOModification {
+public class DAOModification {
 
 	/**
 	 * Permet de supprimer un utilisateur dans la base de donnee

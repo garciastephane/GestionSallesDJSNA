@@ -16,12 +16,12 @@ import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
 import fr.afpa.entitespersistees.RoleBDD;
 import fr.afpa.entitespersistees.TypeProfilBDD;
-import fr.afpa.interfaces.dao.IDAOCreation;
+import fr.afpa.repositories.IDAOCreation;
 import fr.afpa.utils.HibernateUtils;
 
 @Service()
 @Qualifier("creation")
-public class DAOCreation implements IDAOCreation {
+public class DAOCreation {
 
 	/**
 	 * 

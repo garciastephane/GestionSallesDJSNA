@@ -13,12 +13,11 @@ import fr.afpa.entitespersistees.LogBDD;
 import fr.afpa.entitespersistees.LoginMessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
 import fr.afpa.entitespersistees.TypeProfilBDD;
-import fr.afpa.interfaces.dao.IDAOLecture;
 import fr.afpa.utils.HibernateUtils;
 
 @Service()
 @Qualifier("lecture")
-public class DAOLecture implements IDAOLecture {
+public class DAOLecture {
 
 	/**
 	 * Permet de retourner la liste de tous les profils
