@@ -14,19 +14,19 @@ import fr.afpa.dao.DAOModification;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
-import fr.afpa.entites.Utilisateur;
 import fr.afpa.entitespersistees.LogBDD;
 import fr.afpa.entitespersistees.LoginMessageBDD;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
 import fr.afpa.interfaces.dto.IDTOUtilisateurs;
-import fr.afpa.repositories.IArchiveRepository;
+import fr.afpa.repositories.IProfilRepository;
 import fr.afpa.services.ServiceGeneral;
 
 @Service
 public class DTOUtilisateur implements IDTOUtilisateurs {
 	
-	
+	@Autowired
+	private IProfilRepository profilRepository;
 	
 	/**
 	 * Permet de recuperer la liste des personnes
@@ -34,9 +34,11 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	 * @return Permet de retourner la liste des personnes avec leur id
 	 */
 	public Map<Integer, Personne> listePersonnes() {
-		Map<Integer, Personne> listePersonnes = new HashMap();
-		DAOLecture daol = new DAOLecture();
-		List<ProfilBDD> listeProfils = daol.listeTousProfils();
+		Map<Integer, Personne> listePersonnes = new HashMap<Integer, Personne>();
+//		DAOLecture daol = new DAOLecture();
+//		List<ProfilBDD> listeProfils = daol.listeTousProfils();
+		
+		List<ProfilBDD> listeProfils = profilRepository.findAll();
 		for (ProfilBDD profilBDD : listeProfils) {
 			listePersonnes.put(profilBDD.getId_profil(), DTOGeneral.profilBDDToPersonne(profilBDD));
 		}
@@ -72,7 +74,7 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	public List<String> listeLog() {
 		DAOLecture daol = new DAOLecture();
 		List<LogBDD> listeLogs = daol.listeTousLogs();
-		List<String> liste = new ArrayList();
+		List<String> liste = new ArrayList<String>();
 		for (LogBDD log : listeLogs) {
 			liste.add(log.getLogin());
 		}

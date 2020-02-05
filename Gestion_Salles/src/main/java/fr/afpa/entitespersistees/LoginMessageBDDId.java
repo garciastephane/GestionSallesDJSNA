@@ -16,7 +16,7 @@ public class LoginMessageBDDId implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String logBdd;
-	private int messageBdd;
-	private boolean expDest;
+	private Integer messageBdd;
+	private Boolean expDest;
 	
 }

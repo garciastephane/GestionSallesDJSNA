@@ -23,7 +23,7 @@ public class ArchiveBDD {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ARCHIVE_SEQ")
-	private int id_archive;
+	private Integer id_archive;
 
 	@Column
 	private String nom;

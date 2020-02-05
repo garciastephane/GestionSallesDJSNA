@@ -36,7 +36,7 @@ public class LoginMessageBDD implements Serializable{
 	
 	@Id
 	@Column(name = "expediteur")
-	private boolean expDest;
+	private Boolean expDest;
 
 
 	public LoginMessageBDD() {

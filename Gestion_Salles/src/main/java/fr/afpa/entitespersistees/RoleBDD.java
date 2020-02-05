@@ -28,7 +28,7 @@ public class RoleBDD {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROLE_SEQ")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private int id_role;
+	private Integer id_role;
 
 	@Column
 	private String libelle;
@@ -46,7 +46,7 @@ public class RoleBDD {
 	public RoleBDD(String libelle) {
 		super();
 		this.libelle = libelle;
-		this.listeProfils = new ArrayList();
+		this.listeProfils = new ArrayList<ProfilBDD>();
 	}
 
 }

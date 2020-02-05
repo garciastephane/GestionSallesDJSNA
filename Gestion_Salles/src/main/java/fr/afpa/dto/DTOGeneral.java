@@ -3,6 +3,8 @@ package fr.afpa.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import fr.afpa.dao.DAOLecture;
 import fr.afpa.entites.Administrateur;
 import fr.afpa.entites.Message;
@@ -14,8 +16,10 @@ import fr.afpa.entitespersistees.LoginMessageBDD;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
 import fr.afpa.entitespersistees.RoleBDD;
+import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.services.ServiceGeneral;
 
+@Service
 public class DTOGeneral {
 
 	/**

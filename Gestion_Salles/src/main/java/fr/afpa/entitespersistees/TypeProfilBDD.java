@@ -27,7 +27,7 @@ public class TypeProfilBDD {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TYPE_PROFIL_SEQ")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private int id_type_profil;
+	private Integer id_type_profil;
 
 	@Column
 	private String libelle;

@@ -27,7 +27,7 @@ public class MessageBDD {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MESSAGE_SEQ")
-	private int id_message;
+	private Integer id_message;
 	
 	@Column
 	private String objet;

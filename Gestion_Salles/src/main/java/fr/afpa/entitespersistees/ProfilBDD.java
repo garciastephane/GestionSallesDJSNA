@@ -26,7 +26,7 @@ public class ProfilBDD {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROFIL_SEQ")
-	private int id_profil;
+	private Integer id_profil;
 
 	@Column
 	private String nom;
