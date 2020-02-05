@@ -13,12 +13,10 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class Salle {
-
+	private Integer id;
 	private String numero;
 	private String nom;
 	private int capacite;
-	private int nbrChaise;
-	private int nbrTable;
 	private float surface;
 	private TypeSalle typeSalle;
 	private List<Materiel> listeMateriels;
@@ -28,14 +26,12 @@ public class Salle {
 		super();
 	}
 
-	public Salle(String numero, String nom, int capacite, int nbrChaise, int nbrTable, float surface,
+	public Salle(String numero, String nom, int capacite, float surface,
 			TypeSalle typeSalle) {
 		super();
 		this.numero = numero;
 		this.nom = nom;
 		this.capacite = capacite;
-		this.nbrChaise = nbrChaise;
-		this.nbrTable = nbrTable;
 		this.surface = surface;
 		this.typeSalle = typeSalle;
 		this.listeMateriels = new ArrayList();

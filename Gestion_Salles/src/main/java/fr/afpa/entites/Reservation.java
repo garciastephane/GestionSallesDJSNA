@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class Reservation {
-
+	private Integer id;
 	private String intitule;
 	private LocalDate dateDebut;
 	private LocalDate dateFin;

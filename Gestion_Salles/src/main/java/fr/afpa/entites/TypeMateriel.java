@@ -8,7 +8,7 @@ import lombok.ToString;
 public enum TypeMateriel {
 
 	ORDINATEUR("ordinateur"), PRISE_RESEAUX("prise reseaux"), RETROPROJECTEUR("retroprojecteur");
-
+	private Integer id;
 	private String type;
 
 	TypeMateriel(String type) {
