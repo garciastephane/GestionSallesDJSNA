@@ -1,7 +1,7 @@
 *.class
-
+*.project
 **/.settings
-
+*.classpath
 **/.bin
 /target/
 /bin/
