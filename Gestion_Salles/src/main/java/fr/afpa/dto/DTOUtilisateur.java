@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import fr.afpa.dao.DAOCreation;
 import fr.afpa.dao.DAOLecture;
@@ -18,10 +19,12 @@ import fr.afpa.entitespersistees.LogBDD;
 import fr.afpa.entitespersistees.LoginMessageBDD;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
+import fr.afpa.interfaces.dto.IDTOUtilisateurs;
 import fr.afpa.repositories.IArchiveRepository;
 import fr.afpa.services.ServiceGeneral;
 
-public class DTOUtilisateur {
+@Service
+public class DTOUtilisateur implements IDTOUtilisateurs {
 	
 	
 	
@@ -60,20 +63,6 @@ public class DTOUtilisateur {
 		return utilisateur;
 	}
 
-	/**
-	 * Permet de recuperer la liste des utilisateur
-	 * 
-	 * @return la liste des utilisateur
-	 */
-	public Map<Integer, Personne> listeUser() {
-		DAOLecture daol = new DAOLecture();
-		List<ProfilBDD> listeProfils = daol.listeTousUser();
-		Map<Integer, Personne> liste = new HashMap();
-		for (ProfilBDD profil : listeProfils) {
-			liste.put(profil.getId_profil(), DTOGeneral.profilBDDToPersonne(profil));
-		}
-		return liste;
-	}
 
 	/**
 	 * Permet de recuperer la liste des logins

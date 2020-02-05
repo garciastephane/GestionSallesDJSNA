@@ -46,15 +46,6 @@ public class ServiceVisualisation {
 		return dtou.listePersonnes();
 	}
 
-	/**
-	 * Permet de retourner la liste de tous les utilisateurs
-	 * 
-	 * @return la liste de tous les utilisateurs
-	 */
-	public Map<Integer, Personne> listeTousUtilisateurs() {
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		return dtou.listeUser();
-	}
 
 	/**
 	 * Permet de retourner la liste des utilisateurs sous la forme d'une chaine de

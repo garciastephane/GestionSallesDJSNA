@@ -23,8 +23,6 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="fr.afpa.testspringjpa" />
-	
 	<!-- un bean DataSource pour specifier les donnees concernant la connexion (URL, Driver; login, pwd)-->
 	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<beans:property name="driverClassName" value="org.postgresql.Driver" />
@@ -62,5 +60,8 @@
 	
 	<!-- package des repositories -->
 	<jpa:repositories base-package="fr.afpa.repositories" />
+	
+	<!-- package des services et du dto -->
+	<context:component-scan base-package="fr.afpa.interfaces.dto"></context:component-scan>
 	
 </beans:beans>
