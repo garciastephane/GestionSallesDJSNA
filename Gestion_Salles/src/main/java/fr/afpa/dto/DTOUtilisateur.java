@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import fr.afpa.dao.DAOCreation;
 import fr.afpa.dao.DAOLecture;
 import fr.afpa.dao.DAOModification;
@@ -16,10 +18,13 @@ import fr.afpa.entitespersistees.LogBDD;
 import fr.afpa.entitespersistees.LoginMessageBDD;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
+import fr.afpa.repositories.IArchiveRepository;
 import fr.afpa.services.ServiceGeneral;
 
 public class DTOUtilisateur {
-
+	
+	
+	
 	/**
 	 * Permet de recuperer la liste des personnes
 	 * 

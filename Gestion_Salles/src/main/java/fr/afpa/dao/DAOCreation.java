@@ -16,7 +16,6 @@ import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
 import fr.afpa.entitespersistees.RoleBDD;
 import fr.afpa.entitespersistees.TypeProfilBDD;
-import fr.afpa.repositories.IDAOCreation;
 import fr.afpa.utils.HibernateUtils;
 
 @Service()
