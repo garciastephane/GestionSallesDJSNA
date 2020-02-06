@@ -556,8 +556,13 @@ public class HomeController {
 		mv.addObject("listebatiment", serviceModificationSalle.listerBatiment());
 		mv.setViewName("creationSalle");
 		return mv;
-		
-		
+	}
+	
+	@RequestMapping(value="/rms", method = RequestMethod.POST)
+	public String redirectionModifSalle() {
+		return "creationSalle";
+	}
+	
 	/**
 	 * @param batiment
 	 * @param numero de salle
@@ -567,14 +572,6 @@ public class HomeController {
 	 * @param type de salle
 	 * Return la vue modification de la salle
 	 */
-		
-	}
-	
-	@RequestMapping(value="/rms", method = RequestMethod.POST)
-	public String redirectionModifSalle() {
-		return "creationSalle";
-	}
-	
 	@RequestMapping(value="/asbdd" , method = RequestMethod.POST )
 	public String ajoutSalleBdd(@RequestParam(value="batiment") String batiment, @RequestParam(value="numsalle") String numsalle, 
 			@RequestParam(value="nomsalle") String nomsalle, @RequestParam(value="surface")String surface, 
