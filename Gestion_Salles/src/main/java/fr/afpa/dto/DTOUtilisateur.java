@@ -18,8 +18,14 @@ import fr.afpa.entitespersistees.LogBDD;
 import fr.afpa.entitespersistees.LoginMessageBDD;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
+import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.dto.IDTOUtilisateurs;
+import fr.afpa.repositories.IArchiveRepository;
+import fr.afpa.repositories.ILogRepository;
+import fr.afpa.repositories.ILoginMessageRepository;
 import fr.afpa.repositories.IProfilRepository;
+import fr.afpa.repositories.IRoleRepository;
+import fr.afpa.repositories.ITypeProfilRepository;
 import fr.afpa.services.ServiceGeneral;
 
 @Service
@@ -27,6 +33,22 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	
 	@Autowired
 	private IProfilRepository profilRepository;
+	@Autowired
+	private ILogRepository loginRepository;
+	@Autowired
+	private ITypeProfilRepository typeProfilRepository;
+	@Autowired
+	private IRoleRepository roleRepository;
+	@Autowired
+	private IArchiveRepository archiveRepository;
+	@Autowired
+	private ILoginMessageRepository loginMessageRepository;
+	
+	@Autowired
+	private IDTOGeneral dtoGeneral;
+	
+	
+	
 	
 	/**
 	 * Permet de recuperer la liste des personnes
@@ -40,7 +62,7 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 		
 		List<ProfilBDD> listeProfils = profilRepository.findAll();
 		for (ProfilBDD profilBDD : listeProfils) {
-			listePersonnes.put(profilBDD.getId_profil(), DTOGeneral.profilBDDToPersonne(profilBDD));
+			listePersonnes.put(profilBDD.getId_profil(), dtoGeneral.profilBDDToPersonne(profilBDD));
 		}
 		return listePersonnes;
 	}
@@ -61,8 +83,7 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	public Personne user(String login, String mdp) {
 		DAOLecture daol = new DAOLecture();
 		ProfilBDD profilBdd =  daol.getUser(login, mdp);
-		Personne utilisateur = DTOGeneral.profilBDDToPersonne(profilBdd);
-		return utilisateur;
+		return dtoGeneral.profilBDDToPersonne(profilBdd);
 	}
 
 
@@ -91,7 +112,7 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	 * @return true si la personne a ete ajouter, false si non
 	 */
 	public boolean ajoutBDD(Personne personne, String login, String mdp, RolePersonne role) {
-		ProfilBDD profil = DTOGeneral.personneToProfilBDD(personne);
+		ProfilBDD profil = dtoGeneral.personneToProfilBDD(personne);
 		LogBDD log = new LogBDD(login, mdp);
 		profil.setLoginMdp(log);
 		log.setProfil(profil);
@@ -146,14 +167,14 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	 * @return true si le message a ete ajoute et false sinon
 	 */
 	public boolean ajoutMessageBDD(Message message) {
-		MessageBDD messageBDD = DTOGeneral.messageToMessageBDD(message);
+		MessageBDD messageBDD = dtoGeneral.messageToMessageBDD(message);
 		List<LoginMessageBDD> listeLogins = 
-				DTOGeneral.listeLoginsToListeLoginMessageBDD(message.getDestinataires(), message.getExpediteur());
+				dtoGeneral.listeLoginsToListeLoginMessageBDD(message.getDestinataires(), message.getExpediteur());
 		return new DAOCreation().enregistrerMessage(messageBDD, listeLogins);
 	}
 	
 	public Personne personneDuLogin(String login) {
-		Personne personne = DTOGeneral.profilBDDToPersonne(new DAOLecture().profilDuLogin(login));
+		Personne personne = dtoGeneral.profilBDDToPersonne(new DAOLecture().profilDuLogin(login));
 		return personne;
 	}
 

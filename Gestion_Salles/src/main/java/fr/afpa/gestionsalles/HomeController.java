@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +26,7 @@ import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Utilisateur;
+import fr.afpa.interfaces.services.IServiceVisualisation;
 import fr.afpa.services.ServiceCreation;
 import fr.afpa.services.ServiceGeneral;
 import fr.afpa.services.ServiceModification;
@@ -34,10 +37,14 @@ import fr.afpa.services.ServiceVisualisation;
  * Handles requests for the application home page.
  */
 @Controller
+@ComponentScan("fr.afpa.gestionsalles")
 public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	private static String loginCourant;
+	
+	@Autowired
+	private IServiceVisualisation serviceVisualisation;
 
 	/**
 	 * Return la vue index (la page d'accueil)
@@ -326,10 +333,9 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/SVU", method = RequestMethod.GET)
 	public ModelAndView visualisationUtilisateur() {
-
-		ServiceVisualisation sv = new ServiceVisualisation();
+		//ServiceVisualisation sv = new ServiceVisualisation();
 		ModelAndView mv = new ModelAndView();
-		Map<Integer, Personne> listePersonnes = sv.listeTousPersonnes();
+		Map<Integer, Personne> listePersonnes = serviceVisualisation.listeTousPersonnes();
 		mv.addObject("listePersonnes", listePersonnes);
 		mv.setViewName("visualisationutilisateur");
 

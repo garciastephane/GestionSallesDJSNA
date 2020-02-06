@@ -20,7 +20,7 @@ import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.services.ServiceGeneral;
 
 @Service
-public class DTOGeneral {
+public class DTOGeneral implements IDTOGeneral {
 
 	/**
 	 * Permet de transformer une instance de RoleBDD en instance de RolePersonne
@@ -28,7 +28,7 @@ public class DTOGeneral {
 	 * @param role : le role a transformer
 	 * @return le role en instance de RolePersonne
 	 */
-	public static RolePersonne roleBDDToRolePersonne(RoleBDD role) {
+	public RolePersonne roleBDDToRolePersonne(RoleBDD role) {
 		if (RolePersonne.FORMATEUR.getRole().equals(role.getLibelle())) {
 			return RolePersonne.FORMATEUR;
 		} else if (RolePersonne.STAGIAIRE.getRole().equals(role.getLibelle())) {
@@ -45,7 +45,7 @@ public class DTOGeneral {
 	 * @param profilBDD : le profil a transformer
 	 * @return une instance qui herite d'une classe fille de la classe Personne
 	 */
-	public static Personne profilBDDToPersonne(ProfilBDD profilBDD) {
+	public Personne profilBDDToPersonne(ProfilBDD profilBDD) {
 		Personne personne;
 		if ("Administrateur".equals(profilBDD.getTypeProfil().getLibelle())) {
 			personne = new Administrateur();
@@ -70,7 +70,7 @@ public class DTOGeneral {
 	 * @param profilBDD : le profil a transformer
 	 * @return une instance qui herite d'une classe fille de la classe Personne
 	 */
-	public static ProfilBDD personneToProfilBDD(Personne personne) {
+	public ProfilBDD personneToProfilBDD(Personne personne) {
 		ProfilBDD profil = new ProfilBDD();
 		profil.setAdresse(personne.getAdresse());
 		profil.setDateNaissance(ServiceGeneral.conversionDate(personne.getDateNaissance()));
@@ -88,7 +88,7 @@ public class DTOGeneral {
 	 * @param message : le message transformer
 	 * @return le message transforme
 	 */
-	public static MessageBDD messageToMessageBDD(Message message) {
+	public MessageBDD messageToMessageBDD(Message message) {
 		MessageBDD res = new MessageBDD();
 		res.setId_message(message.getId());
 		res.setObjet(message.getObjet());
@@ -103,7 +103,7 @@ public class DTOGeneral {
 	 * @param destinataires : les logins qui recevront le futur message
 	 * @return les logins transformes
 	 */
-	public static List<LoginMessageBDD> listeLoginsToListeLoginMessageBDD(
+	public List<LoginMessageBDD> listeLoginsToListeLoginMessageBDD(
 			List<String> destinataires, String expediteur) {
 		List<LoginMessageBDD> res = new ArrayList<LoginMessageBDD>();
 		for (String destinataire : destinataires) {
@@ -124,7 +124,7 @@ public class DTOGeneral {
 	 * @param le login
 	 * @return liste de Message transformé
 	 */
-	public static List<Message> listeLoginMessageToListeMessage(String login) {
+	public List<Message> listeLoginMessageToListeMessage(String login) {
 		DAOLecture daol = new DAOLecture();
 		List<LoginMessageBDD> lmbdd = daol.getAllMessages(login);
 		List<Message> listMessages = new ArrayList<Message>();
@@ -144,7 +144,7 @@ public class DTOGeneral {
 		return listMessages;
 	}
 	
-	public static List<Message> listeLoginMessageToListeMessageEnvoye(String login) {
+	public List<Message> listeLoginMessageToListeMessageEnvoye(String login) {
 		DAOLecture daol = new DAOLecture();
 		List<LoginMessageBDD> lmbdd = daol.getMessageEnvoye(login);
 		List<Message> listMessages = new ArrayList<Message>();

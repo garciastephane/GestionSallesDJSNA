@@ -15,19 +15,20 @@ import fr.afpa.entitespersistees.RoleBDD;
 @Service
 public interface IDTOGeneral {
 
-	public static RolePersonne roleBDDToRolePersonne(RoleBDD role) {return null;}
+	public RolePersonne roleBDDToRolePersonne(RoleBDD role);
 	
-	public static Personne profilBDDToPersonne(ProfilBDD profilBDD) {return null;}
+	public Personne profilBDDToPersonne(ProfilBDD profilBDD);
 	
-	public static ProfilBDD personneToProfilBDD(Personne personne) {return null;}
+	public ProfilBDD personneToProfilBDD(Personne personne);
 	
-	public static MessageBDD messageToMessageBDD(Message message) {return null;}
+	public MessageBDD messageToMessageBDD(Message message);
 	
-	public static List<LoginMessageBDD> listeLoginsToListeLoginMessageBDD(
-			List<String> destinataires, String expediteur) {return null;}
+	public List<LoginMessageBDD> listeLoginsToListeLoginMessageBDD(
+			List<String> destinataires, String expediteur);
 	
-	public static List<Message> listeLoginMessageToListeMessage(String login) {return null;}
+	public List<Message> listeLoginMessageToListeMessage(String login);
 	
-	public static List<Message> listeLoginMessageToListeMessageEnvoye(String login) {return null;}
+	public List<Message> listeLoginMessageToListeMessageEnvoye(String login);
+	
 	
 }

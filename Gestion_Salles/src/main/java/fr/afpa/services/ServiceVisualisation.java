@@ -4,14 +4,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import fr.afpa.dto.DTOGeneral;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
 import fr.afpa.dto.DTOUtilisateur;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
 import fr.afpa.entites.Utilisateur;
+import fr.afpa.interfaces.dto.IDTOGeneral;
+import fr.afpa.interfaces.dto.IDTOUtilisateurs;
+import fr.afpa.interfaces.services.IServiceVisualisation;
 
-public class ServiceVisualisation {
+@Service
+@Primary
+public class ServiceVisualisation implements IServiceVisualisation {
 
+	@Autowired
+	private IDTOGeneral dtoGeneral;
+	@Autowired
+	private IDTOUtilisateurs dtoUtilisateur;
+	
 	/**
 	 * Permet de retourner la liste des utilisateurs sous la forme d'une chaine de
 	 * caracteres avec les balises html pour un affichage dans un servlet
@@ -42,8 +55,9 @@ public class ServiceVisualisation {
 	 * @return la liste de toutes les personnes
 	 */
 	public Map<Integer, Personne> listeTousPersonnes() {
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		return dtou.listePersonnes();
+		/*DTOUtilisateur dtou = new DTOUtilisateur();
+		return dtou.listePersonnes();*/
+		return dtoUtilisateur.listePersonnes();
 	}
 
 
@@ -75,11 +89,11 @@ public class ServiceVisualisation {
 	}
 	
 	public List<Message> afficherListeMessage(String login){
-		return DTOGeneral.listeLoginMessageToListeMessage(login);
+		return dtoGeneral.listeLoginMessageToListeMessage(login);
 	}
 	
 	
 	public List<Message> afficherListeMessageEnvoyer(String login){
-		return DTOGeneral.listeLoginMessageToListeMessageEnvoye(login);
+		return dtoGeneral.listeLoginMessageToListeMessageEnvoye(login);
 	}
 }
