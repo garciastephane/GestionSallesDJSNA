@@ -3,6 +3,7 @@ package fr.afpa.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.afpa.dao.DAOLecture;
@@ -25,11 +26,15 @@ import fr.afpa.entitespersistees.ReservationBDD;
 import fr.afpa.entitespersistees.RoleBDD;
 import fr.afpa.entitespersistees.SalleBDD;
 import fr.afpa.interfaces.dto.IDTOGeneral;
+import fr.afpa.interfaces.services.IServiceGeneral;
 import fr.afpa.services.ServiceGeneral;
 
 @Service
 public class DTOGeneral implements IDTOGeneral {
 
+	@Autowired
+	private IServiceGeneral serviceGeneral;
+	
 	/**
 	 * Permet de transformer une instance de RoleBDD en instance de RolePersonne
 	 * 
@@ -62,7 +67,7 @@ public class DTOGeneral implements IDTOGeneral {
 		}
 		personne.setNom(profilBDD.getNom());
 		personne.setPrenom(profilBDD.getPrenom());
-		personne.setDateNaissance(ServiceGeneral.conversionDate(profilBDD.getDateNaissance()));
+		personne.setDateNaissance(serviceGeneral.conversionDate(profilBDD.getDateNaissance()));
 		personne.setEmail(profilBDD.getMail());
 		personne.setAdresse(profilBDD.getAdresse());
 		personne.setActif(profilBDD.isActif());
@@ -81,12 +86,12 @@ public class DTOGeneral implements IDTOGeneral {
 	public ProfilBDD personneToProfilBDD(Personne personne) {
 		ProfilBDD profil = new ProfilBDD();
 		profil.setAdresse(personne.getAdresse());
-		profil.setDateNaissance(ServiceGeneral.conversionDate(personne.getDateNaissance()));
+		profil.setDateNaissance(serviceGeneral.conversionDate(personne.getDateNaissance()));
 		profil.setMail(personne.getEmail());
 		profil.setActif(personne.isActif());
 		profil.setNom(personne.getNom());
 		profil.setPrenom(personne.getPrenom());
-		profil.setRole(ServiceGeneral.conversionRole(personne.getRole()));
+		profil.setRole(serviceGeneral.conversionRole(personne.getRole()));
 		return profil;
 	}
 	

@@ -22,6 +22,7 @@ import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
 import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.dto.IDTOUtilisateurs;
+import fr.afpa.interfaces.services.IServiceGeneral;
 import fr.afpa.repositories.IArchiveRepository;
 import fr.afpa.repositories.ILogRepository;
 import fr.afpa.repositories.ILoginMessageRepository;
@@ -48,7 +49,8 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	
 	@Autowired
 	private IDTOGeneral dtoGeneral;
-	
+	@Autowired
+	private IServiceGeneral serviceGeneral;
 	
 	
 	
@@ -155,7 +157,7 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 		userBDD.setPrenom(user.getPrenom());
 		userBDD.setAdresse(user.getAdresse());
 		userBDD.setMail(user.getEmail());
-		userBDD.setDateNaissance(ServiceGeneral.conversionDate(user.getDateNaissance()));
+		userBDD.setDateNaissance(serviceGeneral.conversionDate(user.getDateNaissance()));
 		return daom.modifierUtilisateurBDD(userBDD, id, mdp);
 	}
 	

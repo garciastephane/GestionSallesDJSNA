@@ -31,6 +31,7 @@ import fr.afpa.interfaces.controles.IControleAuthentificationUtilisateur;
 import fr.afpa.interfaces.controles.IControleChoixUtilisateur;
 import fr.afpa.interfaces.controles.IControleCreationUtilisateur;
 import fr.afpa.interfaces.controles.IControleGeneral;
+import fr.afpa.interfaces.services.IServiceGeneral;
 import fr.afpa.interfaces.services.IServiceModificationSalle;
 import fr.afpa.interfaces.services.IServiceUtilisateur;
 import fr.afpa.services.ServiceCreation;
@@ -48,6 +49,8 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	private static String loginCourant;
 	
+	@Autowired
+	private IServiceGeneral serviceGeneral;
 	@Autowired
 	private IServiceVisualisation serviceVisualisation;
 	@Autowired
@@ -194,7 +197,7 @@ public class HomeController {
 			roleOk = sc.conversionRole(role);
 		}
 		if (controleGeneral.controleDateDeNaissance(datenaissance)) {
-			dateNaissance = ServiceGeneral.conversionDate(datenaissance);
+			dateNaissance = serviceGeneral.conversionDate(datenaissance);
 		}
 		if (password.equals(password2) && controleCreationUtilisateur.controleLogin(login)) {
 			loginOk = login;
@@ -283,7 +286,7 @@ public class HomeController {
 				user.setPrenom(prenom);
 				user.setEmail(mail);
 				user.setAdresse(adresse);
-				user.setDateNaissance(ServiceGeneral.conversionDate(datenaissance));
+				user.setDateNaissance(serviceGeneral.conversionDate(datenaissance));
 				sm.modifierUtilisateur(user, Integer.parseInt(id), password);
 			}
 			break;

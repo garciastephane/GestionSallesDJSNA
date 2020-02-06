@@ -9,10 +9,14 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entitespersistees.RoleBDD;
+import fr.afpa.interfaces.services.IServiceGeneral;
 
-public class ServiceGeneral {
+@Service
+public class ServiceGeneral implements IServiceGeneral {
 
 	private ServiceGeneral() {
 	}
@@ -23,7 +27,7 @@ public class ServiceGeneral {
 	 * @param date : la date a convertir
 	 * @return la date convertie en LocalDate
 	 */
-	public static LocalDate conversionDate(Date date) {
+	public LocalDate conversionDate(Date date) {
 		return date.toLocalDate();
 	}
 
@@ -33,7 +37,7 @@ public class ServiceGeneral {
 	 * @param date : la date a convertir
 	 * @return la date convertie en sql.Date
 	 */
-	public static Date conversionDate(LocalDate date) {
+	public Date conversionDate(LocalDate date) {
 		return Date.valueOf(date);
 	}
 	
@@ -44,7 +48,7 @@ public class ServiceGeneral {
 	 * @param date : la date a convertir
 	 * @return la date convertie en LocalDateTime
 	 */
-	public static LocalDateTime conversionDateTime(Timestamp dateTime) {
+	public LocalDateTime conversionDateTime(Timestamp dateTime) {
 		return dateTime.toLocalDateTime();
 	}
 
@@ -55,7 +59,7 @@ public class ServiceGeneral {
 	 * @param dateTime : la date a convertir
 	 * @return la date convertie en sql.TimeStamp
 	 */
-	public static Timestamp conversionDateTime(LocalDateTime dateTime) {
+	public Timestamp conversionDateTime(LocalDateTime dateTime) {
 		return Timestamp.valueOf(dateTime);
 	}
 
@@ -65,7 +69,7 @@ public class ServiceGeneral {
 	 * @param date la date a convertir
 	 * @return la date convertie
 	 */
-	public static LocalDate conversionDate(String date) {
+	public LocalDate conversionDate(String date) {
 		LocalDate lDate = null;
 		try {
 			lDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -81,7 +85,7 @@ public class ServiceGeneral {
 	 * @param role le role a convertir
 	 * @return le role converti
 	 */
-	public static RoleBDD conversionRole(RolePersonne role) {
+	public RoleBDD conversionRole(RolePersonne role) {
 		return new RoleBDD(role.getRole());
 	}
 	
@@ -91,7 +95,7 @@ public class ServiceGeneral {
 	 * @param chaine : la chaine de caracteres a decouper
 	 * @return la chaine de caracteres decoupee dans une liste
 	 */
-	public static List<String> conversionStringEnListe(String chaine) {
+	public List<String> conversionStringEnListe(String chaine) {
 		List<String> res = new ArrayList<String>();
 		String[] tableau = chaine.split(";");
 		for (String string : tableau) {

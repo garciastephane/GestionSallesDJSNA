@@ -1,10 +1,14 @@
 package fr.afpa.services;
 
+import org.springframework.stereotype.Service;
+
 import fr.afpa.dto.DTOUtilisateur;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
+import fr.afpa.interfaces.services.IServiceModification;
 
-public class ServiceModification {
+@Service
+public class ServiceModification implements IServiceModification {
 
 	public static final String CHOIX = "choix";
 
@@ -30,12 +34,6 @@ public class ServiceModification {
 		return dtou.activerDesactiverBDD(id);
 	}
 	
-	/**
-	 * permet d'archiver un msg
-	 */
-//	public boolean archiverMsg(int id) {
-//		
-//	}
 
 	/**
 	 * Permet de modifier un utilisateur en passant par le DTO
