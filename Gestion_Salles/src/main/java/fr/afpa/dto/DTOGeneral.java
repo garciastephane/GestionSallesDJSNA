@@ -7,15 +7,23 @@ import org.springframework.stereotype.Service;
 
 import fr.afpa.dao.DAOLecture;
 import fr.afpa.entites.Administrateur;
+import fr.afpa.entites.Materiel;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
+import fr.afpa.entites.Reservation;
 import fr.afpa.entites.RolePersonne;
+import fr.afpa.entites.Salle;
+import fr.afpa.entites.TypeMateriel;
+import fr.afpa.entites.TypeSalle;
 import fr.afpa.entites.Utilisateur;
 import fr.afpa.entitespersistees.LogBDD;
 import fr.afpa.entitespersistees.LoginMessageBDD;
+import fr.afpa.entitespersistees.MaterielBDD;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
+import fr.afpa.entitespersistees.ReservationBDD;
 import fr.afpa.entitespersistees.RoleBDD;
+import fr.afpa.entitespersistees.SalleBDD;
 import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.services.ServiceGeneral;
 
@@ -162,6 +170,37 @@ public class DTOGeneral implements IDTOGeneral {
 		}
 		
 		return listMessages;
+	}
+
+	@Override
+	public Salle salleBDDToSalle(SalleBDD salleBDD) {
+		Salle salle = new Salle();
+		salle.setNom(salleBDD.getNom());
+		salle.setCapacite(salleBDD.getCapacite());
+		salle.setNumero(salleBDD.getNumero());
+		salle.setId(salleBDD.getId());
+		salle.setSurface(salleBDD.getSurface());
+		salle.setTypeSalle(TypeSalle.valueOf(salleBDD.getTypeSalle().getType()));
+		List<Materiel> materiel = new ArrayList<Materiel>();
+//		for (MaterielBDD materielBDD : salleBDD.getMateriel()) {
+//			Materiel m = new Materiel();
+//			m.setId(materielBDD.getId());
+//			m.setType(TypeMateriel.valueOf(materielBDD.getTypeMateriel().getType()));
+//			m.setQuantite(materielBDD.getQuantite());
+//			materiel.add(m);
+//		}
+//		salle.setListeMateriels(materiel);
+//		List<Reservation> reservation = new ArrayList<Reservation>();
+//		for (ReservationBDD reservationBDD : salleBDD.getReservation()) {
+//			Reservation r = new Reservation();
+//			r.setId(reservationBDD.getId());
+//			r.setIntitule(reservationBDD.getIntitule());
+//			r.setDateDebut(reservationBDD.getDateDebut());
+//			r.setDateFin(reservationBDD.getDateFin());
+//			reservation.add(r);
+//		}
+//		salle.setListeReservations(reservation);
+		return salle;
 	}
 	
 	
