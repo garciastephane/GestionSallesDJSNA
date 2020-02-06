@@ -341,7 +341,7 @@ public class HomeController {
 		if (controleAuthentificationUtilisateur.controleAdmin(loginCourant)) {
 			return "gestionuser";
 		} else {
-			return "index";
+			return "menuUser";
 		}
 
 	}
