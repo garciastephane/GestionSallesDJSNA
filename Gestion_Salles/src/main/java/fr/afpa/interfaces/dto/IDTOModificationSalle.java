@@ -11,10 +11,16 @@ import fr.afpa.entites.Salle;
 @Service
 public interface IDTOModificationSalle {
 
-	boolean choixSalle(int id);
+	Salle choixSalle(String id);
 
 	Map<Integer, Salle> listeSalles();
 
 	ArrayList<Batiment> listerBatiment();
+
+	boolean updateSalle(Salle salle);
+
+	boolean activerDesactiverSalle(int parseInt);
+
+	boolean supprimerSalle(int parseInt);
 
 }

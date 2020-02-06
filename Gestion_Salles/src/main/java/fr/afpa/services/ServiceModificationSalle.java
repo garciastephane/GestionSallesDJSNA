@@ -45,4 +45,24 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 		return dtoModificationSalle.listerBatiment();
 	}
 	
+
+	@Override
+	public Salle getSalle(String id) {
+		return dtoModificationSalle.choixSalle(id);
+	}
+
+	@Override
+	public boolean updateSalle(Salle salle) {
+		return dtoModificationSalle.updateSalle(salle);
+	}
+
+	@Override
+	public boolean activerDesactiverSalle(int parseInt) {
+		return dtoModificationSalle.activerDesactiverSalle(parseInt);
+	}
+
+	@Override
+	public boolean supprimerSalle(int parseInt) {
+		return dtoModificationSalle.supprimerSalle(parseInt);
+	}
 }

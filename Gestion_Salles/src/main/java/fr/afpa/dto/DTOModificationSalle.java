@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,7 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 	private IDTOGeneral dtoGeneral;
 	@Autowired
 	private IBatimentRepository dtoBatiment;
-	
-	@Override
-	public boolean choixSalle(int id) {
-		return false;
-		
-	}
+
 
 	@Override
 	public Map<Integer, Salle> listeSalles() {
@@ -43,6 +39,14 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 	}
 
 	@Override
+	public Salle choixSalle(String id) {
+		if(modificationSalleRepository.existsById(Integer.parseInt(id)))
+			return dtoGeneral.salleBDDToSalle(modificationSalleRepository.findById(Integer.parseInt(id)).get());
+		else
+			return null;
+	}
+
+	@Override
 	public ArrayList<Batiment> listerBatiment() {
 		ArrayList<Batiment> bat = new ArrayList<Batiment>();
 		List<BatimentBDD> batBdd = dtoBatiment.findAll();
@@ -50,6 +54,30 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 			bat.add(dtoGeneral.batimentBDDtobatiment(batimentBDD));
 		}
 		return bat;
+	}
+
+	@Override
+	public boolean updateSalle(Salle salle) {
+		SalleBDD salleBDD = modificationSalleRepository.getOne(salle.getId());
+		salleBDD.setCapacite(salle.getCapacite());
+		salleBDD.setNom(salle.getNom());
+		salleBDD.setNumero(salle.getNumero());
+		salleBDD.setSurface(salle.getSurface());
+		//TYPE SALLE
+		return false;
+	}
+
+	@Override
+	public boolean activerDesactiverSalle(int parseInt) {
+		SalleBDD salleBDD = modificationSalleRepository.getOne(parseInt);
+		//salleBDD.setActif(!salleBDD.isActif());
+		return false;
+	}
+
+	@Override
+	public boolean supprimerSalle(int parseInt) {
+		modificationSalleRepository.deleteById(parseInt);
+		return true;
 	}
 	
 	

@@ -188,7 +188,7 @@ public class DTOGeneral implements IDTOGeneral {
 		salle.setId(salleBDD.getId());
 		salle.setSurface(salleBDD.getSurface());
 		salle.setTypeSalle(TypeSalle.valueOf(salleBDD.getTypeSalle().getType()));
-		List<Materiel> materiel = new ArrayList<Materiel>();
+//		List<Materiel> materiel = new ArrayList<Materiel>();
 //		for (MaterielBDD materielBDD : salleBDD.getMateriel()) {
 //			Materiel m = new Materiel();
 //			m.setId(materielBDD.getId());
@@ -197,16 +197,6 @@ public class DTOGeneral implements IDTOGeneral {
 //			materiel.add(m);
 //		}
 //		salle.setListeMateriels(materiel);
-//		List<Reservation> reservation = new ArrayList<Reservation>();
-//		for (ReservationBDD reservationBDD : salleBDD.getReservation()) {
-//			Reservation r = new Reservation();
-//			r.setId(reservationBDD.getId());
-//			r.setIntitule(reservationBDD.getIntitule());
-//			r.setDateDebut(reservationBDD.getDateDebut());
-//			r.setDateFin(reservationBDD.getDateFin());
-//			reservation.add(r);
-//		}
-//		salle.setListeReservations(reservation);
 		return salle;
 	}
 
@@ -217,8 +207,5 @@ public class DTOGeneral implements IDTOGeneral {
 		bat.setNom(batimentBDD.getNom());
 		return bat;
 	}
-	
-	
-	
 	
 }
