@@ -26,12 +26,7 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 	private IDTOGeneral dtoGeneral;
 	@Autowired
 	private IBatimentRepository dtoBatiment;
-	
-	@Override
-	public boolean choixSalle(int id) {
-		return false;
-		
-	}
+
 
 	@Override
 	public Map<Integer, Salle> listeSalles() {
