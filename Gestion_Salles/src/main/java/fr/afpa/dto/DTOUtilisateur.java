@@ -78,6 +78,7 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	public boolean authentificationReussie(String login, String mdp) {
 		DAOLecture daol = new DAOLecture();
 		return !daol.authentification(login, mdp).isEmpty();
+		//return loginRepository.
 	}
 	
 	public Personne user(String login, String mdp) {
