@@ -7,4 +7,6 @@ public interface IServiceModificationSalle {
 
 	String voirSalle();
 
+	Object listerBatiment();
+
 }

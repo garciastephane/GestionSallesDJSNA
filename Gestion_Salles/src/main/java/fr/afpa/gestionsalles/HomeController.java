@@ -453,7 +453,6 @@ public class HomeController {
 		ArrayList<Message> lm = (ArrayList<Message>) sv.afficherListeMessage(loginCourant);
 
 		mv.addObject("listeMessages", lm);
-
 		mv.setViewName("boiteReception");
 		return mv;
 	}
@@ -504,7 +503,8 @@ public class HomeController {
 	 * @return le model contenant le message et la redirection
 	 */
 	@RequestMapping(value = "/voirR", method = RequestMethod.GET, params = {"expediteur","objet","contenu","date"})
-	public ModelAndView voirMessage(@RequestParam(value = "expediteur") String expediteur, @RequestParam(value = "objet") String objet, @RequestParam(value = "contenu") String contenu, @RequestParam(value = "date") String date) {
+	public ModelAndView voirMessage(@RequestParam(value = "expediteur") String expediteur, @RequestParam(value = "objet") String objet, 
+			@RequestParam(value = "contenu") String contenu, @RequestParam(value = "date") String date) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("expediteur", expediteur);
 		mv.addObject("objet",objet);
@@ -534,11 +534,29 @@ public class HomeController {
 		return "modifiersalle";
 	}
 	@RequestMapping(value="/crs", method = RequestMethod.GET)
-	public String createSalle() {
-		return "creationSalle";
+	public ModelAndView createSalle() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("listebatiment", serviceModificationSalle.listerBatiment());
+		mv.setViewName("creationSalle");
+		return mv;
+		
+		
+	/**
+	 * @param batiment
+	 * @param numero de salle
+	 * @param nom de salle
+	 * @param surface de la salle
+	 * @param capacite de la salle
+	 * @param type de salle
+	 * Return la vue modification de la salle
+	 */
+		
 	}
 	@RequestMapping(value="/asbdd" , method = RequestMethod.POST )
-	public String ajoutSalleBdd(@RequestParam(value="batiment") String batiment, @RequestParam(value="numsalle") String numsalle, @RequestParam(value="nomsalle") String nomsalle, @RequestParam(value="surface")String surface, @RequestParam(value="capacite") String capacite,@RequestParam(value="type") String type) {
+	public String ajoutSalleBdd(@RequestParam(value="batiment") String batiment, @RequestParam(value="numsalle") String numsalle, 
+			@RequestParam(value="nomsalle") String nomsalle, @RequestParam(value="surface")String surface, 
+			@RequestParam(value="capacite") String capacite,@RequestParam(value="type") String type) {
+		
 		Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),TypeSalle.valueOf(type));
 		serviceCreationSalle.ajoutSalleBdd(salle, batiment, type);
 		return "creationSalle";

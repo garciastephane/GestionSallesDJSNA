@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import fr.afpa.entites.Batiment;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Salle;
+import fr.afpa.entitespersistees.BatimentBDD;
 import fr.afpa.entitespersistees.LoginMessageBDD;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
@@ -34,4 +36,7 @@ public interface IDTOGeneral {
 	
 	
 	Salle salleBDDToSalle(SalleBDD salleBDD);
+
+	public Batiment batimentBDDtobatiment(BatimentBDD batimentBDD);
+
 }
