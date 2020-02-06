@@ -83,7 +83,7 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	public Personne user(String login, String mdp) {
 		DAOLecture daol = new DAOLecture();
 		ProfilBDD profilBdd =  daol.getUser(login, mdp);
-		return dtoGeneral.profilBDDToPersonne(profilBdd);
+		return new DTOGeneral().profilBDDToPersonne(profilBdd);
 	}
 
 
@@ -174,8 +174,7 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	}
 	
 	public Personne personneDuLogin(String login) {
-		Personne personne = dtoGeneral.profilBDDToPersonne(new DAOLecture().profilDuLogin(login));
-		return personne;
+		return dtoGeneral.profilBDDToPersonne(new DAOLecture().profilDuLogin(login));
 	}
 
 	public boolean archivage(int id) {
