@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
+import fr.afpa.entites.Salle;
 import fr.afpa.entitespersistees.LoginMessageBDD;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
 import fr.afpa.entitespersistees.RoleBDD;
+import fr.afpa.entitespersistees.SalleBDD;
 
 @Service
 public interface IDTOGeneral {
@@ -31,4 +33,5 @@ public interface IDTOGeneral {
 	public List<Message> listeLoginMessageToListeMessageEnvoye(String login);
 	
 	
+	Salle salleBDDToSalle(SalleBDD salleBDD);
 }

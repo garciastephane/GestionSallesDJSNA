@@ -27,6 +27,7 @@ import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Utilisateur;
 import fr.afpa.interfaces.services.IServiceVisualisation;
+import fr.afpa.interfaces.services.IServiceModificationSalle;
 import fr.afpa.services.ServiceCreation;
 import fr.afpa.services.ServiceGeneral;
 import fr.afpa.services.ServiceModification;
@@ -45,6 +46,8 @@ public class HomeController {
 	
 	@Autowired
 	private IServiceVisualisation serviceVisualisation;
+	@Autowired
+	private IServiceModificationSalle serviceModificationSalle;
 
 	/**
 	 * Return la vue index (la page d'accueil)
@@ -503,15 +506,19 @@ public class HomeController {
 	 * Return la vue choix de la salle
 	 */
 	@RequestMapping(value = "/cs", method = RequestMethod.GET)
-	public String choixSalle() {
-		return "choixsalle";
+	public ModelAndView choixSalle() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("allroom", serviceModificationSalle.voirSalle());
+		mv.setViewName("choixsalle");
+		return mv;
 	}
 	
 	/**
 	 * Return la vue modification de la salle
 	 */
 	@RequestMapping(value = "/ms", method = RequestMethod.GET)
-	public String modifSalle() {
+	public String modifSalle(@RequestParam String id) {
+		
 		return "modifiersalle";
 	}
 

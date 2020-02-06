@@ -32,11 +32,11 @@
 	<br />
 	<br />
 	<div class="container">
-		<form class="needs-validation" action="SChU" method="post">
+		<form class="needs-validation" action="" method="post">
 			<div class="form-row">
 				<div class="col-md-2 mb-3">
 					<label>id salle</label> <input class="form-control"
-						type="number" name="${ choix }">
+						type="number" name="choix">
 					<button class="btn btn-success" type="submit" value="Valider">Valider</button>
 				</div>
 			</div>
@@ -47,13 +47,10 @@
 					<thead>
 						<tr class="table table-primary">
 							<td>Id</td>
-							<td>Id bâtiment</td>
 							<td>Numero</td>
 							<td>Type de salle</td>
 							<td>Nom</td>
 							<td>Capacité</td>
-							<td>Nombre de chaise</td>
-							<td>Nombre de table</td>
 							<td>Surface</td>
 						</tr>
 					</thead>
