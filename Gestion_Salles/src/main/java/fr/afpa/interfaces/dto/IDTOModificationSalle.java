@@ -17,4 +17,10 @@ public interface IDTOModificationSalle {
 
 	ArrayList<Batiment> listerBatiment();
 
+	boolean updateSalle(Salle salle);
+
+	boolean activerDesactiverSalle(int parseInt);
+
+	boolean supprimerSalle(int parseInt);
+
 }

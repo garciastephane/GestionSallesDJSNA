@@ -55,6 +55,30 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 		}
 		return bat;
 	}
+
+	@Override
+	public boolean updateSalle(Salle salle) {
+		SalleBDD salleBDD = modificationSalleRepository.getOne(salle.getId());
+		salleBDD.setCapacite(salle.getCapacite());
+		salleBDD.setNom(salle.getNom());
+		salleBDD.setNumero(salle.getNumero());
+		salleBDD.setSurface(salle.getSurface());
+		//TYPE SALLE
+		return false;
+	}
+
+	@Override
+	public boolean activerDesactiverSalle(int parseInt) {
+		SalleBDD salleBDD = modificationSalleRepository.getOne(parseInt);
+		//salleBDD.setActif(!salleBDD.isActif());
+		return false;
+	}
+
+	@Override
+	public boolean supprimerSalle(int parseInt) {
+		modificationSalleRepository.deleteById(parseInt);
+		return true;
+	}
 	
 	
 }

@@ -42,7 +42,7 @@ import fr.afpa.services.ServiceVisualisation;
 public class HomeController {
 
 	private static String loginCourant;
-	
+
 	@Autowired
 	private IServiceGeneral serviceGeneral;
 	@Autowired
@@ -51,7 +51,7 @@ public class HomeController {
 	private IServiceModificationSalle serviceModificationSalle;
 	@Autowired
 	private IServiceUtilisateur serviceUtilisateur;
-	
+
 	@Autowired
 	private IControleAuthentificationUtilisateur controleAuthentificationUtilisateur;
 	@Autowired
@@ -73,6 +73,7 @@ public class HomeController {
 
 	/**
 	 * Redirige vers le menu
+	 * 
 	 * @return la page
 	 */
 	@RequestMapping(value = "/menu", method = RequestMethod.GET)
@@ -81,10 +82,13 @@ public class HomeController {
 	}
 
 	/**
-	 * Controller permettant de logguer la personne en fonction de son type de profil, admin ou utilisateur
-	 * @param login de la personne
+	 * Controller permettant de logguer la personne en fonction de son type de
+	 * profil, admin ou utilisateur
+	 * 
+	 * @param login    de la personne
 	 * @param password de la personne
-	 * @return un model contenant l'utilisateur ou l'admin et la redirection vers les menus associ�s
+	 * @return un model contenant l'utilisateur ou l'admin et la redirection vers
+	 *         les menus associ�s
 	 */
 	@RequestMapping(value = "/SAP", method = RequestMethod.POST)
 	public ModelAndView authentificationPersonne(@RequestParam(value = "login") String login,
@@ -92,7 +96,7 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 
 		if (controleAuthentificationUtilisateur.controlePersonneInscrite(login, password)) {
-			
+
 			loginCourant = login;
 			Personne personne = serviceUtilisateur.utilisateur(login, password);
 			if (personne instanceof Utilisateur) {
@@ -105,20 +109,22 @@ public class HomeController {
 
 		} else {
 			mv.setViewName("index");
-		
+
 		}
 		return mv;
 	}
 
 	/**
-	 * Controller permettant d'afficher l'utilisateur dans la gestion des utilisateurs
+	 * Controller permettant d'afficher l'utilisateur dans la gestion des
+	 * utilisateurs
+	 * 
 	 * @param choix
 	 * @return
 	 */
 	@RequestMapping(value = "/SChU", method = RequestMethod.POST)
 	public ModelAndView choixUser(@RequestParam(value = "choix") String choix) {
 		ModelAndView mv = new ModelAndView();
-	
+
 		DTOUtilisateur dtou = new DTOUtilisateur();
 		Map<Integer, Personne> listePersonnes = dtou.listePersonnes();
 		if (controleChoixUtilisateur.verificationChoix(choix)) {
@@ -130,26 +136,27 @@ public class HomeController {
 						personne.getDateNaissance().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
 				mv.setViewName("modifierutilisateur");
-	
+
 			} else {
 				mv.addObject("choix", choix);
 				mv.addObject("alluser", new ServiceVisualisation().afficherUser());
-				
+
 				mv.setViewName("choixuser");
-		
+
 			}
 		} else {
 			mv.addObject("choix", choix);
 			mv.addObject("alluser", new ServiceVisualisation().afficherUser());
-		
+
 			mv.setViewName("choixuser");
-		
+
 		}
-		 return mv;
+		return mv;
 	}
 
 	/**
 	 * Controller permettant de cr�er une personne
+	 * 
 	 * @param nom
 	 * @param prenom
 	 * @param mail
@@ -169,7 +176,7 @@ public class HomeController {
 			@RequestParam(value = "datenaissance") String datenaissance,
 			@RequestParam(value = "password") String password, @RequestParam(value = "password2") String password2,
 			@RequestParam(value = "login") String login, @RequestParam(value = "create") String create) {
-	
+
 		ServiceCreation sc = new ServiceCreation();
 		ModelAndView mv = new ModelAndView();
 		String nomOk = "";
@@ -180,10 +187,10 @@ public class HomeController {
 		LocalDate dateNaissance = LocalDate.now();
 		String loginOk = "";
 		String passwordOk = null;
-		
+
 		if (controleGeneral.controleNomPrenom(nom)) {
 			nomOk = nom;
-		} 
+		}
 		if (controleGeneral.controleNomPrenom(prenom)) {
 			prenomOk = prenom;
 		}
@@ -209,22 +216,21 @@ public class HomeController {
 
 			if (controleCreationUtilisateur.controleLogin(login)) {
 				mv.addObject("existe", false);
-			
+
 			} else {
 				mv.addObject("existe", true);
-			
+
 			}
 		}
-		if ("".equals(nomOk) || "".equals(prenomOk) || "".equals(mailOk) || "".equals(adresseOk) || "".equals(loginOk)) {
+		if ("".equals(nomOk) || "".equals(prenomOk) || "".equals(mailOk) || "".equals(adresseOk)
+				|| "".equals(loginOk)) {
 			mv.addObject("champIncorrect", true);
 			if ("pageUser".equals(create)) {
 				mv.setViewName("creationCompte");
-			}
-			else {
+			} else {
 				mv.setViewName("creationutilisateur");
 			}
-		}
-		else {
+		} else {
 			if ("user".equals(create)) {
 				sc.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login, password, false);
 				mv.setViewName("gestionuser");
@@ -236,23 +242,26 @@ public class HomeController {
 				mv.setViewName("index");
 			}
 		}
-		
+
 		return mv;
 
 	}
+
 	/**
 	 * Controller de deconnexion
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/SD", method = RequestMethod.POST)
 	public String deconnexion() {
 
 		return "index";
-		
+
 	}
 
 	/**
 	 * Controller permettant de modifier un utilisateur (gestion de compte)
+	 * 
 	 * @param modif
 	 * @param password
 	 * @param password2
@@ -299,9 +308,10 @@ public class HomeController {
 
 		return mv;
 	}
-	
+
 	/**
 	 * Controller permettant de rediriger la personne vers choix ou alluser
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/SRCU", method = RequestMethod.GET)
@@ -312,28 +322,30 @@ public class HomeController {
 		mv.addObject("alluser", new ServiceVisualisation().afficherUser());
 
 		mv.setViewName("choixuser");
-	
+
 		return mv;
 	}
 
 	/**
 	 * Redirection sur le formulaire cr�ationutilisateur
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/SRC", method = RequestMethod.GET)
 	public String redirectionCreation() {
-		
+
 		return "creationutilisateur";
 
 	}
 
 	/**
-	 *Controlleur du Bouton retour
+	 * Controlleur du Bouton retour
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/Retour", method = RequestMethod.GET)
 	public String retour() {
-	
+
 		if (controleAuthentificationUtilisateur.controleAdmin(loginCourant)) {
 			return "gestionuser";
 		} else {
@@ -343,12 +355,14 @@ public class HomeController {
 	}
 
 	/**
-	 * Controlleur permettant de visualiser la liste des utilisateur ( gestion utilisateur )
+	 * Controlleur permettant de visualiser la liste des utilisateur ( gestion
+	 * utilisateur )
+	 * 
 	 * @return la liste des personnes
 	 */
 	@RequestMapping(value = "/SVU", method = RequestMethod.GET)
 	public ModelAndView visualisationUtilisateur() {
-		//ServiceVisualisation sv = new ServiceVisualisation();
+		// ServiceVisualisation sv = new ServiceVisualisation();
 		ModelAndView mv = new ModelAndView();
 		Map<Integer, Personne> listePersonnes = serviceVisualisation.listeTousPersonnes();
 		mv.addObject("listePersonnes", listePersonnes);
@@ -359,6 +373,7 @@ public class HomeController {
 
 	/**
 	 * Redirection � la cr�ation du compte utilisateur
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/CCPU", method = RequestMethod.GET)
@@ -368,6 +383,7 @@ public class HomeController {
 
 	/**
 	 * Redirection � la cr�ation du message
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/NM", method = RequestMethod.GET)
@@ -377,6 +393,7 @@ public class HomeController {
 
 	/**
 	 * Controller permettant d'envoyer un message
+	 * 
 	 * @param destinataire
 	 * @param objet
 	 * @param contenu
@@ -403,30 +420,33 @@ public class HomeController {
 		}
 		return mv;
 	}
-	
+
 	/**
 	 * Controller permettant d'achiver un message
-	 * @param id r�cup�ration de l'id pour mettre � true l'archivage du message dans la base de donn�e
+	 * 
+	 * @param id r�cup�ration de l'id pour mettre � true l'archivage du message dans
+	 *           la base de donn�e
 	 * @return redirection vers boite de r�ception
 	 */
 	@RequestMapping(value = "/ARC", method = RequestMethod.POST)
-	public ModelAndView archivage(@RequestParam(value="id") int id, @RequestParam(value="page") String page) {
+	public ModelAndView archivage(@RequestParam(value = "id") int id, @RequestParam(value = "page") String page) {
 		ModelAndView mv = new ModelAndView();
 		ServiceModification sm = new ServiceModification();
-		//System.out.println("toto "+id);
+		// System.out.println("toto "+id);
 		sm.archiverMsg(id);
 		if ("boiteReception".equals(page)) {
 			mv.setViewName("boiteReception");
-		}
-		else {
+		} else {
 			mv.setViewName("messageEnvoye");
 		}
 		return mv;
-		
+
 	}
-	
+
 	/**
-	 * Controller permettant d'afficher la liste des messages archiver dans la page Messages archiv�s
+	 * Controller permettant d'afficher la liste des messages archiver dans la page
+	 * Messages archiv�s
+	 * 
 	 * @return le model contenant la liste des messages archiv�s et la redirection
 	 */
 	@RequestMapping(value = "/MA", method = RequestMethod.GET)
@@ -439,10 +459,11 @@ public class HomeController {
 		mv.setViewName("boiteArchives");
 		return mv;
 	}
-	
-	
+
 	/**
-	 * Controller permettant d'afficher la liste des messages dans la boite de r�ception
+	 * Controller permettant d'afficher la liste des messages dans la boite de
+	 * r�ception
+	 * 
 	 * @return les donn�es du model et la vue
 	 */
 	@RequestMapping(value = "/BR", method = RequestMethod.GET)
@@ -456,11 +477,10 @@ public class HomeController {
 		mv.setViewName("boiteReception");
 		return mv;
 	}
-	
-	
-	
+
 	/**
 	 * Controller qui permet d'afficher la liste des messages envoy�s
+	 * 
 	 * @return les donn�es du model et la redirection
 	 */
 	@RequestMapping(value = "/ME", method = RequestMethod.GET)
@@ -474,46 +494,53 @@ public class HomeController {
 		mv.setViewName("messageEnvoye");
 		return mv;
 	}
-	
+
 	/**
 	 * Controller permettant de visualiser un message envoy�
+	 * 
 	 * @param destinataire
 	 * @param objet
 	 * @param contenu
 	 * @param date
 	 * @return un model contenant le message et la redirection
 	 */
-	@RequestMapping(value = "/voirE", method = RequestMethod.GET, params = {"destinataire","objet","contenu","date"})
-	public ModelAndView voirMessage(@RequestParam(value = "destinataire") List<String> destinataire, @RequestParam(value = "objet") String objet, @RequestParam(value = "contenu") String contenu, @RequestParam(value = "date") String date) {
+	@RequestMapping(value = "/voirE", method = RequestMethod.GET, params = { "destinataire", "objet", "contenu",
+			"date" })
+	public ModelAndView voirMessage(@RequestParam(value = "destinataire") List<String> destinataire,
+			@RequestParam(value = "objet") String objet, @RequestParam(value = "contenu") String contenu,
+			@RequestParam(value = "date") String date) {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("destinataires",destinataire);
-		mv.addObject("objet",objet);
-		mv.addObject("contenu",contenu);
-		mv.addObject("date",date);
+		mv.addObject("destinataires", destinataire);
+		mv.addObject("objet", objet);
+		mv.addObject("contenu", contenu);
+		mv.addObject("date", date);
 		mv.setViewName("voirMessageEnvoye");
 		return mv;
 	}
 
 	/**
-	 * Controller permettant de visualiser un message recu dans la boite de r�ception
+	 * Controller permettant de visualiser un message recu dans la boite de
+	 * r�ception
+	 * 
 	 * @param expediteur
 	 * @param objet
 	 * @param contenu
 	 * @param date
 	 * @return le model contenant le message et la redirection
 	 */
-	@RequestMapping(value = "/voirR", method = RequestMethod.GET, params = {"expediteur","objet","contenu","date"})
-	public ModelAndView voirMessage(@RequestParam(value = "expediteur") String expediteur, @RequestParam(value = "objet") String objet, 
-			@RequestParam(value = "contenu") String contenu, @RequestParam(value = "date") String date) {
+	@RequestMapping(value = "/voirR", method = RequestMethod.GET, params = { "expediteur", "objet", "contenu", "date" })
+	public ModelAndView voirMessage(@RequestParam(value = "expediteur") String expediteur,
+			@RequestParam(value = "objet") String objet, @RequestParam(value = "contenu") String contenu,
+			@RequestParam(value = "date") String date) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("expediteur", expediteur);
-		mv.addObject("objet",objet);
-		mv.addObject("contenu",contenu);
-		mv.addObject("date",date);
+		mv.addObject("objet", objet);
+		mv.addObject("contenu", contenu);
+		mv.addObject("date", date);
 		mv.setViewName("voirMessageRecu");
 		return mv;
 	}
-	
+
 	/**
 	 * Return la vue choix de la salle
 	 */
@@ -524,7 +551,7 @@ public class HomeController {
 		mv.setViewName("choixsalle");
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/sc", method = RequestMethod.POST)
 	public ModelAndView salleChoisi(@RequestParam(name = "id") String id) {
 		ModelAndView mv = new ModelAndView();
@@ -533,51 +560,72 @@ public class HomeController {
 		if (salle != null) {
 			mv.addObject("salle", salle);
 			mv.setViewName("modifiersalle");
-		}
-		else {
+		} else {
 			mv.addObject("allroom", serviceModificationSalle.voirSalle());
 			mv.setViewName("choixsalle");
 		}
 		return mv;
 	}
-	
+
 	/**
 	 * Return la vue modification de la salle
 	 */
 	@RequestMapping(value = "/ms", method = RequestMethod.POST)
 	public String modifSalle(@RequestParam String id) {
-		
+
 		return "modifiersalle";
 	}
-	
-	@RequestMapping(value="/crs", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/crs", method = RequestMethod.GET)
 	public ModelAndView createSalle() {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("listebatiment", serviceModificationSalle.listerBatiment());
 		mv.setViewName("creationSalle");
 		return mv;
 	}
-	
-	@RequestMapping(value="/rms", method = RequestMethod.POST)
-	public String redirectionModifSalle() {
-		return "creationSalle";
+
+	@RequestMapping(value = "/rms", method = RequestMethod.POST)
+	public ModelAndView redirectionModifSalle(@RequestParam(value = "numsalle") String numsalle,
+			@RequestParam(value = "nomsalle") String nomsalle, @RequestParam(value = "surface") String surface,
+			@RequestParam(value = "capacite") String capacite, @RequestParam(value = "type") String type,
+			@RequestParam(value = "modif") String modif, @RequestParam(value = "id") String id) {
+		ModelAndView mv = new ModelAndView();
+		switch (modif) {
+		case "valider":
+			Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),
+					TypeSalle.valueOf(type));
+			serviceModificationSalle.updateSalle(salle);
+			break;
+		case "desactiver":
+			serviceModificationSalle.activerDesactiverSalle(Integer.parseInt(id));
+			break;
+		case "supprimer":
+			serviceModificationSalle.supprimerSalle(Integer.parseInt(id));
+			break;
+
+		default:
+			break;
+		}
+		mv.setViewName("choixSalle");
+		return mv;
 	}
-	
+
 	/**
 	 * @param batiment
-	 * @param numero de salle
-	 * @param nom de salle
-	 * @param surface de la salle
+	 * @param numero   de salle
+	 * @param nom      de salle
+	 * @param surface  de la salle
 	 * @param capacite de la salle
-	 * @param type de salle
-	 * Return la vue modification de la salle
+	 * @param type     de salle Return la vue modification de la salle
 	 */
-	@RequestMapping(value="/asbdd" , method = RequestMethod.POST )
-	public String ajoutSalleBdd(@RequestParam(value="batiment") String batiment, @RequestParam(value="numsalle") String numsalle, 
-			@RequestParam(value="nomsalle") String nomsalle, @RequestParam(value="surface")String surface, 
-			@RequestParam(value="capacite") String capacite,@RequestParam(value="type") String type) {
-		
-		Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),TypeSalle.valueOf(type));
+	@RequestMapping(value = "/asbdd", method = RequestMethod.POST)
+	public String ajoutSalleBdd(@RequestParam(value = "batiment") String batiment,
+			@RequestParam(value = "numsalle") String numsalle, @RequestParam(value = "nomsalle") String nomsalle,
+			@RequestParam(value = "surface") String surface, @RequestParam(value = "capacite") String capacite,
+			@RequestParam(value = "type") String type) {
+
+		Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),
+				TypeSalle.valueOf(type));
 		serviceCreationSalle.ajoutSalleBdd(salle, batiment, type);
 		return "creationSalle";
 	}

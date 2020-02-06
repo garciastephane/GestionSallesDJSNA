@@ -13,4 +13,10 @@ public interface IServiceModificationSalle {
 
 	Object listerBatiment();
 
+	boolean updateSalle(Salle salle);
+
+	boolean activerDesactiverSalle(int parseInt);
+
+	boolean supprimerSalle(int parseInt);
+
 }
