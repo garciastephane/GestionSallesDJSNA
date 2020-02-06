@@ -27,7 +27,7 @@
 	</c:choose> --%>
 
 
-	<div class="container">
+	<div class="container text-center">
 		<h2>
 			<strong>GESTION DES UTILISATEURS</strong>
 		</h2>

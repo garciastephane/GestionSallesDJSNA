@@ -110,7 +110,7 @@
 				value="admin">Creer un Administrateur</button>
 		</form>
 		<br /> <br />
-		<form action="menu" method="get">
+		<form action="Retour" method="get">
 			<button class="btn btn-danger" type="submit">Retour</button>
 
 		</form>
