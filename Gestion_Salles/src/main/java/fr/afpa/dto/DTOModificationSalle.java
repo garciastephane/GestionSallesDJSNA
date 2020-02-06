@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,14 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 			listePersonnes.put(salleBDD.getId(), dtoGeneral.salleBDDToSalle(salleBDD));
 		}
 		return listePersonnes;
+	}
+
+	@Override
+	public Salle choixSalle(String id) {
+		if(modificationSalleRepository.existsById(Integer.parseInt(id)))
+			return dtoGeneral.salleBDDToSalle(modificationSalleRepository.findById(Integer.parseInt(id)).get());
+		else
+			return null;
 	}
 
 	@Override

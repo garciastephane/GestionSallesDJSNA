@@ -32,11 +32,15 @@
 	<br />
 	<br />
 	<div class="container">
-		<form class="needs-validation" action="" method="post">
+		<form class="needs-validation" action="sc" method="post">
 			<div class="form-row">
+				<div class="col-md-1 mb-3">
+					<label>id salle :</label>
+				</div>
 				<div class="col-md-2 mb-3">
-					<label>id salle</label> <input class="form-control"
-						type="number" name="choix">
+					<input class="form-control" type="number" name="id">
+				</div>
+				<div class="col-md-2 mb-3">
 					<button class="btn btn-success" type="submit" value="Valider">Valider</button>
 				</div>
 			</div>

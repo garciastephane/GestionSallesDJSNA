@@ -13,14 +13,6 @@
 <title>Modifier une salle</title>
 </head>
 <body>
-	<%-- <c:choose>
-		<c:when test="${ empty sessionScope.authentification }">
-			<c:redirect url="index.jsp" />
-		</c:when>
-		<c:when test="${ not empty sessionScope.authentification }">
-			<c:set scope="session" var="authentification" value="true" />
-		</c:when>
-	</c:choose>--%>
 	<div class="container">
 		<br /> <br />
 		<h2>
@@ -31,8 +23,7 @@
 	<br />
 	<br />
 	<div class="container">
-		<form class="needs-validation" action="" method="post">
-
+		<form class="needs-validation" action="rms" method="post">
 			<input hidden="" name="id" value="${ id }">
 
 			<div class="form-row">
@@ -47,18 +38,14 @@
 				<div class="col-md-4 mb-3">
 					<label>Type de salle</label> <input type="text"
 						class="form-control" name="type"
-						value='<c:out value="${ salle.type.type }"/>'>
+						value='<c:out value="${ salle.typeSalle.type }"/>'>
 				</div>
 			</div>
 
 			<div class="form-row">
 				<div class="col-md-4 mb-3">
-					<label>Nombre de chaise</label> <input type="number" class="form-control"
-						name="chaise" value='<c:out value="${ salle.nbrChaise }"/>'>
-				</div>
-				<div class="col-md-4 mb-3">
-					<label>Nombre de table</label> <input type="number" class="form-control"
-						name="table" value='<c:out value="${ salle.nbrTable }"/>'>
+					<label>Surface</label> <input type="number" class="form-control"
+						name="surface" value='<c:out value="${ salle.surface }"/>'>
 				</div>
 				<div class="col-md-4 mb-3">
 					<label>Capacité</label> <input type="number" class="form-control"
@@ -74,7 +61,7 @@
 			</div>
 		</form>
 		<br /> <br />
-		<form action="">
+		<form action="cs" method="get">
 			<button class="btn btn-danger">Retour</button>
 		</form>
 	</div>

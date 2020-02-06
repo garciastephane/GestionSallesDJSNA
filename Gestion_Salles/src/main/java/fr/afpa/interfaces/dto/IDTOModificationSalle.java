@@ -11,7 +11,7 @@ import fr.afpa.entites.Salle;
 @Service
 public interface IDTOModificationSalle {
 
-	boolean choixSalle(int id);
+	Salle choixSalle(String id);
 
 	Map<Integer, Salle> listeSalles();
 

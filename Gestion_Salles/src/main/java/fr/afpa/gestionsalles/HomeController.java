@@ -525,14 +525,31 @@ public class HomeController {
 		return mv;
 	}
 	
+	@RequestMapping(value = "/sc", method = RequestMethod.POST)
+	public ModelAndView salleChoisi(@RequestParam(name = "id") String id) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("id", id);
+		Salle salle = serviceModificationSalle.getSalle(id);
+		if (salle != null) {
+			mv.addObject("salle", salle);
+			mv.setViewName("modifiersalle");
+		}
+		else {
+			mv.addObject("allroom", serviceModificationSalle.voirSalle());
+			mv.setViewName("choixsalle");
+		}
+		return mv;
+	}
+	
 	/**
 	 * Return la vue modification de la salle
 	 */
-	@RequestMapping(value = "/ms", method = RequestMethod.GET)
+	@RequestMapping(value = "/ms", method = RequestMethod.POST)
 	public String modifSalle(@RequestParam String id) {
 		
 		return "modifiersalle";
 	}
+	
 	@RequestMapping(value="/crs", method = RequestMethod.GET)
 	public ModelAndView createSalle() {
 		ModelAndView mv = new ModelAndView();
@@ -552,6 +569,12 @@ public class HomeController {
 	 */
 		
 	}
+	
+	@RequestMapping(value="/rms", method = RequestMethod.POST)
+	public String redirectionModifSalle() {
+		return "creationSalle";
+	}
+	
 	@RequestMapping(value="/asbdd" , method = RequestMethod.POST )
 	public String ajoutSalleBdd(@RequestParam(value="batiment") String batiment, @RequestParam(value="numsalle") String numsalle, 
 			@RequestParam(value="nomsalle") String nomsalle, @RequestParam(value="surface")String surface, 

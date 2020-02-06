@@ -45,4 +45,9 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 		return dtoModificationSalle.listerBatiment();
 	}
 	
+
+	@Override
+	public Salle getSalle(String id) {
+		return dtoModificationSalle.choixSalle(id);
+	}
 }
