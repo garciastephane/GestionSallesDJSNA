@@ -163,15 +163,12 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	}
 
 	public boolean archivage(int id) {
-		DAOModification dm = new DAOModification();
-		return dm.archivageDAO(id);
-		
-		/*Optional<MessageBDD> message = messageRepository.findById(id);
+		Optional<MessageBDD> message = messageRepository.findById(id);
 		if (message.isPresent()) {
 			message.get().setArchive(true);
 			messageRepository.save(message.get());
 			return true;
 		}
-		return false;*/
+		return false;
 	}
 }

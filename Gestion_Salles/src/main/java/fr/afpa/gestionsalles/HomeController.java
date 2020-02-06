@@ -27,6 +27,7 @@ import fr.afpa.interfaces.controles.IControleChoixUtilisateur;
 import fr.afpa.interfaces.controles.IControleCreationUtilisateur;
 import fr.afpa.interfaces.controles.IControleGeneral;
 import fr.afpa.interfaces.services.IServiceGeneral;
+import fr.afpa.interfaces.services.IServiceModification;
 import fr.afpa.interfaces.services.IServiceModificationSalle;
 import fr.afpa.interfaces.services.IServiceUtilisateur;
 import fr.afpa.interfaces.services.IServiceVisualisation;
@@ -47,6 +48,8 @@ public class HomeController {
 	private IServiceGeneral serviceGeneral;
 	@Autowired
 	private IServiceVisualisation serviceVisualisation;
+	@Autowired
+	private IServiceModification serviceModification;
 	@Autowired
 	private IServiceModificationSalle serviceModificationSalle;
 	@Autowired
@@ -412,9 +415,7 @@ public class HomeController {
 	@RequestMapping(value = "/ARC", method = RequestMethod.POST)
 	public ModelAndView archivage(@RequestParam(value="id") int id, @RequestParam(value="page") String page) {
 		ModelAndView mv = new ModelAndView();
-		ServiceModification sm = new ServiceModification();
-		//System.out.println("toto "+id);
-		sm.archiverMsg(id);
+		serviceModification.archiverMsg(id);
 		if ("boiteReception".equals(page)) {
 			mv.setViewName("boiteReception");
 		}

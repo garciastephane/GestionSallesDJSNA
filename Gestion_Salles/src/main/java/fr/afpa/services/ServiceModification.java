@@ -5,11 +5,14 @@ import org.springframework.stereotype.Service;
 import fr.afpa.dto.DTOUtilisateur;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
+import fr.afpa.interfaces.dto.IDTOUtilisateurs;
 import fr.afpa.interfaces.services.IServiceModification;
 
 @Service
 public class ServiceModification implements IServiceModification {
 
+	private IDTOUtilisateurs dtoUtilisateurs;
+	
 	public static final String CHOIX = "choix";
 
 	/**
@@ -49,8 +52,7 @@ public class ServiceModification implements IServiceModification {
 	}
 
 	public boolean archiverMsg(int id) {
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		return dtou.archivage(id);
+		return dtoUtilisateurs.archivage(id);
 		
 	}
 }
