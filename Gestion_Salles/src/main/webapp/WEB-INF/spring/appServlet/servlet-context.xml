@@ -61,7 +61,13 @@
 	<!-- package des repositories -->
 	<jpa:repositories base-package="fr.afpa.repositories" />
 	
-	<!-- package des services et du dto -->
+	<!-- package des interfaces -->
 	<context:component-scan base-package="fr.afpa.interfaces.dto"/>
+	<context:component-scan base-package="fr.afpa.interfaces.services"/>
+	
+	<!-- package des services et du dto -->
+	<context:component-scan base-package="fr.afpa.dto"/>
+	<context:component-scan base-package="fr.afpa.services"/>
+	
 	
 </beans:beans>
