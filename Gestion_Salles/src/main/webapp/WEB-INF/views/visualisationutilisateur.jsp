@@ -60,7 +60,7 @@
 		</table>
 	<br />
 	<div>
-		<form action="menu" method="get">
+		<form action="gestionuser" method="get">
 			<button class="btn btn-danger">Retour</button>
 		</form>
 	</div>
