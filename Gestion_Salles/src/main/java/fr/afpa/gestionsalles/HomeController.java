@@ -521,5 +521,8 @@ public class HomeController {
 		
 		return "modifiersalle";
 	}
-
+	@RequestMapping(value="/crs", method = RequestMethod.GET)
+	public String createSalle() {
+		return "creationSalle";
+	}
 }
