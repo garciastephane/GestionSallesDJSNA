@@ -1,6 +1,11 @@
 package fr.afpa.controles;
 
-public class ControleGeneral {
+import org.springframework.stereotype.Service;
+
+import fr.afpa.interfaces.controles.IControleGeneral;
+
+@Service
+public class ControleGeneral implements IControleGeneral {
 	
 	/**
 	 * Constructeur prive de la classe ControleGeneral
@@ -14,7 +19,7 @@ public class ControleGeneral {
 	 * @param nom le nom ou le prenom de la personne
 	 * @return true si le nom ou prenom est correct, false si non
 	 */
-	public static boolean controleNomPrenom(String nom) {
+	public boolean controleNomPrenom(String nom) {
 		if (nom != null)
 			return nom.matches("[A-Za-z]+");
 		return false;
@@ -26,7 +31,7 @@ public class ControleGeneral {
 	 * @param date la date saisie
 	 * @return true si la date est correct, false si non
 	 */
-	public static boolean controleDateDeNaissance(String date) {
+	public boolean controleDateDeNaissance(String date) {
 		if (date != null)
 			return date.matches(
 					"(0[1-9]|[12]\\d|3[01])/(0[1-9]|1[0-2])/([1-9][0-9]{3}|0[1-9][0-9]{2}|00[1-9][0-9]{1}|000[1-9])");
@@ -39,7 +44,7 @@ public class ControleGeneral {
 	 * @param role le role a verifier
 	 * @return true si le role existe, false si non
 	 */
-	public static boolean controleRole(String role) {
+	public boolean controleRole(String role) {
 		if (role != null) {
 			switch (role.toLowerCase()) {
 			case "formateur":
@@ -59,7 +64,7 @@ public class ControleGeneral {
 	 * @return true si le contenu ne depasse pas les 255 caracteres
 	 * et false sinon
 	 */
-	public static boolean controleTailleContenuMesage(String contenu) {
+	public boolean controleTailleContenuMesage(String contenu) {
 		if (contenu != null) {
 			return contenu.length() <= 255;
 		}
@@ -73,7 +78,7 @@ public class ControleGeneral {
 	 * @return true si l'objet ne depasse pas les 50 caracteres
 	 * et false sinon
 	 */
-	public static boolean controleTailleObjetMesage(String objet) {
+	public boolean controleTailleObjetMesage(String objet) {
 		if (objet != null) {
 			return objet.length() <= 50;
 		}

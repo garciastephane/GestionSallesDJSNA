@@ -2,9 +2,13 @@ package fr.afpa.controles;
 
 import java.util.List;
 
-import fr.afpa.dto.DTOUtilisateur;
+import org.springframework.stereotype.Service;
 
-public class ControleCreationUtilisateur {
+import fr.afpa.dto.DTOUtilisateur;
+import fr.afpa.interfaces.controles.IControleCreationUtilisateur;
+
+@Service
+public class ControleCreationUtilisateur implements IControleCreationUtilisateur {
 
 	/**
 	 * Constructeur prive de la classe ControleCreationUtilisateur
@@ -19,7 +23,7 @@ public class ControleCreationUtilisateur {
 	 * @param parameter le login a verifier
 	 * @return true si le login n'existe pas, false si non
 	 */
-	public static boolean controleLogin(String parameter) {
+	public boolean controleLogin(String parameter) {
 		DTOUtilisateur dtou = new DTOUtilisateur();
 		List<String> listeLogs = dtou.listeLog();
 		return !listeLogs.contains(parameter);

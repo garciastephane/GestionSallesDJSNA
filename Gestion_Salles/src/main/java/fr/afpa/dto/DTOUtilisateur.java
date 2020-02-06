@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import fr.afpa.dao.DAOCreation;
@@ -57,9 +59,6 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	 */
 	public Map<Integer, Personne> listePersonnes() {
 		Map<Integer, Personne> listePersonnes = new HashMap<Integer, Personne>();
-//		DAOLecture daol = new DAOLecture();
-//		List<ProfilBDD> listeProfils = daol.listeTousProfils();
-		
 		List<ProfilBDD> listeProfils = profilRepository.findAll();
 		for (ProfilBDD profilBDD : listeProfils) {
 			listePersonnes.put(profilBDD.getId_profil(), dtoGeneral.profilBDDToPersonne(profilBDD));
@@ -78,7 +77,8 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	public boolean authentificationReussie(String login, String mdp) {
 		DAOLecture daol = new DAOLecture();
 		return !daol.authentification(login, mdp).isEmpty();
-		//return loginRepository.
+		/*List<LogBDD> loginMDP = loginRepository.findByLoginAndMotdepasse(login, mdp);
+		return !loginMDP.isEmpty();*/
 	}
 	
 	public Personne user(String login, String mdp) {

@@ -1,11 +1,20 @@
 package fr.afpa.controles;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import fr.afpa.dto.DTOUtilisateur;
 import fr.afpa.entites.Administrateur;
 import fr.afpa.entites.Personne;
+import fr.afpa.interfaces.controles.IControleAuthentificationUtilisateur;
+import fr.afpa.interfaces.controles.IControleCreationUtilisateur;
 
-public class ControleAuthentificationUtilisateur {
+@Service
+public class ControleAuthentificationUtilisateur implements IControleAuthentificationUtilisateur {
 
+	@Autowired
+	private IControleCreationUtilisateur controleCreationUtilisateur;
+	
 	/**
 	 * Permet de verifier si une personne est inscrite sur le site
 	 * 
@@ -27,7 +36,7 @@ public class ControleAuthentificationUtilisateur {
 	public boolean controleDestinataire(String logins) {
 		String[] tabLogins = logins.split(";");
 		for (String login : tabLogins) {
-			if (ControleCreationUtilisateur.controleLogin(login)) {
+			if (controleCreationUtilisateur.controleLogin(login)) {
 				return false;
 			}
 		}

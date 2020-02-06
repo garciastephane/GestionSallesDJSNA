@@ -27,6 +27,9 @@ import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Utilisateur;
 import fr.afpa.interfaces.services.IServiceVisualisation;
+import fr.afpa.interfaces.controles.IControleChoixUtilisateur;
+import fr.afpa.interfaces.controles.IControleCreationUtilisateur;
+import fr.afpa.interfaces.controles.IControleGeneral;
 import fr.afpa.interfaces.services.IServiceModificationSalle;
 import fr.afpa.services.ServiceCreation;
 import fr.afpa.services.ServiceGeneral;
@@ -48,6 +51,13 @@ public class HomeController {
 	private IServiceVisualisation serviceVisualisation;
 	@Autowired
 	private IServiceModificationSalle serviceModificationSalle;
+	
+	@Autowired
+	private IControleChoixUtilisateur controleChoixUtilisateur;
+	@Autowired
+	private IControleCreationUtilisateur controleCreationUtilisateur;
+	@Autowired
+	private IControleGeneral controleGeneral;
 
 	/**
 	 * Return la vue index (la page d'accueil)
@@ -109,7 +119,7 @@ public class HomeController {
 	
 		DTOUtilisateur dtou = new DTOUtilisateur();
 		Map<Integer, Personne> listePersonnes = dtou.listePersonnes();
-		if (ControleChoixUtilisateur.verificationChoix(choix)) {
+		if (controleChoixUtilisateur.verificationChoix(choix)) {
 			Personne personne = listePersonnes.get(Integer.parseInt(choix));
 			if (personne instanceof Utilisateur) {
 				mv.addObject("personne", personne);
@@ -169,21 +179,21 @@ public class HomeController {
 		String loginOk = "";
 		String passwordOk = null;
 		
-		if (ControleGeneral.controleNomPrenom(nom)) {
+		if (controleGeneral.controleNomPrenom(nom)) {
 			nomOk = nom;
 		} 
-		if (ControleGeneral.controleNomPrenom(prenom)) {
+		if (controleGeneral.controleNomPrenom(prenom)) {
 			prenomOk = prenom;
 		}
 		mailOk = mail;
 		adresseOk = adresse;
-		if (ControleGeneral.controleRole(role)) {
+		if (controleGeneral.controleRole(role)) {
 			roleOk = sc.conversionRole(role);
 		}
-		if (ControleGeneral.controleDateDeNaissance(datenaissance)) {
+		if (controleGeneral.controleDateDeNaissance(datenaissance)) {
 			dateNaissance = ServiceGeneral.conversionDate(datenaissance);
 		}
-		if (password.equals(password2) && ControleCreationUtilisateur.controleLogin(login)) {
+		if (password.equals(password2) && controleCreationUtilisateur.controleLogin(login)) {
 			loginOk = login;
 			passwordOk = password;
 		} else {
@@ -195,7 +205,7 @@ public class HomeController {
 			mv.addObject("datenaissance", datenaissance);
 			mv.addObject("login", login);
 
-			if (ControleCreationUtilisateur.controleLogin(login)) {
+			if (controleCreationUtilisateur.controleLogin(login)) {
 				mv.addObject("existe", false);
 			
 			} else {

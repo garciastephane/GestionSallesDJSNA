@@ -3,6 +3,8 @@ package fr.afpa.services;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import fr.afpa.controles.ControleAuthentificationUtilisateur;
 import fr.afpa.controles.ControleGeneral;
 import fr.afpa.dto.DTOUtilisateur;
@@ -11,8 +13,13 @@ import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Utilisateur;
+import fr.afpa.interfaces.controles.IControleGeneral;
 
 public class ServiceCreation {
+	
+	@Autowired
+	private IControleGeneral controleGeneral;
+	
 	/**
 	 * Permet de convertir un role de type String en role de type RolePersonne
 	 * 
@@ -73,8 +80,8 @@ public class ServiceCreation {
 			, String contenu, LocalDateTime date) {
 		ControleAuthentificationUtilisateur cau = new ControleAuthentificationUtilisateur();
 		if (cau.controleDestinataire(destinataires)
-				&& ControleGeneral.controleTailleContenuMesage(contenu)
-				&& ControleGeneral.controleTailleObjetMesage(objet)) {
+				&& controleGeneral.controleTailleContenuMesage(contenu)
+				&& controleGeneral.controleTailleObjetMesage(objet)) {
 			Message message = new Message(expediteur, ServiceGeneral.conversionStringEnListe(destinataires)
 					, objet, contenu, date, false);
 			return new DTOUtilisateur().ajoutMessageBDD(message);
