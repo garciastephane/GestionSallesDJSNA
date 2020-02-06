@@ -1,11 +1,13 @@
 package fr.afpa.services;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.afpa.entites.Batiment;
 import fr.afpa.entites.Salle;
 import fr.afpa.interfaces.dto.IDTOModificationSalle;
 import fr.afpa.interfaces.services.IServiceModificationSalle;
@@ -37,4 +39,10 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 		}
 		return res;
 	}
+
+	@Override
+	public ArrayList<Batiment> listerBatiment() {
+		return dtoModificationSalle.listerBatiment();
+	}
+	
 }

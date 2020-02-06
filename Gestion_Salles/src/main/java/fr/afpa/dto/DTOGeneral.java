@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import fr.afpa.dao.DAOLecture;
 import fr.afpa.entites.Administrateur;
+import fr.afpa.entites.Batiment;
 import fr.afpa.entites.Materiel;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
@@ -17,6 +18,7 @@ import fr.afpa.entites.Salle;
 import fr.afpa.entites.TypeMateriel;
 import fr.afpa.entites.TypeSalle;
 import fr.afpa.entites.Utilisateur;
+import fr.afpa.entitespersistees.BatimentBDD;
 import fr.afpa.entitespersistees.LogBDD;
 import fr.afpa.entitespersistees.LoginMessageBDD;
 import fr.afpa.entitespersistees.MaterielBDD;
@@ -206,6 +208,14 @@ public class DTOGeneral implements IDTOGeneral {
 //		}
 //		salle.setListeReservations(reservation);
 		return salle;
+	}
+
+	@Override
+	public Batiment batimentBDDtobatiment(BatimentBDD batimentBDD) {
+		Batiment bat = new Batiment();
+		bat.setId(batimentBDD.getId());
+		bat.setNom(batimentBDD.getNom());
+		return bat;
 	}
 	
 	

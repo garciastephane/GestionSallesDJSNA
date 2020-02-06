@@ -42,7 +42,7 @@
 		</div>
 		<div class="card text-center" style="width: 18rem;">
 			<div class="card-body">
-				<a href="">Création de Salle</a>
+				<a href="crs">Création de Salle</a>
 			</div>
 		</div>
 		
