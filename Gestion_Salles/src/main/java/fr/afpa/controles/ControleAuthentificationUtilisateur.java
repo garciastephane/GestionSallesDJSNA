@@ -8,12 +8,16 @@ import fr.afpa.entites.Administrateur;
 import fr.afpa.entites.Personne;
 import fr.afpa.interfaces.controles.IControleAuthentificationUtilisateur;
 import fr.afpa.interfaces.controles.IControleCreationUtilisateur;
+import fr.afpa.interfaces.dto.IDTOUtilisateurs;
 
 @Service
 public class ControleAuthentificationUtilisateur implements IControleAuthentificationUtilisateur {
 
 	@Autowired
 	private IControleCreationUtilisateur controleCreationUtilisateur;
+	
+	@Autowired
+	private IDTOUtilisateurs dtoUtilisateurs;
 	
 	/**
 	 * Permet de verifier si une personne est inscrite sur le site
@@ -23,8 +27,7 @@ public class ControleAuthentificationUtilisateur implements IControleAuthentific
 	 * @return true si la personne est inscrite et false sinon
 	 */
 	public boolean controlePersonneInscrite(String login, String mdp) {
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		return dtou.authentificationReussie(login, mdp);
+		return dtoUtilisateurs.authentificationReussie(login, mdp);
 	}
 
 	/**
@@ -43,11 +46,7 @@ public class ControleAuthentificationUtilisateur implements IControleAuthentific
 		return true;
 	}
 	
-	public Personne getUser(String login, String mdp) {
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		Personne utilisateur = dtou.user(login, mdp);
-		return utilisateur;
-	}
+	
 	
 	/**
 	 * Permet de verifier a partir d'un login si une personne est un admin ou non

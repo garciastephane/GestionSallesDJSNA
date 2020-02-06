@@ -14,8 +14,9 @@ import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Utilisateur;
 import fr.afpa.interfaces.controles.IControleGeneral;
+import fr.afpa.interfaces.services.IServiceCreation;
 
-public class ServiceCreation {
+public class ServiceCreation implements IServiceCreation {
 	
 	@Autowired
 	private IControleGeneral controleGeneral;

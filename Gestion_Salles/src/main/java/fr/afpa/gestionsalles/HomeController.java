@@ -27,10 +27,12 @@ import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Utilisateur;
 import fr.afpa.interfaces.services.IServiceVisualisation;
+import fr.afpa.interfaces.controles.IControleAuthentificationUtilisateur;
 import fr.afpa.interfaces.controles.IControleChoixUtilisateur;
 import fr.afpa.interfaces.controles.IControleCreationUtilisateur;
 import fr.afpa.interfaces.controles.IControleGeneral;
 import fr.afpa.interfaces.services.IServiceModificationSalle;
+import fr.afpa.interfaces.services.IServiceUtilisateur;
 import fr.afpa.services.ServiceCreation;
 import fr.afpa.services.ServiceGeneral;
 import fr.afpa.services.ServiceModification;
@@ -41,7 +43,6 @@ import fr.afpa.services.ServiceVisualisation;
  * Handles requests for the application home page.
  */
 @Controller
-@ComponentScan("fr.afpa.gestionsalles")
 public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -51,7 +52,11 @@ public class HomeController {
 	private IServiceVisualisation serviceVisualisation;
 	@Autowired
 	private IServiceModificationSalle serviceModificationSalle;
+	@Autowired
+	private IServiceUtilisateur serviceUtilisateur;
 	
+	@Autowired
+	private IControleAuthentificationUtilisateur controleAuthentificationUtilisateur;
 	@Autowired
 	private IControleChoixUtilisateur controleChoixUtilisateur;
 	@Autowired
@@ -85,14 +90,12 @@ public class HomeController {
 	@RequestMapping(value = "/SAP", method = RequestMethod.POST)
 	public ModelAndView authentificationPersonne(@RequestParam(value = "login") String login,
 			@RequestParam(value = "password") String password) {
-		ControleAuthentificationUtilisateur cau = new ControleAuthentificationUtilisateur();
-		ServiceUtilisateur su = new ServiceUtilisateur();
 		ModelAndView mv = new ModelAndView();
 
-		if (cau.controlePersonneInscrite(login, password)) {
+		if (controleAuthentificationUtilisateur.controlePersonneInscrite(login, password)) {
 			
 			loginCourant = login;
-			Personne personne = su.utilisateur(login, password);
+			Personne personne = serviceUtilisateur.utilisateur(login, password);
 			if (personne instanceof Utilisateur) {
 				mv.addObject("personne", personne);
 				mv.setViewName("menuUser");

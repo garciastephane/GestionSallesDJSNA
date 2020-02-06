@@ -11,8 +11,6 @@ public interface IControleAuthentificationUtilisateur {
 	
 	public boolean controleDestinataire(String logins);
 	
-	public Personne getUser(String login, String mdp);
-	
 	public boolean controleAdmin(String login);
 	
 }

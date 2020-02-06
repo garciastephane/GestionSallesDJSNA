@@ -75,16 +75,13 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	 * @return true si la personne est dans la base de donnees et false sinon
 	 */
 	public boolean authentificationReussie(String login, String mdp) {
-		DAOLecture daol = new DAOLecture();
-		return !daol.authentification(login, mdp).isEmpty();
-		/*List<LogBDD> loginMDP = loginRepository.findByLoginAndMotdepasse(login, mdp);
-		return !loginMDP.isEmpty();*/
+		List<LogBDD> loginMDP = loginRepository.findByLoginAndMotdepasse(login, mdp);
+		return !loginMDP.isEmpty();
 	}
 	
 	public Personne user(String login, String mdp) {
-		DAOLecture daol = new DAOLecture();
-		ProfilBDD profilBdd =  daol.getUser(login, mdp);
-		return new DTOGeneral().profilBDDToPersonne(profilBdd);
+		ProfilBDD profilBdd = profilRepository.findByLoginMdp(loginRepository.findByLoginAndMotdepasse(login, mdp).get(0));
+		return dtoGeneral.profilBDDToPersonne(profilBdd);
 	}
 
 
