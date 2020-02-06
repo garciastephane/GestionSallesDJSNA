@@ -338,7 +338,7 @@ public class HomeController {
 	@RequestMapping(value = "/Retour", method = RequestMethod.GET)
 	public String retour() {
 	
-		if (new ControleAuthentificationUtilisateur().controleAdmin(loginCourant)) {
+		if (controleAuthentificationUtilisateur.controleAdmin(loginCourant)) {
 			return "gestionuser";
 		} else {
 			return "index";

@@ -1,15 +1,17 @@
 package fr.afpa.controles;
 
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.afpa.dto.DTOUtilisateur;
 import fr.afpa.interfaces.controles.IControleCreationUtilisateur;
+import fr.afpa.interfaces.dto.IDTOUtilisateurs;
 
 @Service
 public class ControleCreationUtilisateur implements IControleCreationUtilisateur {
 
+	@Autowired
+	private IDTOUtilisateurs dtoUtilisateur;
+	
 	/**
 	 * Constructeur prive de la classe ControleCreationUtilisateur
 	 */
@@ -24,9 +26,7 @@ public class ControleCreationUtilisateur implements IControleCreationUtilisateur
 	 * @return true si le login n'existe pas, false si non
 	 */
 	public boolean controleLogin(String parameter) {
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		List<String> listeLogs = dtou.listeLog();
-		return !listeLogs.contains(parameter);
+		return !dtoUtilisateur.listeLog().contains(parameter);
 	}
 
 }

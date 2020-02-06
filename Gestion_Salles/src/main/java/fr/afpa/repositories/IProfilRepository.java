@@ -1,5 +1,7 @@
 package fr.afpa.repositories;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +13,6 @@ public interface IProfilRepository extends JpaRepository<ProfilBDD, Integer> {
 
 	ProfilBDD findByLoginMdp(LogBDD findByLoginAndMotdepasse);
 
-	
+	ProfilBDD findByLoginMdp(Optional<LogBDD> optional);
 	
 }

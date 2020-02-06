@@ -54,6 +54,6 @@ public class ControleAuthentificationUtilisateur implements IControleAuthentific
 	 * @return true si c'est un admin et false sinon
 	 */
 	public boolean controleAdmin(String login) {
-		return new DTOUtilisateur().personneDuLogin(login) instanceof Administrateur;
+		return dtoUtilisateurs.personneDuLogin(login) instanceof Administrateur;
 	}
 }

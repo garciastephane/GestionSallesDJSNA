@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import fr.afpa.dao.DAOCreation;
-import fr.afpa.dao.DAOLecture;
 import fr.afpa.dao.DAOModification;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
@@ -23,13 +19,8 @@ import fr.afpa.entitespersistees.ProfilBDD;
 import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.dto.IDTOUtilisateurs;
 import fr.afpa.interfaces.services.IServiceGeneral;
-import fr.afpa.repositories.IArchiveRepository;
 import fr.afpa.repositories.ILogRepository;
-import fr.afpa.repositories.ILoginMessageRepository;
 import fr.afpa.repositories.IProfilRepository;
-import fr.afpa.repositories.IRoleRepository;
-import fr.afpa.repositories.ITypeProfilRepository;
-import fr.afpa.services.ServiceGeneral;
 
 @Service
 public class DTOUtilisateur implements IDTOUtilisateurs {
@@ -38,14 +29,6 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	private IProfilRepository profilRepository;
 	@Autowired
 	private ILogRepository loginRepository;
-	@Autowired
-	private ITypeProfilRepository typeProfilRepository;
-	@Autowired
-	private IRoleRepository roleRepository;
-	@Autowired
-	private IArchiveRepository archiveRepository;
-	@Autowired
-	private ILoginMessageRepository loginMessageRepository;
 	
 	@Autowired
 	private IDTOGeneral dtoGeneral;
@@ -61,8 +44,7 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	 */
 	public Map<Integer, Personne> listePersonnes() {
 		Map<Integer, Personne> listePersonnes = new HashMap<Integer, Personne>();
-		List<ProfilBDD> listeProfils = profilRepository.findAll();
-		for (ProfilBDD profilBDD : listeProfils) {
+		for (ProfilBDD profilBDD : profilRepository.findAll()) {
 			listePersonnes.put(profilBDD.getId_profil(), dtoGeneral.profilBDDToPersonne(profilBDD));
 		}
 		return listePersonnes;
@@ -93,10 +75,8 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	 * @return la liste des logins
 	 */
 	public List<String> listeLog() {
-		DAOLecture daol = new DAOLecture();
-		List<LogBDD> listeLogs = daol.listeTousLogs();
 		List<String> liste = new ArrayList<String>();
-		for (LogBDD log : listeLogs) {
+		for (LogBDD log : loginRepository.findAll()) {
 			liste.add(log.getLogin());
 		}
 		return liste;
@@ -174,7 +154,7 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	}
 	
 	public Personne personneDuLogin(String login) {
-		return dtoGeneral.profilBDDToPersonne(new DAOLecture().profilDuLogin(login));
+		return dtoGeneral.profilBDDToPersonne(profilRepository.findByLoginMdp(loginRepository.findById(login)));
 	}
 
 	public boolean archivage(int id) {
