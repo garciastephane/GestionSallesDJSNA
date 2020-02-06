@@ -82,7 +82,7 @@ public class HomeController {
 			Personne personne = su.utilisateur(login, password);
 			if (personne instanceof Utilisateur) {
 				mv.addObject("personne", personne);
-				mv.setViewName("menu");
+				mv.setViewName("menuUser");
 			} else {
 				mv.addObject("personne", personne);
 				mv.setViewName("gestionuser");
