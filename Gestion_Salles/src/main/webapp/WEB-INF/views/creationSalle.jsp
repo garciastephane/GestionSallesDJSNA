@@ -8,18 +8,21 @@
 </head>
 <body>
 <h2>CREATION SALLE</h2>
-<form action="creationSalle" method="post">
+<form action="asbdd" method="post">
 		
-		<label>Nom de batiment : </label> <input type="text" name="nom de batiment">
+		<label>Nom de batiment : </label> <input type="text" name="batiment">
 		<br> 
-		<label>Numero de salle : </label> <input type="text" name="numero de salle">
+		<label>Numero de salle : </label> <input type="text" name="numsalle">
 		<br> 
-		<label>Nom de la salle : </label> <input type="text" name="nom de salle">
+		<label>Nom de la salle : </label> <input type="text" name="nomsalle">
 		<br>
 		<label>Surface : </label> <input type="number" name="surface">
 		<br>
 		<label>Capacite : </label><input type="number" name="capacite">
+		<br>	
+		<label>Type salle : </label><input type="text" name="type">
 		<br>
+		
 		
 		<button type="submit">Envoyer</button>
 	</form>

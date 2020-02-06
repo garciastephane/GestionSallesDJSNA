@@ -10,7 +10,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,15 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.afpa.controles.ControleAuthentificationUtilisateur;
-import fr.afpa.controles.ControleChoixUtilisateur;
-import fr.afpa.controles.ControleCreationUtilisateur;
-import fr.afpa.controles.ControleGeneral;
 import fr.afpa.dto.DTOUtilisateur;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
+import fr.afpa.entites.Salle;
+import fr.afpa.entites.TypeSalle;
 import fr.afpa.entites.Utilisateur;
-import fr.afpa.interfaces.services.IServiceVisualisation;
 import fr.afpa.interfaces.controles.IControleAuthentificationUtilisateur;
 import fr.afpa.interfaces.controles.IControleChoixUtilisateur;
 import fr.afpa.interfaces.controles.IControleCreationUtilisateur;
@@ -34,10 +31,10 @@ import fr.afpa.interfaces.controles.IControleGeneral;
 import fr.afpa.interfaces.services.IServiceGeneral;
 import fr.afpa.interfaces.services.IServiceModificationSalle;
 import fr.afpa.interfaces.services.IServiceUtilisateur;
+import fr.afpa.interfaces.services.IServiceVisualisation;
+import fr.afpa.interfaces.services.IServicesCreationSalle;
 import fr.afpa.services.ServiceCreation;
-import fr.afpa.services.ServiceGeneral;
 import fr.afpa.services.ServiceModification;
-import fr.afpa.services.ServiceUtilisateur;
 import fr.afpa.services.ServiceVisualisation;
 
 /**
@@ -66,6 +63,8 @@ public class HomeController {
 	private IControleCreationUtilisateur controleCreationUtilisateur;
 	@Autowired
 	private IControleGeneral controleGeneral;
+	@Autowired
+	private IServicesCreationSalle serviceCreationSalle;
 
 	/**
 	 * Return la vue index (la page d'accueil)
@@ -539,6 +538,12 @@ public class HomeController {
 	}
 	@RequestMapping(value="/crs", method = RequestMethod.GET)
 	public String createSalle() {
+		return "creationSalle";
+	}
+	@RequestMapping(value="/asbdd" , method = RequestMethod.POST )
+	public String ajoutSalleBdd(@RequestParam(value="batiment") String batiment, @RequestParam(value="numsalle") String numsalle, @RequestParam(value="nomsalle") String nomsalle, @RequestParam(value="surface")String surface, @RequestParam(value="capacite") String capacite,@RequestParam(value="type") String type) {
+		Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),TypeSalle.valueOf(type));
+		serviceCreationSalle.ajoutSalleBdd(salle, batiment, type);
 		return "creationSalle";
 	}
 }
