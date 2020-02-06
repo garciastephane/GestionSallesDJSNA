@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.dto.IDTOUtilisateurs;
 import fr.afpa.interfaces.services.IServiceGeneral;
 import fr.afpa.repositories.ILogRepository;
+import fr.afpa.repositories.IMessageRepository;
 import fr.afpa.repositories.IProfilRepository;
 
 @Service
@@ -29,6 +32,8 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	private IProfilRepository profilRepository;
 	@Autowired
 	private ILogRepository loginRepository;
+	@Autowired
+	private IMessageRepository messageRepository;
 	
 	@Autowired
 	private IDTOGeneral dtoGeneral;
@@ -160,5 +165,13 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	public boolean archivage(int id) {
 		DAOModification dm = new DAOModification();
 		return dm.archivageDAO(id);
+		
+		/*Optional<MessageBDD> message = messageRepository.findById(id);
+		if (message.isPresent()) {
+			message.get().setArchive(true);
+			messageRepository.save(message.get());
+			return true;
+		}
+		return false;*/
 	}
 }
