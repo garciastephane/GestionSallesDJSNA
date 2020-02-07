@@ -582,6 +582,7 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("listebatiment", serviceModificationSalle.listerBatiment());
 		mv.setViewName("creationSalle");
+		mv.addObject("listeTypeSalle", TypeSalle.values());
 		return mv;
 	}
 

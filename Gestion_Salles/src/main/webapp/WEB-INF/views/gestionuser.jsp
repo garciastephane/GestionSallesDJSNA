@@ -76,7 +76,7 @@
 	<div class="container">
 		<form action="SD" method="post">
 			<button class="btn btn-primary" type="submit" name="deconnection"
-				value="deconnection">Déconnection</button>
+				value="deconnexion">Déconnexion</button>
 
 		</form>
 		<br />

@@ -12,24 +12,19 @@ import fr.afpa.entites.Batiment;
 import fr.afpa.entites.Materiel;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
-import fr.afpa.entites.Reservation;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Salle;
-import fr.afpa.entites.TypeMateriel;
 import fr.afpa.entites.TypeSalle;
 import fr.afpa.entites.Utilisateur;
 import fr.afpa.entitespersistees.BatimentBDD;
 import fr.afpa.entitespersistees.LogBDD;
 import fr.afpa.entitespersistees.LoginMessageBDD;
-import fr.afpa.entitespersistees.MaterielBDD;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
-import fr.afpa.entitespersistees.ReservationBDD;
 import fr.afpa.entitespersistees.RoleBDD;
 import fr.afpa.entitespersistees.SalleBDD;
 import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.services.IServiceGeneral;
-import fr.afpa.services.ServiceGeneral;
 
 @Service
 public class DTOGeneral implements IDTOGeneral {
