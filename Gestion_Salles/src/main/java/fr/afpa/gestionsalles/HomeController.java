@@ -594,7 +594,8 @@ public class HomeController {
 		switch (modif) {
 		case "valider":
 			Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),
-					TypeSalle.valueOf(type));
+					TypeSalle.valueOf(type.toUpperCase()));
+			salle.setId(Integer.parseInt(id));
 			serviceModificationSalle.updateSalle(salle);
 			break;
 		case "desactiver":
@@ -607,7 +608,8 @@ public class HomeController {
 		default:
 			break;
 		}
-		mv.setViewName("choixSalle");
+		mv.addObject("allroom", serviceModificationSalle.voirSalle());
+		mv.setViewName("choixsalle");
 		return mv;
 	}
 
