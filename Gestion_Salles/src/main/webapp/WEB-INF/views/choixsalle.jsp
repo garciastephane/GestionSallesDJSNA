@@ -56,6 +56,24 @@
 							<td>Nom</td>
 							<td>Capacité</td>
 							<td>Surface</td>
+							<td>Batiment</td>
+<!-- 							<td><a href="" class="btn btn-primary">Voir</a></td> -->
+<!-- 							<td> -->
+<!-- 								<form action="" method="post"> -->
+<!-- 									<input class="btn btn-danger" type="submit" value="Reserver" /> -->
+<!-- 								</form> -->
+<!-- 							</td> -->
+<!-- 							<td> -->
+<!-- 								<form action="" method="post"> -->
+<!-- 									<input class="btn btn-danger" type="submit" value="Modifier" /> -->
+<!-- 								</form> -->
+<!-- 							</td> -->
+<!-- 							<td> -->
+<!-- 								<form action="" method="post"> -->
+<!-- 									<input class="btn btn-danger" type="submit" value="Archiver" /> -->
+<!-- 								</form> -->
+<!-- 							</td> -->
+					
 						</tr>
 					</thead>
 					<tbody>

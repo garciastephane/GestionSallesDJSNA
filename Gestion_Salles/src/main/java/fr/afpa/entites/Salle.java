@@ -19,6 +19,7 @@ public class Salle {
 	private int capacite;
 	private float surface;
 	private TypeSalle typeSalle;
+	private Batiment batiment;
 	private List<Materiel> listeMateriels;
 	private List<Reservation> listeReservations;
 

@@ -12,17 +12,23 @@ import fr.afpa.entites.Administrateur;
 import fr.afpa.entites.Batiment;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
+import fr.afpa.entites.Reservation;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Salle;
+import fr.afpa.entites.TypeMateriel;
 import fr.afpa.entites.TypeSalle;
 import fr.afpa.entites.Utilisateur;
 import fr.afpa.entitespersistees.BatimentBDD;
 import fr.afpa.entitespersistees.LogBDD;
 import fr.afpa.entitespersistees.LoginMessageBDD;
+import fr.afpa.entitespersistees.MaterielBDD;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
+import fr.afpa.entitespersistees.ReservationBDD;
 import fr.afpa.entitespersistees.RoleBDD;
 import fr.afpa.entitespersistees.SalleBDD;
+import fr.afpa.entitespersistees.TypeMaterielBDD;
+import fr.afpa.entitespersistees.TypeSalleBDD;
 import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.services.IServiceGeneral;
 import fr.afpa.repositories.ILogRepository;
@@ -204,33 +210,105 @@ public class DTOGeneral implements IDTOGeneral {
 		return listMessages;
 	}
 
+	public static TypeSalle typeSalleBDDToTypeSalle(TypeSalleBDD type) {
+		if (TypeSalle.BUREAU.getType().equals(type.getType())) {
+			return TypeSalle.BUREAU;
+		} 
+		else if (TypeSalle.FORMATION.getType().equals(type.getType())) {
+			return TypeSalle.FORMATION;
+		}
+		else if (TypeSalle.INFIRMERIE.getType().equals(type.getType())) {
+			return TypeSalle.INFIRMERIE;
+		}
+		else if (TypeSalle.REUNION.getType().equals(type.getType())) {
+			return TypeSalle.REUNION;
+		} else {
+			return null;
+		}
+	}
+	
+	
+	@Override
+	public TypeMateriel typeMaterielBDDToTypeMateriel(TypeMaterielBDD typematerielBDD) {
+		if (TypeMateriel.ORDINATEUR.getType().equals(typematerielBDD.getType())) {
+			return TypeMateriel.ORDINATEUR;
+		} 
+		else if (TypeMateriel.PRISE_RESEAUX.getType().equals(typematerielBDD.getType())) {
+			return TypeMateriel.PRISE_RESEAUX;
+		}
+		else if (TypeMateriel.RETROPROJECTEUR.getType().equals(typematerielBDD.getType())) {
+			return TypeMateriel.RETROPROJECTEUR;
+		} else {
+			return null;
+		}
+	}
+	
+	@Override
+	public Materiel materielBDDToMateriel(MaterielBDD materielBDD) {
+		Materiel materiel = new Materiel();
+		materiel.setId(materielBDD.getId());
+		materiel.setQuantite(materielBDD.getQuantite());
+		materiel.setType(typeMaterielBDDToTypeMateriel(materielBDD.getTypeMateriel()));
+		return materiel;
+	}
+	
+	@Override
+	public List<Materiel> listMaterielBDDToListMateriel(List<MaterielBDD> listMaterielBDD) {
+		List<Materiel> listeMat = new ArrayList<Materiel>();
+		for (MaterielBDD materielBDD : listMaterielBDD) {
+			listeMat.add(materielBDDToMateriel(materielBDD));
+		}
+		return listeMat;
+	}
+
+
+	@Override
+	public List<Reservation> listReservationBDDToListReservation(List<ReservationBDD> listReservationBDD) {
+		List<Reservation> listReservation = new ArrayList<Reservation>();
+		for (ReservationBDD reservationBDD : listReservationBDD) {
+			listReservation.add(reservationBDDToReservation(reservationBDD));
+		}
+		return listReservation;
+	}
+
+	@Override
+	public Reservation reservationBDDToReservation(ReservationBDD reservationBDD) {
+		Reservation reservation = new Reservation();
+		reservation.setId(reservationBDD.getId());
+		reservation.setIntitule(reservationBDD.getIntitule());
+		reservation.setDateDebut(reservationBDD.getDateDebut());
+		reservation.setDateFin(reservationBDD.getDateFin());
+		return reservation;
+	}
+	
+	
 	@Override
 	public Salle salleBDDToSalle(SalleBDD salleBDD) {
 		Salle salle = new Salle();
+		salle.setId(salleBDD.getId());
 		salle.setNom(salleBDD.getNom());
 		salle.setCapacite(salleBDD.getCapacite());
 		salle.setNumero(salleBDD.getNumero());
-		salle.setId(salleBDD.getId());
 		salle.setSurface(salleBDD.getSurface());
-		salle.setTypeSalle(TypeSalle.valueOf(salleBDD.getTypeSalle().getType()));
-//		List<Materiel> materiel = new ArrayList<Materiel>();
-//		for (MaterielBDD materielBDD : salleBDD.getMateriel()) {
-//			Materiel m = new Materiel();
-//			m.setId(materielBDD.getId());
-//			m.setType(TypeMateriel.valueOf(materielBDD.getTypeMateriel().getType()));
-//			m.setQuantite(materielBDD.getQuantite());
-//			materiel.add(m);
-//		}
-//		salle.setListeMateriels(materiel);
+		salle.setTypeSalle(typeSalleBDDToTypeSalle(salleBDD.getTypeSalle()));
+		salle.setBatiment(batimentBDDToBatiment(salleBDD.getBatiment()));
+		//salle.setListeMateriels(listMaterielBDDToListMateriel(salleBDD.getMateriel()));
+		//salle.setListeReservations(listReservationBDDToListReservation(salleBDD.getReservation()));
 		return salle;
 	}
 
 	@Override
-	public Batiment batimentBDDtobatiment(BatimentBDD batimentBDD) {
+	public Batiment batimentBDDToBatiment(BatimentBDD batimentBDD) {
 		Batiment bat = new Batiment();
 		bat.setId(batimentBDD.getId());
 		bat.setNom(batimentBDD.getNom());
 		return bat;
 	}
+
+
+	
+
+	
+	
 	
 }

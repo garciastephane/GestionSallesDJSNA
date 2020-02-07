@@ -1,7 +1,7 @@
 package fr.afpa.interfaces.dto;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ public interface IDTOModificationSalle {
 
 	Salle choixSalle(String id);
 
-	Map<Integer, Salle> listeSalles();
+	List<Salle> listeSalles();
 
 	ArrayList<Batiment> listerBatiment();
 

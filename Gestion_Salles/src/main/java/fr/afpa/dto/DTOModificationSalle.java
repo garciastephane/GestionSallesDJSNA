@@ -1,10 +1,7 @@
 package fr.afpa.dto;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,13 +26,13 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 
 
 	@Override
-	public Map<Integer, Salle> listeSalles() {
-		Map<Integer, Salle> listePersonnes = new HashMap();
+	public List<Salle> listeSalles() {
+		List<Salle> listeSalle = new ArrayList<Salle>();
 		List<SalleBDD> listeSalles = modificationSalleRepository.findAll();
 		for (SalleBDD salleBDD : listeSalles) {
-			listePersonnes.put(salleBDD.getId(), dtoGeneral.salleBDDToSalle(salleBDD));
+			listeSalle.add(dtoGeneral.salleBDDToSalle(salleBDD));
 		}
-		return listePersonnes;
+		return listeSalle;
 	}
 
 	@Override
@@ -51,7 +48,7 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 		ArrayList<Batiment> bat = new ArrayList<Batiment>();
 		List<BatimentBDD> batBdd = dtoBatiment.findAll();
 		for (BatimentBDD batimentBDD : batBdd) {
-			bat.add(dtoGeneral.batimentBDDtobatiment(batimentBDD));
+			bat.add(dtoGeneral.batimentBDDToBatiment(batimentBDD));
 		}
 		return bat;
 	}

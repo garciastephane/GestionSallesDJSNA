@@ -1,8 +1,7 @@
 package fr.afpa.services;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,10 +23,9 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 	
 	@Override
 	public String voirSalle() {
-		Map<Integer, Salle> listeSalles = dtoModificationSalle.listeSalles();
+		List<Salle> listeSalles = dtoModificationSalle.listeSalles();
 		String res = "";
-		for (Entry<Integer, Salle> coupleSalle : listeSalles.entrySet()) {
-			Salle salle = coupleSalle.getValue();
+		for (Salle salle : listeSalles) {
 			res += "<tr>";
 			res += "<td>" + salle.getId() + "</td>";
 			res += "<td>" + salle.getNumero() + "</td>";
@@ -35,6 +33,7 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 			res += "<td>" + salle.getNom() + "</td>";
 			res += "<td>" + salle.getCapacite() + "</td>";
 			res += "<td>" + salle.getSurface() + "</td>";
+			res += "<td>" + salle.getBatiment().getNom() + "</td>";
 			res += "</tr>";
 		}
 		return res;
