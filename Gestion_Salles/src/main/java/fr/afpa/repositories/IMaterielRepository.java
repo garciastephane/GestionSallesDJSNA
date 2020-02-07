@@ -15,7 +15,7 @@ public interface IMaterielRepository extends JpaRepository<MaterielBDD, Integer>
 	
 	List<MaterielBDD> findBySalle(SalleBDD salle);
 	
-	@Query(value = "select t.\"type\", m.quantite from materiel m, typemateriel t where m.typemateriel=t.id_typemateriel and salle = ?1", nativeQuery = true)
-	Optional<MaterielBDD> findByQuantiteAndType(int i);
+	@Query(value = "select quantite from materiel m, typemateriel t where m.typemateriel=t.id_typemateriel and salle = ?1 and t.\"type\" = ?2", nativeQuery = true)
+	List<Integer> findQuantiteByTypeMateriel(int id, String type);
 	
 }

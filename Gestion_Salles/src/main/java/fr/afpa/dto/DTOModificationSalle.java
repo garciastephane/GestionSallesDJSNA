@@ -12,9 +12,7 @@ import fr.afpa.entites.Batiment;
 import fr.afpa.entites.Salle;
 import fr.afpa.entites.TypeMateriel;
 import fr.afpa.entitespersistees.BatimentBDD;
-import fr.afpa.entitespersistees.MaterielBDD;
 import fr.afpa.entitespersistees.SalleBDD;
-import fr.afpa.entitespersistees.TypeMaterielBDD;
 import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.dto.IDTOModificationSalle;
 import fr.afpa.repositories.IBatimentRepository;
@@ -35,7 +33,6 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 	@Autowired
 	private IMaterielRepository materielRepository;
 
-
 	@Override
 	public List<Salle> listeSalles() {
 		List<Salle> listeSalle = new ArrayList<Salle>();
@@ -48,7 +45,7 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 
 	@Override
 	public Salle choixSalle(String id) {
-		if(modificationSalleRepository.existsById(Integer.parseInt(id)))
+		if (modificationSalleRepository.existsById(Integer.parseInt(id)))
 			return dtoGeneral.salleBDDToSalle(modificationSalleRepository.findById(Integer.parseInt(id)).get());
 		else
 			return null;
@@ -72,7 +69,7 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 		salleBDD.setNumero(salle.getNumero());
 		salleBDD.setSurface(salle.getSurface());
 		modificationSalleRepository.save(salleBDD);
-		//TYPE SALLE
+		// TYPE SALLE
 		return false;
 	}
 
@@ -83,13 +80,14 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 	}
 
 	@Override
-	public Map<Integer, String> voirMateriel(int id) {
-		Map<Integer, String> materiels = new HashMap<Integer, String>();
+	public Map<String, Integer> voirMateriel(int id) {
+		Map<String, Integer> materiels = new HashMap<String, Integer>();
 		TypeMateriel[] type = TypeMateriel.values();
-		System.out.println(materielRepository.findByQuantiteAndType(1).get());
-//		materiels = ;
+		for (TypeMateriel typeMateriel : type) {
+			List<Integer> i = materielRepository.findQuantiteByTypeMateriel(id, typeMateriel.getType().toUpperCase());
+			materiels.put(typeMateriel.getType().toUpperCase(), (!i.isEmpty()) ? i.get(0) : 0);
+		}
 		return materiels;
 	}
-	
-	
+
 }

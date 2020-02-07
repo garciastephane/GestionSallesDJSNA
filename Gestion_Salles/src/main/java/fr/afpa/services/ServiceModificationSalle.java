@@ -64,12 +64,12 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 
 	@Override
 	public String voirMateriel(int id) {
-		Map<Integer, String> materiels = dtoModificationSalle.voirMateriel(id);
+		Map<String, Integer> materiels = dtoModificationSalle.voirMateriel(id);
 		String res = "";
-		for (Entry<Integer, String> materiel : materiels.entrySet()) {
+		for (Entry<String, Integer> materiel : materiels.entrySet()) {
 			res += "<tr>";
-			res += "<td>" + materiel.getValue() + "</td>";
 			res += "<td>" + materiel.getKey() + "</td>";
+			res += "<td>" + materiel.getValue() + "</td>";
 			res += "<td> <button>ajouter</button> </td>";
 			res += "<td> <button>retirer</button> </td>";
 			res += "</tr>";

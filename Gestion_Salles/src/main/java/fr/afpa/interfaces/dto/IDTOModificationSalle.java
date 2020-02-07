@@ -22,6 +22,6 @@ public interface IDTOModificationSalle {
 
 	boolean supprimerSalle(int parseInt);
 
-	Map<Integer, String> voirMateriel(int id);
+	Map<String, Integer> voirMateriel(int id);
 
 }
