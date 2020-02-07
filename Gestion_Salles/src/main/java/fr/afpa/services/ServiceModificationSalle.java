@@ -35,6 +35,7 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 			res += "<td>" + salle.getNom() + "</td>";
 			res += "<td>" + salle.getCapacite() + "</td>";
 			res += "<td>" + salle.getSurface() + "</td>";
+			res += "<td><button>Reserver</button></td>";
 			res += "</tr>";
 		}
 		return res;
