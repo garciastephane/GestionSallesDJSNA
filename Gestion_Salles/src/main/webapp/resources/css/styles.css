@@ -1,0 +1,22 @@
+
+body {
+ 	margin-left: 20%;
+	margin-right: 20%;
+	font-size: 1.4rem;
+}
+h2{
+	font-weight: bold; 
+	text-align : center;
+}
+input,select {
+	margin-right: 25%;
+  	float: right;
+ 	 clear: both;
+ 	 width:20%;
+}
+label{
+	margin-left:20%;
+}
+#num{
+	width:5em;
+}

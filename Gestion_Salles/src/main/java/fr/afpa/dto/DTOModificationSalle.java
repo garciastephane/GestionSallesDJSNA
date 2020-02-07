@@ -58,11 +58,12 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 
 	@Override
 	public boolean updateSalle(Salle salle) {
-		SalleBDD salleBDD = modificationSalleRepository.getOne(salle.getId());
+		SalleBDD salleBDD = modificationSalleRepository.findById(salle.getId()).get();
 		salleBDD.setCapacite(salle.getCapacite());
 		salleBDD.setNom(salle.getNom());
 		salleBDD.setNumero(salle.getNumero());
 		salleBDD.setSurface(salle.getSurface());
+		modificationSalleRepository.save(salleBDD);
 		//TYPE SALLE
 		return false;
 	}

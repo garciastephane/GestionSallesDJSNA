@@ -582,6 +582,7 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("listebatiment", serviceModificationSalle.listerBatiment());
 		mv.setViewName("creationSalle");
+		mv.addObject("listeTypeSalle", TypeSalle.values());
 		return mv;
 	}
 
@@ -594,11 +595,9 @@ public class HomeController {
 		switch (modif) {
 		case "valider":
 			Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),
-					TypeSalle.valueOf(type));
+					TypeSalle.valueOf(type.toUpperCase()));
+			salle.setId(Integer.parseInt(id));
 			serviceModificationSalle.updateSalle(salle);
-			break;
-		case "desactiver":
-			serviceModificationSalle.activerDesactiverSalle(Integer.parseInt(id));
 			break;
 		case "supprimer":
 			serviceModificationSalle.supprimerSalle(Integer.parseInt(id));
@@ -607,7 +606,8 @@ public class HomeController {
 		default:
 			break;
 		}
-		mv.setViewName("choixSalle");
+		mv.addObject("allroom", serviceModificationSalle.voirSalle());
+		mv.setViewName("choixsalle");
 		return mv;
 	}
 

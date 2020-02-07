@@ -29,11 +29,11 @@
 			<div class="form-row">
 				<div class="col-md-4 mb-3">
 					<label>Numero</label> <input type="text" class="form-control"
-						name="numero" value='<c:out value="${ salle.numero }"/>'>
+						name="numsalle" value='<c:out value="${ salle.numero }"/>'>
 				</div>
 				<div class="col-md-4 mb-3">
 					<label>Nom</label> <input type="text" class="form-control"
-						name="nom" value='<c:out value="${ salle.nom }"/>'>
+						name="nomsalle" value='<c:out value="${ salle.nom }"/>'>
 				</div>
 				<div class="col-md-4 mb-3">
 					<label>Type de salle</label> <input type="text"
@@ -56,7 +56,6 @@
 <br>
 			<div>
 				<button name="modif" class="btn btn-success" value="valider">valider</button>
-				<button name="modif" class="btn btn-primary" value="desactiver">activer/désactiver</button>
 				<button name="modif" class="btn btn-primary" value="supprimer">supprimer</button>
 			</div>
 		</form>
