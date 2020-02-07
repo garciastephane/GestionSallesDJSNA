@@ -636,4 +636,7 @@ public class HomeController {
 		serviceCreationSalle.ajoutSalleBdd(salle, batiment, type);
 		return "creationSalle";
 	}
+	
+	
+	
 }
