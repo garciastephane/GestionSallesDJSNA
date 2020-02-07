@@ -632,7 +632,7 @@ public class HomeController {
 			@RequestParam(value = "type") String type) {
 
 		Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),
-				TypeSalle.valueOf(type));
+				TypeSalle.values()[Integer.parseInt(type)]);
 		serviceCreationSalle.ajoutSalleBdd(salle, batiment, type);
 		return "creationSalle";
 	}

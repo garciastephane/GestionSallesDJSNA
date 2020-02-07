@@ -38,13 +38,13 @@ public class DTOCreationSalle implements IDTOCreationSalle {
 	public boolean ajoutSalle(Salle salle, String batiment, String type) {
 		SalleBDD salleBDD = new SalleBDD();
 		
-		salleBDD.setBatiment(batimentRepository.findByNom(batiment).get(0));
+		salleBDD.setBatiment(batimentRepository.findById(Integer.parseInt(batiment)).get());
 		salleBDD.setCapacite(salle.getCapacite());
 		salleBDD.setId(salle.getId());
 		salleBDD.setNom(salle.getNom());
 		salleBDD.setNumero(salle.getNumero());
 		salleBDD.setSurface(salle.getSurface());
-		salleBDD.setTypeSalle(typeSalleRepository.findByType(type).get(0));
+		salleBDD.setTypeSalle(typeSalleRepository.findById(Integer.parseInt(batiment)).get());
 		salleRepository.save(salleBDD);
 
 		return true;
