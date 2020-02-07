@@ -437,17 +437,12 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/ARC", method = RequestMethod.POST)
 	public ModelAndView archivage(@RequestParam(value = "id") int id, @RequestParam(value = "page") String page) {
-		//ModelAndView mv = new ModelAndView();
 		serviceModification.archiverMsg(id);
 		if ("boiteReception".equals(page)) {
-			//mv.setViewName("boiteReception");
 			return boiteReception();
 		} else {
 			return messageEnvoye();
-			//mv.setViewName("messageEnvoye");
 		}
-		//return mv;
-
 	}
 
 	/**
@@ -490,7 +485,6 @@ public class HomeController {
 	@RequestMapping(value = "/ME", method = RequestMethod.GET)
 	public ModelAndView messageEnvoye() {
 		ModelAndView mv = new ModelAndView();
-		// DAOLecture daol = new DAOLecture();
 		ArrayList<Message> lm = (ArrayList<Message>) serviceVisualisation.afficherListeMessageEnvoyer(loginCourant);
 		mv.addObject("listeMessages", lm);
 

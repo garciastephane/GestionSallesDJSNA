@@ -9,8 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.afpa.dao.DAOCreation;
-import fr.afpa.dao.DAOModification;
 import fr.afpa.entites.Administrateur;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
@@ -111,13 +109,13 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 		LogBDD log = new LogBDD(login, mdp);
 		TypeProfilBDD typeProfil;
 		RoleBDD roleBDD;
-		// obtention du role
+		
 		if ("Formateur".equals(role.getRole())) {
 			roleBDD = roleRepository.findById(1).get();
 		} else {
 			roleBDD = roleRepository.findById(2).get();
 		}
-		// obtention du type de profil
+		
 		if (personne instanceof Administrateur) {
 			typeProfil = typeProfilRepository.findById(1).get();
 		} else {
@@ -125,11 +123,9 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 		}
 		profil.setTypeProfil(typeProfil);
 		profil.setRole(roleBDD);
-		//roleBDD.getListeProfils().add(profil);
 		
 		profil.setLoginMdp(log);
 		log.setProfil(profil);
-		// return new DAOCreation().enregistrerUtilisateur(profil, log, role, personne);
 		
 		profilRepository.save(profil);
 		return true;
@@ -157,8 +153,6 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	 * @return true si l'operation a ete effectuee
 	 */
 	public boolean activerDesactiverBDD(int id) {
-//		DAOModification daom = new DAOModification();
-//		return daom.activerDesactiverUtilisateurBDD(id);
 		if (profilRepository.findById(id).isPresent()) {
 			ProfilBDD profil = profilRepository.findById(id).get();
 			profil.setActif(!profil.isActif());
@@ -203,10 +197,8 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 			MessageBDD messageBDD = dtoGeneral.messageToMessageBDD(message);
 			List<LoginMessageBDD> listeLogins = dtoGeneral.listeLoginsToListeLoginMessageBDD(message.getDestinataires(),
 					message.getExpediteur());
-			// return new DAOCreation().enregistrerMessage(messageBDD, listeLogins);
 
 			for (LoginMessageBDD loginMessageBDD : listeLogins) {
-				// LogBDD login = session.load(LogBDD.class, lmbdd.getLogBdd().getLogin());
 				LogBDD login = loginRepository.findById(loginMessageBDD.getLogBdd().getLogin()).get();
 				loginMessageBDD.setLogBdd(login);
 				loginMessageBDD.setMessageBdd(messageBDD);

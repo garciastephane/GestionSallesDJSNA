@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.afpa.dao.DAOLecture;
 import fr.afpa.entites.Administrateur;
 import fr.afpa.entites.Batiment;
+import fr.afpa.entites.Materiel;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
 import fr.afpa.entites.Reservation;
@@ -151,8 +151,6 @@ public class DTOGeneral implements IDTOGeneral {
 	 * @return liste de Message transformé
 	 */
 	public List<Message> listeLoginMessageToListeMessage(String login) {
-		//DAOLecture daol = new DAOLecture();
-		//List<LoginMessageBDD> lmbdd = daol.getAllMessages(login);
 		
 		List<LoginMessageBDD> lmbdd = loginMessageRepository.findByLogBddAndExpDest(loginRepository.findById(login).get(), false);
 		
@@ -181,9 +179,6 @@ public class DTOGeneral implements IDTOGeneral {
 	}
 	
 	public List<Message> listeLoginMessageToListeMessageEnvoye(String login) {
-		DAOLecture daol = new DAOLecture();
-		//List<LoginMessageBDD> lmbdd = daol.getMessageEnvoye(login);
-		
 		List<LoginMessageBDD> lmbdd = loginMessageRepository.findByLogBddAndExpDest(loginRepository.findById(login).get(), true);
 		
 		List<Message> listMessages = new ArrayList<Message>();
