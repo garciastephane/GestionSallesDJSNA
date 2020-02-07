@@ -26,6 +26,8 @@ import fr.afpa.interfaces.controles.IControleAuthentificationUtilisateur;
 import fr.afpa.interfaces.controles.IControleChoixUtilisateur;
 import fr.afpa.interfaces.controles.IControleCreationUtilisateur;
 import fr.afpa.interfaces.controles.IControleGeneral;
+import fr.afpa.interfaces.dto.IDTOUtilisateurs;
+import fr.afpa.interfaces.services.IServiceCreation;
 import fr.afpa.interfaces.services.IServiceGeneral;
 import fr.afpa.interfaces.services.IServiceModification;
 import fr.afpa.interfaces.services.IServiceModificationSalle;
@@ -54,6 +56,11 @@ public class HomeController {
 	private IServiceModificationSalle serviceModificationSalle;
 	@Autowired
 	private IServiceUtilisateur serviceUtilisateur;
+	@Autowired
+	private IServiceCreation serviceCreation;
+	
+	@Autowired
+	private IDTOUtilisateurs dtoUtilisateur;
 
 	@Autowired
 	private IControleAuthentificationUtilisateur controleAuthentificationUtilisateur;
@@ -128,8 +135,7 @@ public class HomeController {
 	public ModelAndView choixUser(@RequestParam(value = "choix") String choix) {
 		ModelAndView mv = new ModelAndView();
 
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		Map<Integer, Personne> listePersonnes = dtou.listePersonnes();
+		Map<Integer, Personne> listePersonnes = dtoUtilisateur.listePersonnes();
 		if (controleChoixUtilisateur.verificationChoix(choix)) {
 			Personne personne = listePersonnes.get(Integer.parseInt(choix));
 			if (personne instanceof Utilisateur) {
@@ -142,14 +148,14 @@ public class HomeController {
 
 			} else {
 				mv.addObject("choix", choix);
-				mv.addObject("alluser", new ServiceVisualisation().afficherUser());
+				mv.addObject("alluser", serviceVisualisation.afficherUser());
 
 				mv.setViewName("choixuser");
 
 			}
 		} else {
 			mv.addObject("choix", choix);
-			mv.addObject("alluser", new ServiceVisualisation().afficherUser());
+			mv.addObject("alluser", serviceVisualisation.afficherUser());
 
 			mv.setViewName("choixuser");
 
@@ -200,7 +206,7 @@ public class HomeController {
 		mailOk = mail;
 		adresseOk = adresse;
 		if (controleGeneral.controleRole(role)) {
-			roleOk = sc.conversionRole(role);
+			roleOk = serviceCreation.conversionRole(role);
 		}
 		if (controleGeneral.controleDateDeNaissance(datenaissance)) {
 			dateNaissance = serviceGeneral.conversionDate(datenaissance);
@@ -235,13 +241,13 @@ public class HomeController {
 			}
 		} else {
 			if ("user".equals(create)) {
-				sc.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login, password, false);
+				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login, password, false);
 				mv.setViewName("gestionuser");
 			} else if ("admin".equals(create)) {
-				sc.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login, password, true);
+				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login, password, true);
 				mv.setViewName("gestionuser");
 			} else if ("pageUser".equals(create)) {
-				sc.creationPersonne(nom, prenom, dateNaissance, mail, adresse, false, roleOk, login, password, false);
+				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, false, roleOk, login, password, false);
 				mv.setViewName("index");
 			}
 		}
@@ -285,7 +291,6 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 
 		String req = modif;
-		ServiceModification sm = new ServiceModification();
 		switch (req) {
 		case "valider":
 			if (password.equals(password2)) {
@@ -295,14 +300,14 @@ public class HomeController {
 				user.setEmail(mail);
 				user.setAdresse(adresse);
 				user.setDateNaissance(serviceGeneral.conversionDate(datenaissance));
-				sm.modifierUtilisateur(user, Integer.parseInt(id), password);
+				serviceModification.modifierUtilisateur(user, Integer.parseInt(id), password);
 			}
 			break;
 		case "desactiver":
-			sm.activerDesactiverUtilisateur(Integer.parseInt(id));
+			serviceModification.activerDesactiverUtilisateur(Integer.parseInt(id));
 			break;
 		case "supprimer":
-			sm.supprimerUtilisateur(Integer.parseInt(id));
+			serviceModification.supprimerUtilisateur(Integer.parseInt(id));
 			break;
 		default:
 			break;
@@ -322,7 +327,7 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 
 		mv.addObject("choix", ServiceModification.CHOIX);
-		mv.addObject("alluser", new ServiceVisualisation().afficherUser());
+		mv.addObject("alluser", serviceVisualisation.afficherUser());
 
 		mv.setViewName("choixuser");
 
@@ -409,9 +414,8 @@ public class HomeController {
 		mv.addObject("destinataire", destinataire);
 		mv.addObject("objet", objet);
 		mv.addObject("contenu", contenu);
-		if (new ControleAuthentificationUtilisateur().controleDestinataire(destinataire)) {
-			ServiceCreation sc = new ServiceCreation();
-			if (sc.creationMessage(loginCourant, destinataire, objet, contenu, LocalDateTime.now())) {
+		if (controleAuthentificationUtilisateur.controleDestinataire(destinataire)) {
+			if (serviceCreation.creationMessage(loginCourant, destinataire, objet, contenu, LocalDateTime.now())) {
 				mv.setViewName("confirmationMessageEnvoye");
 			} else {
 				mv.addObject("invalide", true);
@@ -453,9 +457,8 @@ public class HomeController {
 	@RequestMapping(value = "/MA", method = RequestMethod.GET)
 	public ModelAndView boiteArchive() {
 		ModelAndView mv = new ModelAndView();
-		ServiceVisualisation sv = new ServiceVisualisation();
-		ArrayList<Message> lm = (ArrayList<Message>) sv.afficherListeMessage(loginCourant);
-		lm.addAll(sv.afficherListeMessageEnvoyer(loginCourant));
+		ArrayList<Message> lm = (ArrayList<Message>) serviceVisualisation.afficherListeMessage(loginCourant);
+		lm.addAll(serviceVisualisation.afficherListeMessageEnvoyer(loginCourant));
 		mv.addObject("listeMessages", lm);
 		mv.setViewName("boiteArchives");
 		return mv;
@@ -470,9 +473,7 @@ public class HomeController {
 	@RequestMapping(value = "/BR", method = RequestMethod.GET)
 	public ModelAndView boiteReception() {
 		ModelAndView mv = new ModelAndView();
-		// DAOLecture daol = new DAOLecture();
-		ServiceVisualisation sv = new ServiceVisualisation();
-		ArrayList<Message> lm = (ArrayList<Message>) sv.afficherListeMessage(loginCourant);
+		ArrayList<Message> lm = (ArrayList<Message>) serviceVisualisation.afficherListeMessage(loginCourant);
 
 		mv.addObject("listeMessages", lm);
 		mv.setViewName("boiteReception");
@@ -488,8 +489,7 @@ public class HomeController {
 	public ModelAndView messageEnvoye() {
 		ModelAndView mv = new ModelAndView();
 		// DAOLecture daol = new DAOLecture();
-		ServiceVisualisation sv = new ServiceVisualisation();
-		ArrayList<Message> lm = (ArrayList<Message>) sv.afficherListeMessageEnvoyer(loginCourant);
+		ArrayList<Message> lm = (ArrayList<Message>) serviceVisualisation.afficherListeMessageEnvoyer(loginCourant);
 		mv.addObject("listeMessages", lm);
 
 		mv.setViewName("messageEnvoye");

@@ -2,6 +2,7 @@ package fr.afpa.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ import fr.afpa.entitespersistees.RoleBDD;
 import fr.afpa.entitespersistees.SalleBDD;
 import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.services.IServiceGeneral;
+import fr.afpa.repositories.ILoginMessageRepository;
+import fr.afpa.repositories.IRoleRepository;
+import fr.afpa.repositories.ITypeProfilRepository;
 import fr.afpa.services.ServiceGeneral;
 
 @Service
@@ -36,6 +40,9 @@ public class DTOGeneral implements IDTOGeneral {
 
 	@Autowired
 	private IServiceGeneral serviceGeneral;
+	@Autowired
+	private ILoginMessageRepository loginMessageRepository;
+	
 	
 	/**
 	 * Permet de transformer une instance de RoleBDD en instance de RolePersonne
@@ -140,15 +147,25 @@ public class DTOGeneral implements IDTOGeneral {
 	 * @return liste de Message transformé
 	 */
 	public List<Message> listeLoginMessageToListeMessage(String login) {
-		DAOLecture daol = new DAOLecture();
-		List<LoginMessageBDD> lmbdd = daol.getAllMessages(login);
+		//DAOLecture daol = new DAOLecture();
+		//List<LoginMessageBDD> lmbdd = daol.getAllMessages(login);
+		
+		List<LoginMessageBDD> lmbdd = loginMessageRepository.findByLogBddAndExpDest(login, false);
+		
 		List<Message> listMessages = new ArrayList<Message>();
 		for (LoginMessageBDD loginMessageBdd : lmbdd) {
 			Message message = new Message();
 			message.setId(loginMessageBdd.getMessageBdd().getId_message());
 			message.setExpediteur(loginMessageBdd.getLogBdd().getLogin());
 			int nombre = loginMessageBdd.getMessageBdd().getId_message();
-			message.setDestinataires(daol.getAllDestinataire(nombre));
+			
+			List<LoginMessageBDD> listeLoginsMessages = loginMessageRepository.findByMessageBddAndExpDest(nombre, true);
+			List<String> listeDestinataires = listeLoginsMessages.stream()
+												.map(LoginMessageBDD::getLogBdd)
+												.map(LogBDD::getLogin)
+												.collect(Collectors.toList());
+			
+			message.setDestinataires(listeDestinataires);
 			message.setObjet(loginMessageBdd.getMessageBdd().getObjet());
 			message.setContenu(loginMessageBdd.getMessageBdd().getContenu());
 			message.setDate(loginMessageBdd.getMessageBdd().getDate());
@@ -161,14 +178,24 @@ public class DTOGeneral implements IDTOGeneral {
 	
 	public List<Message> listeLoginMessageToListeMessageEnvoye(String login) {
 		DAOLecture daol = new DAOLecture();
-		List<LoginMessageBDD> lmbdd = daol.getMessageEnvoye(login);
+		//List<LoginMessageBDD> lmbdd = daol.getMessageEnvoye(login);
+		
+		List<LoginMessageBDD> lmbdd = loginMessageRepository.findByLogBddAndExpDest(login, true);
+		
 		List<Message> listMessages = new ArrayList<Message>();
 		for (LoginMessageBDD loginMessageBdd : lmbdd) {
 			Message message = new Message();
 			message.setId(loginMessageBdd.getMessageBdd().getId_message());
 			message.setExpediteur(loginMessageBdd.getLogBdd().getLogin());
 			int nombre = loginMessageBdd.getMessageBdd().getId_message();
-			message.setDestinataires(daol.getAllDestinataire(nombre));
+			
+			List<LoginMessageBDD> listeLoginsMessages = loginMessageRepository.findByMessageBddAndExpDest(nombre, false);
+			List<String> listeDestinataires = listeLoginsMessages.stream()
+												.map(LoginMessageBDD::getLogBdd)
+												.map(LogBDD::getLogin)
+												.collect(Collectors.toList());
+			
+			message.setDestinataires(listeDestinataires);
 			message.setObjet(loginMessageBdd.getMessageBdd().getObjet());
 			message.setContenu(loginMessageBdd.getMessageBdd().getContenu());
 			message.setDate(loginMessageBdd.getMessageBdd().getDate());

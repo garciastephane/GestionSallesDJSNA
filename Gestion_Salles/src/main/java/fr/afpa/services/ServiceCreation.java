@@ -4,24 +4,31 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import fr.afpa.controles.ControleAuthentificationUtilisateur;
 import fr.afpa.dto.DTOUtilisateur;
 import fr.afpa.entites.Administrateur;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Utilisateur;
+import fr.afpa.interfaces.controles.IControleAuthentificationUtilisateur;
 import fr.afpa.interfaces.controles.IControleGeneral;
+import fr.afpa.interfaces.dto.IDTOUtilisateurs;
 import fr.afpa.interfaces.services.IServiceCreation;
 import fr.afpa.interfaces.services.IServiceGeneral;
 
+@Service
 public class ServiceCreation implements IServiceCreation {
 	
 	@Autowired
 	private IControleGeneral controleGeneral;
 	@Autowired
 	private IServiceGeneral serviceGeneral;
+	@Autowired
+	private IDTOUtilisateurs dtoUtilisateur;
+	@Autowired
+	private IControleAuthentificationUtilisateur controleAuthentificationUtilisateur;
 	
 	/**
 	 * Permet de convertir un role de type String en role de type RolePersonne
@@ -58,13 +65,12 @@ public class ServiceCreation implements IServiceCreation {
 			boolean actif, RolePersonne role, String login, String mdp, boolean admin) {
 		if (mdp != null) {
 			Personne p;
-			DTOUtilisateur dtou = new DTOUtilisateur();
 			if (admin) {
 				p = new Administrateur(nom, prenom, dateNaissance, mail, adresse, actif, role);
 			} else {
 				p = new Utilisateur(nom, prenom, dateNaissance, mail, adresse, actif, role);
 			}
-			dtou.ajoutBDD(p, login, mdp, role);
+			dtoUtilisateur.ajoutBDD(p, login, mdp, role);
 			return p;
 		}
 			return null;
@@ -81,13 +87,12 @@ public class ServiceCreation implements IServiceCreation {
 	 */
 	public boolean creationMessage(String expediteur, String destinataires, String objet
 			, String contenu, LocalDateTime date) {
-		ControleAuthentificationUtilisateur cau = new ControleAuthentificationUtilisateur();
-		if (cau.controleDestinataire(destinataires)
+		if (controleAuthentificationUtilisateur.controleDestinataire(destinataires)
 				&& controleGeneral.controleTailleContenuMesage(contenu)
 				&& controleGeneral.controleTailleObjetMesage(objet)) {
 			Message message = new Message(expediteur, serviceGeneral.conversionStringEnListe(destinataires)
 					, objet, contenu, date, false);
-			return new DTOUtilisateur().ajoutMessageBDD(message);
+			return dtoUtilisateur.ajoutMessageBDD(message);
 		}
 		return false;
 	}

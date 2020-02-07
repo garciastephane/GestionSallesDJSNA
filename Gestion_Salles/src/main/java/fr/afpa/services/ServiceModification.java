@@ -1,5 +1,6 @@
 package fr.afpa.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.afpa.dto.DTOUtilisateur;
@@ -11,6 +12,7 @@ import fr.afpa.interfaces.services.IServiceModification;
 @Service
 public class ServiceModification implements IServiceModification {
 
+	@Autowired
 	private IDTOUtilisateurs dtoUtilisateurs;
 	
 	public static final String CHOIX = "choix";
@@ -22,8 +24,7 @@ public class ServiceModification implements IServiceModification {
 	 * @return true si l'utilisateur est supprimer, false si non
 	 */
 	public boolean supprimerUtilisateur(int id) {
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		return dtou.suppressionBDD(id);
+		return dtoUtilisateurs.suppressionBDD(id);
 	}
 
 	/**
@@ -33,8 +34,7 @@ public class ServiceModification implements IServiceModification {
 	 * @return true si l'opération a ete effectuee
 	 */
 	public boolean activerDesactiverUtilisateur(int id) {
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		return dtou.activerDesactiverBDD(id);
+		return dtoUtilisateurs.activerDesactiverBDD(id);
 	}
 	
 
@@ -47,8 +47,7 @@ public class ServiceModification implements IServiceModification {
 	 * @return true si l'utilisateur est modifier, false si non
 	 */
 	public boolean modifierUtilisateur(Personne user, int id, String mdp) {
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		return dtou.modifierBDD(user, id, mdp);
+		return dtoUtilisateurs.modifierBDD(user, id, mdp);
 	}
 
 	public boolean archiverMsg(int id) {

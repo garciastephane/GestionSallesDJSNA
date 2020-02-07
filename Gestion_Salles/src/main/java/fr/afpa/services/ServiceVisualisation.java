@@ -32,8 +32,7 @@ public class ServiceVisualisation implements IServiceVisualisation {
 	 * @return une chaine de caracteres
 	 */
 	public String afficher() {
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		Map<Integer, Personne> listePersonnes = dtou.listePersonnes();
+		Map<Integer, Personne> listePersonnes = dtoUtilisateur.listePersonnes();
 		String res = "";
 		for (Entry<Integer, Personne> couplePersonne : listePersonnes.entrySet()) {
 			Personne personne = couplePersonne.getValue();
@@ -68,8 +67,7 @@ public class ServiceVisualisation implements IServiceVisualisation {
 	 * @return une chaine de caracteres
 	 */
 	public String afficherUser() {
-		DTOUtilisateur dtou = new DTOUtilisateur();
-		Map<Integer, Personne> listePersonnes = dtou.listePersonnes();
+		Map<Integer, Personne> listePersonnes = dtoUtilisateur.listePersonnes();
 		String res = "";
 		for (Entry<Integer, Personne> couplePersonne : listePersonnes.entrySet()) {
 			Personne personne = couplePersonne.getValue();

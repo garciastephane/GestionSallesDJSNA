@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import fr.afpa.dao.DAOCreation;
 import fr.afpa.dao.DAOModification;
+import fr.afpa.entites.Administrateur;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
@@ -18,30 +19,39 @@ import fr.afpa.entitespersistees.LogBDD;
 import fr.afpa.entitespersistees.LoginMessageBDD;
 import fr.afpa.entitespersistees.MessageBDD;
 import fr.afpa.entitespersistees.ProfilBDD;
+import fr.afpa.entitespersistees.RoleBDD;
+import fr.afpa.entitespersistees.TypeProfilBDD;
 import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.dto.IDTOUtilisateurs;
 import fr.afpa.interfaces.services.IServiceGeneral;
 import fr.afpa.repositories.ILogRepository;
+import fr.afpa.repositories.ILoginMessageRepository;
 import fr.afpa.repositories.IMessageRepository;
 import fr.afpa.repositories.IProfilRepository;
+import fr.afpa.repositories.IRoleRepository;
+import fr.afpa.repositories.ITypeProfilRepository;
 
 @Service
 public class DTOUtilisateur implements IDTOUtilisateurs {
-	
+
 	@Autowired
 	private IProfilRepository profilRepository;
 	@Autowired
 	private ILogRepository loginRepository;
 	@Autowired
+	private IRoleRepository roleRepository;
+	@Autowired
+	private ITypeProfilRepository typeProfilRepository;
+	@Autowired
 	private IMessageRepository messageRepository;
-	
+	@Autowired
+	private ILoginMessageRepository loginMessageRepository;
+
 	@Autowired
 	private IDTOGeneral dtoGeneral;
 	@Autowired
 	private IServiceGeneral serviceGeneral;
-	
-	
-	
+
 	/**
 	 * Permet de recuperer la liste des personnes
 	 * 
@@ -67,12 +77,12 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 		List<LogBDD> loginMDP = loginRepository.findByLoginAndMotdepasse(login, mdp);
 		return !loginMDP.isEmpty();
 	}
-	
+
 	public Personne user(String login, String mdp) {
-		ProfilBDD profilBdd = profilRepository.findByLoginMdp(loginRepository.findByLoginAndMotdepasse(login, mdp).get(0));
+		ProfilBDD profilBdd = profilRepository
+				.findByLoginMdp(loginRepository.findByLoginAndMotdepasse(login, mdp).get(0));
 		return dtoGeneral.profilBDDToPersonne(profilBdd);
 	}
-
 
 	/**
 	 * Permet de recuperer la liste des logins
@@ -99,9 +109,30 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	public boolean ajoutBDD(Personne personne, String login, String mdp, RolePersonne role) {
 		ProfilBDD profil = dtoGeneral.personneToProfilBDD(personne);
 		LogBDD log = new LogBDD(login, mdp);
+		TypeProfilBDD typeProfil;
+		RoleBDD roleBDD;
+		// obtention du role
+		if ("Formateur".equals(role.getRole())) {
+			roleBDD = roleRepository.findById(1).get();
+		} else {
+			roleBDD = roleRepository.findById(2).get();
+		}
+		// obtention du type de profil
+		if (personne instanceof Administrateur) {
+			typeProfil = typeProfilRepository.findById(1).get();
+		} else {
+			typeProfil = typeProfilRepository.findById(2).get();
+		}
+		profil.setTypeProfil(typeProfil);
+		profil.setRole(roleBDD);
+		//roleBDD.getListeProfils().add(profil);
+		
 		profil.setLoginMdp(log);
 		log.setProfil(profil);
-		return new DAOCreation().enregistrerUtilisateur(profil, log, role, personne);
+		// return new DAOCreation().enregistrerUtilisateur(profil, log, role, personne);
+		
+		profilRepository.save(profil);
+		return true;
 	}
 
 	/**
@@ -111,20 +142,31 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	 * @return true si la suppression a ete faite, false si non
 	 */
 	public boolean suppressionBDD(int id) {
-		DAOModification daom = new DAOModification();
-		return daom.suppressionUtilisateurBDD(id);
+		if (profilRepository.findById(id).isPresent()) {
+			profilRepository.deleteById(id);
+			return true;
+		}
+		return false;
 	}
 
 	/**
-	 * Permet de desactiver un utilisateur dans la base de donnee s'il est 
-	 * actif et de l'activer s'il est desactive
+	 * Permet de desactiver un utilisateur dans la base de donnee s'il est actif et
+	 * de l'activer s'il est desactive
 	 * 
 	 * @param id l'id de l'utilisateur
 	 * @return true si l'operation a ete effectuee
 	 */
 	public boolean activerDesactiverBDD(int id) {
-		DAOModification daom = new DAOModification();
-		return daom.activerDesactiverUtilisateurBDD(id);
+//		DAOModification daom = new DAOModification();
+//		return daom.activerDesactiverUtilisateurBDD(id);
+		if (profilRepository.findById(id).isPresent()) {
+			ProfilBDD profil = profilRepository.findById(id).get();
+			profil.setActif(!profil.isActif());
+			profilRepository.save(profil);
+			return true;
+		}
+		return false;
+
 	}
 
 	/**
@@ -136,32 +178,61 @@ public class DTOUtilisateur implements IDTOUtilisateurs {
 	 * @return true si l'utilisateur a ete modifier, false si non
 	 */
 	public boolean modifierBDD(Personne user, int id, String mdp) {
-		DAOModification daom = new DAOModification();
-		ProfilBDD userBDD = new ProfilBDD();
-		userBDD.setNom(user.getNom());
-		userBDD.setPrenom(user.getPrenom());
-		userBDD.setAdresse(user.getAdresse());
-		userBDD.setMail(user.getEmail());
-		userBDD.setDateNaissance(serviceGeneral.conversionDate(user.getDateNaissance()));
-		return daom.modifierUtilisateurBDD(userBDD, id, mdp);
+		if (profilRepository.findById(id).isPresent()) {
+			ProfilBDD userBDD = profilRepository.findById(id).get();
+			userBDD.setNom(user.getNom());
+			userBDD.setPrenom(user.getPrenom());
+			userBDD.setAdresse(user.getAdresse());
+			userBDD.setMail(user.getEmail());
+			userBDD.setDateNaissance(serviceGeneral.conversionDate(user.getDateNaissance()));
+			userBDD.getLoginMdp().setMotdepasse(mdp);
+			profilRepository.save(userBDD);
+			return true;
+		}
+		return false;
 	}
-	
+
 	/**
 	 * Permet d'ajouter un message a la base de donnees
+	 * 
 	 * @param message le message a ajouter
 	 * @return true si le message a ete ajoute et false sinon
 	 */
 	public boolean ajoutMessageBDD(Message message) {
-		MessageBDD messageBDD = dtoGeneral.messageToMessageBDD(message);
-		List<LoginMessageBDD> listeLogins = 
-				dtoGeneral.listeLoginsToListeLoginMessageBDD(message.getDestinataires(), message.getExpediteur());
-		return new DAOCreation().enregistrerMessage(messageBDD, listeLogins);
-	}
-	
-	public Personne personneDuLogin(String login) {
-		return dtoGeneral.profilBDDToPersonne(profilRepository.findByLoginMdp(loginRepository.findById(login)));
+		try {
+			MessageBDD messageBDD = dtoGeneral.messageToMessageBDD(message);
+			List<LoginMessageBDD> listeLogins = dtoGeneral.listeLoginsToListeLoginMessageBDD(message.getDestinataires(),
+					message.getExpediteur());
+			// return new DAOCreation().enregistrerMessage(messageBDD, listeLogins);
+
+			for (LoginMessageBDD loginMessageBDD : listeLogins) {
+				// LogBDD login = session.load(LogBDD.class, lmbdd.getLogBdd().getLogin());
+				LogBDD login = loginRepository.findById(loginMessageBDD.getLogBdd().getLogin()).get();
+				loginMessageBDD.setLogBdd(login);
+				loginMessageBDD.setMessageBdd(messageBDD);
+			}
+			messageBDD.setListLoginMessage(listeLogins);
+
+			messageRepository.save(messageBDD);
+			for (LoginMessageBDD loginMessageBDD : listeLogins) {
+				loginMessageRepository.save(loginMessageBDD);
+			}
+		} catch (Exception e) {
+			
+		}
+		return true;
 	}
 
+	public Personne personneDuLogin(String login) {
+		return dtoGeneral.profilBDDToPersonne(profilRepository.findByLoginMdp(loginRepository.findById(login).get()));
+	}
+
+	/**
+	 * Permet d'archiver un message
+	 * 
+	 * @param id : l'id du message
+	 * @return true si le message a ete archive et false sinon
+	 */
 	public boolean archivage(int id) {
 		Optional<MessageBDD> message = messageRepository.findById(id);
 		if (message.isPresent()) {
