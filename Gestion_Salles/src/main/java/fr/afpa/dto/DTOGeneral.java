@@ -291,7 +291,7 @@ public class DTOGeneral implements IDTOGeneral {
 		salle.setCapacite(salleBDD.getCapacite());
 		salle.setNumero(salleBDD.getNumero());
 		salle.setSurface(salleBDD.getSurface());
-		salle.setTypeSalle(TypeSalle.valueOf(salleBDD.getTypeSalle().getType()));
+		salle.setTypeSalle(TypeSalle.valueOf(salleBDD.getTypeSalle().getType().toUpperCase()));
 		salle.setBatiment(batimentBDDToBatiment(salleBDD.getBatiment()));
 		//salle.setListeMateriels(listMaterielBDDToListMateriel(salleBDD.getMateriel()));
 		//salle.setListeReservations(listReservationBDDToListReservation(salleBDD.getReservation()));
