@@ -1,15 +1,10 @@
 package fr.afpa.dto;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.afpa.entites.Salle;
-import fr.afpa.entitespersistees.BatimentBDD;
-import fr.afpa.entitespersistees.CentreBDD;
 import fr.afpa.entitespersistees.SalleBDD;
-import fr.afpa.entitespersistees.TypeSalleBDD;
 import fr.afpa.interfaces.dto.IDTOCreationSalle;
 import fr.afpa.repositories.IBatimentRepository;
 import fr.afpa.repositories.ICentreRepository;
