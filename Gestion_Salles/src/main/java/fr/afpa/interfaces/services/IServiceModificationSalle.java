@@ -1,5 +1,7 @@
 package fr.afpa.interfaces.services;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import fr.afpa.entites.Salle;
@@ -17,7 +19,7 @@ public interface IServiceModificationSalle {
 
 	boolean supprimerSalle(int parseInt);
 
-	String voirMateriel(int id);
+	Map<String, Integer> voirMateriel(int id);
 
 	String listeSalle2();
 
