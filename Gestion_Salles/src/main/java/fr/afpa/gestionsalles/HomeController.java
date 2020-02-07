@@ -437,14 +437,16 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/ARC", method = RequestMethod.POST)
 	public ModelAndView archivage(@RequestParam(value = "id") int id, @RequestParam(value = "page") String page) {
-		ModelAndView mv = new ModelAndView();
+		//ModelAndView mv = new ModelAndView();
 		serviceModification.archiverMsg(id);
 		if ("boiteReception".equals(page)) {
-			mv.setViewName("boiteReception");
+			//mv.setViewName("boiteReception");
+			return boiteReception();
 		} else {
-			mv.setViewName("messageEnvoye");
+			return messageEnvoye();
+			//mv.setViewName("messageEnvoye");
 		}
-		return mv;
+		//return mv;
 
 	}
 
