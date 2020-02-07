@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.afpa.dao.DAOLecture;
 import fr.afpa.entites.Administrateur;
 import fr.afpa.entites.Batiment;
 import fr.afpa.entites.Materiel;
@@ -151,6 +152,8 @@ public class DTOGeneral implements IDTOGeneral {
 	 * @return liste de Message transformé
 	 */
 	public List<Message> listeLoginMessageToListeMessage(String login) {
+		//DAOLecture daol = new DAOLecture();
+		//List<LoginMessageBDD> lmbdd = daol.getAllMessages(login);
 		
 		List<LoginMessageBDD> lmbdd = loginMessageRepository.findByLogBddAndExpDest(loginRepository.findById(login).get(), false);
 		
@@ -179,6 +182,9 @@ public class DTOGeneral implements IDTOGeneral {
 	}
 	
 	public List<Message> listeLoginMessageToListeMessageEnvoye(String login) {
+		DAOLecture daol = new DAOLecture();
+		//List<LoginMessageBDD> lmbdd = daol.getMessageEnvoye(login);
+		
 		List<LoginMessageBDD> lmbdd = loginMessageRepository.findByLogBddAndExpDest(loginRepository.findById(login).get(), true);
 		
 		List<Message> listMessages = new ArrayList<Message>();
@@ -285,7 +291,7 @@ public class DTOGeneral implements IDTOGeneral {
 		salle.setCapacite(salleBDD.getCapacite());
 		salle.setNumero(salleBDD.getNumero());
 		salle.setSurface(salleBDD.getSurface());
-		salle.setTypeSalle(typeSalleBDDToTypeSalle(salleBDD.getTypeSalle()));
+		salle.setTypeSalle(TypeSalle.valueOf(salleBDD.getTypeSalle().getType()));
 		salle.setBatiment(batimentBDDToBatiment(salleBDD.getBatiment()));
 		//salle.setListeMateriels(listMaterielBDDToListMateriel(salleBDD.getMateriel()));
 		//salle.setListeReservations(listReservationBDDToListReservation(salleBDD.getReservation()));

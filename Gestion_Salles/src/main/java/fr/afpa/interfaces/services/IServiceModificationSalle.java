@@ -15,8 +15,8 @@ public interface IServiceModificationSalle {
 
 	boolean updateSalle(Salle salle);
 
-	boolean activerDesactiverSalle(int parseInt);
-
 	boolean supprimerSalle(int parseInt);
+
+	String voirMateriel(int id);
 
 }

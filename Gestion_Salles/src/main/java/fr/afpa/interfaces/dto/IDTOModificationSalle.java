@@ -2,6 +2,7 @@ package fr.afpa.interfaces.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,8 @@ public interface IDTOModificationSalle {
 
 	boolean updateSalle(Salle salle);
 
-	boolean activerDesactiverSalle(int parseInt);
-
 	boolean supprimerSalle(int parseInt);
+
+	Map<Integer, String> voirMateriel(int id);
 
 }

@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.afpa.controles.ControleAuthentificationUtilisateur;
-import fr.afpa.dto.DTOUtilisateur;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
 import fr.afpa.entites.RolePersonne;
@@ -36,7 +34,6 @@ import fr.afpa.interfaces.services.IServiceVisualisation;
 import fr.afpa.interfaces.services.IServicesCreationSalle;
 import fr.afpa.services.ServiceCreation;
 import fr.afpa.services.ServiceModification;
-import fr.afpa.services.ServiceVisualisation;
 
 /**
  * Handles requests for the application home page.
@@ -555,6 +552,8 @@ public class HomeController {
 		mv.addObject("id", id);
 		Salle salle = serviceModificationSalle.getSalle(id);
 		if (salle != null) {
+			
+			mv.addObject("materiel", serviceModificationSalle.voirMateriel(Integer.parseInt(id)));
 			mv.addObject("salle", salle);
 			mv.setViewName("modifiersalle");
 		} else {

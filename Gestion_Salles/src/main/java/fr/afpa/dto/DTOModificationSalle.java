@@ -1,19 +1,26 @@
 package fr.afpa.dto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.afpa.entites.Batiment;
 import fr.afpa.entites.Salle;
+import fr.afpa.entites.TypeMateriel;
 import fr.afpa.entitespersistees.BatimentBDD;
+import fr.afpa.entitespersistees.MaterielBDD;
 import fr.afpa.entitespersistees.SalleBDD;
+import fr.afpa.entitespersistees.TypeMaterielBDD;
 import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.dto.IDTOModificationSalle;
 import fr.afpa.repositories.IBatimentRepository;
+import fr.afpa.repositories.IMaterielRepository;
 import fr.afpa.repositories.ISalleRepository;
+import fr.afpa.repositories.ITypeMaterielRepository;
 
 @Service
 public class DTOModificationSalle implements IDTOModificationSalle {
@@ -23,6 +30,10 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 	private IDTOGeneral dtoGeneral;
 	@Autowired
 	private IBatimentRepository dtoBatiment;
+	@Autowired
+	private ITypeMaterielRepository typeMaterielRepository;
+	@Autowired
+	private IMaterielRepository materielRepository;
 
 
 	@Override
@@ -66,16 +77,18 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 	}
 
 	@Override
-	public boolean activerDesactiverSalle(int parseInt) {
-		SalleBDD salleBDD = modificationSalleRepository.getOne(parseInt);
-		//salleBDD.setActif(!salleBDD.isActif());
-		return false;
-	}
-
-	@Override
 	public boolean supprimerSalle(int parseInt) {
 		modificationSalleRepository.deleteById(parseInt);
 		return true;
+	}
+
+	@Override
+	public Map<Integer, String> voirMateriel(int id) {
+		Map<Integer, String> materiels = new HashMap<Integer, String>();
+		TypeMateriel[] type = TypeMateriel.values();
+		System.out.println(materielRepository.findByQuantiteAndType(1).get());
+//		materiels = ;
+		return materiels;
 	}
 	
 	

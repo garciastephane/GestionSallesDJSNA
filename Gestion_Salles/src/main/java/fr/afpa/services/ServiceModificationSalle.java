@@ -2,6 +2,8 @@ package fr.afpa.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,6 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 			res += "<td>" + salle.getNom() + "</td>";
 			res += "<td>" + salle.getCapacite() + "</td>";
 			res += "<td>" + salle.getSurface() + "</td>";
-			res += "<td>" + salle.getBatiment().getNom() + "</td>";
 			res += "</tr>";
 		}
 		return res;
@@ -55,13 +56,24 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 		return dtoModificationSalle.updateSalle(salle);
 	}
 
-	@Override
-	public boolean activerDesactiverSalle(int parseInt) {
-		return dtoModificationSalle.activerDesactiverSalle(parseInt);
-	}
 
 	@Override
 	public boolean supprimerSalle(int parseInt) {
 		return dtoModificationSalle.supprimerSalle(parseInt);
+	}
+
+	@Override
+	public String voirMateriel(int id) {
+		Map<Integer, String> materiels = dtoModificationSalle.voirMateriel(id);
+		String res = "";
+		for (Entry<Integer, String> materiel : materiels.entrySet()) {
+			res += "<tr>";
+			res += "<td>" + materiel.getValue() + "</td>";
+			res += "<td>" + materiel.getKey() + "</td>";
+			res += "<td> <button>ajouter</button> </td>";
+			res += "<td> <button>retirer</button> </td>";
+			res += "</tr>";
+		}
+		return res;
 	}
 }

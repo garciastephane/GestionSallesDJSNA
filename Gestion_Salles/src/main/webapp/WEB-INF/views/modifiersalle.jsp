@@ -51,9 +51,25 @@
 					<label>Capacité</label> <input type="number" class="form-control"
 						name="capacite" value='<c:out value="${ salle.capacite }"/>'>
 				</div>
-				
+
 			</div>
-<br>
+			<div class="form-row">
+			<div class="col-md-5 mb-3">
+				<table class="table">
+					<thead>
+						<tr class="table table-primary">
+							<td>type</td>
+							<td>quantité</td>
+						</tr>
+					</thead>
+					<tbody>
+						<c:out value="${ materiel }" escapeXml="false"></c:out>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+			<br>
 			<div>
 				<button name="modif" class="btn btn-success" value="valider">valider</button>
 				<button name="modif" class="btn btn-primary" value="supprimer">supprimer</button>
