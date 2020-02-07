@@ -37,7 +37,7 @@
 	<div class="container">
 		<div class="card text-center" style="width: 18rem;">
 			<div class="card-body">
-				<a href="">Liste des Salles</a>
+				<a href="cs">Liste des Salles</a>
 			</div>
 		</div>
 		<div class="card text-center" style="width: 18rem;">
