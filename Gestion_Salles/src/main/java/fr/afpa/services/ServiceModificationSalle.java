@@ -41,6 +41,24 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 	}
 
 	@Override
+	public String listeSalle2() {
+		List<Salle> listeSalles = dtoModificationSalle.voirSalles();
+		String res = "";
+		for (Salle salle : listeSalles) {
+			res += "<tr>";
+			res += "<td>" + salle.getId() + "</td>";
+			res += "<td>" + salle.getNumero() + "</td>";
+			res += "<td>" + salle.getTypeSalle().getType() + "</td>";
+			res += "<td>" + salle.getNom() + "</td>";
+			res += "<td>" + salle.getCapacite() + "</td>";
+			res += "<td>" + salle.getSurface() + "</td>";
+			res += "<td>" + salle.getBatiment().getNom() + "</td>";
+			res += "</tr>";
+		}
+		return res;
+	}
+	
+	@Override
 	public ArrayList<Batiment> listerBatiment() {
 		return dtoModificationSalle.listerBatiment();
 	}
@@ -76,4 +94,6 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 		}
 		return res;
 	}
+
+	
 }

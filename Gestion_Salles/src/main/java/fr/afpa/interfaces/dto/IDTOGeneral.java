@@ -42,6 +42,8 @@ public interface IDTOGeneral {
 	
 	
 	public Salle salleBDDToSalle(SalleBDD salleBDD);
+	
+	public Salle salleBDDToSalle2(SalleBDD salleBDD) ;
 
 	public Batiment batimentBDDToBatiment(BatimentBDD batimentBDD);
 	

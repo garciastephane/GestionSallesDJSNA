@@ -19,4 +19,6 @@ public interface IServiceModificationSalle {
 
 	String voirMateriel(int id);
 
+	String listeSalle2();
+
 }

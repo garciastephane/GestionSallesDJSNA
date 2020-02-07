@@ -37,7 +37,7 @@
 	<div class="container">
 		<div class="card text-center" style="width: 18rem;">
 			<div class="card-body">
-				<a href="cs">Liste des Salles</a>
+				<a href="vs">Liste des Salles</a>
 			</div>
 		</div>
 		<div class="card text-center" style="width: 18rem;">
@@ -45,7 +45,11 @@
 				<a href="crs">Création de Salle</a>
 			</div>
 		</div>
-		
+		<div class="card text-center" style="width: 18rem;">
+			<div class="card-body">
+				<a href="">Modification de Salle</a>
+			</div>
+		</div>
 		<div class="card text-center" style="width: 18rem;">
 			<div class="card-body">
 				<a href="SVU">Liste des Utilisateurs</a>

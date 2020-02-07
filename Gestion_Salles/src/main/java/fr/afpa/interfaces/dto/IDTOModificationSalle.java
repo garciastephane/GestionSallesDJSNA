@@ -23,5 +23,7 @@ public interface IDTOModificationSalle {
 	boolean supprimerSalle(int parseInt);
 
 	Map<String, Integer> voirMateriel(int id);
+	
+	public List<Salle> voirSalles();
 
 }

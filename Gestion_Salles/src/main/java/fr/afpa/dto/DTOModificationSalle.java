@@ -42,6 +42,16 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 		}
 		return listeSalle;
 	}
+	
+	@Override
+	public List<Salle> voirSalles() {
+		List<Salle> listeSalle = new ArrayList<Salle>();
+		List<SalleBDD> listeSalles = modificationSalleRepository.findAll();
+		for (SalleBDD salleBDD : listeSalles) {
+			listeSalle.add(dtoGeneral.salleBDDToSalle2(salleBDD));
+		}
+		return listeSalle;
+	}
 
 	@Override
 	public Salle choixSalle(String id) {

@@ -545,6 +545,17 @@ public class HomeController {
 		mv.setViewName("choixsalle");
 		return mv;
 	}
+	
+	
+	@RequestMapping(value = "/vs", method = RequestMethod.GET)
+	public ModelAndView voirSalle() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("allroom", serviceModificationSalle.listeSalle2());
+		mv.setViewName("visualisationrsalle");
+		return mv;
+	}
+
+	
 
 	@RequestMapping(value = "/sc", method = RequestMethod.POST)
 	public ModelAndView salleChoisi(@RequestParam(name = "id") String id) {
