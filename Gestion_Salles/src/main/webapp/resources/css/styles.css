@@ -3,13 +3,22 @@ body {
  	margin-left: 20%;
 	margin-right: 20%;
 	font-size: 1.4rem;
+	line-height : 200%;
+	background-color:#f3f3f3;
+
+}
+.container {
+
+	background-color : #fff;
 }
 h2{
 	font-weight: bold; 
+	font-size :3rem;
 	text-align : center;
 }
 input,select {
 	margin-right: 25%;
+	line-height : 130%;
   	float: right;
  	 clear: both;
  	 width:20%;
