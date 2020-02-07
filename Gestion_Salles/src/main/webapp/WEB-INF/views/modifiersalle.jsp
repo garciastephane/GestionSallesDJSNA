@@ -56,7 +56,6 @@
 <br>
 			<div>
 				<button name="modif" class="btn btn-success" value="valider">valider</button>
-				<button name="modif" class="btn btn-primary" value="desactiver">activer/désactiver</button>
 				<button name="modif" class="btn btn-primary" value="supprimer">supprimer</button>
 			</div>
 		</form>

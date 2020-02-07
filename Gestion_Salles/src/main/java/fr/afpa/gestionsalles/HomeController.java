@@ -598,9 +598,6 @@ public class HomeController {
 			salle.setId(Integer.parseInt(id));
 			serviceModificationSalle.updateSalle(salle);
 			break;
-		case "desactiver":
-			serviceModificationSalle.activerDesactiverSalle(Integer.parseInt(id));
-			break;
 		case "supprimer":
 			serviceModificationSalle.supprimerSalle(Integer.parseInt(id));
 			break;
