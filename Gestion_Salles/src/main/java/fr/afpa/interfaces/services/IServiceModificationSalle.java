@@ -13,7 +13,7 @@ public interface IServiceModificationSalle {
 
 	Object listerBatiment();
 
-	boolean updateSalle(Salle salle);
+	boolean updateSalle(Salle salle, int i, int j, int k);
 
 	boolean supprimerSalle(int parseInt);
 

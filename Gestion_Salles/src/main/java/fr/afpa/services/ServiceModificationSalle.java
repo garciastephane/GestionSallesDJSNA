@@ -71,8 +71,8 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 	}
 
 	@Override
-	public boolean updateSalle(Salle salle) {
-		return dtoModificationSalle.updateSalle(salle);
+	public boolean updateSalle(Salle salle, int retro, int ordi, int reseau) {
+		return dtoModificationSalle.updateSalle(salle, retro, ordi, reseau);
 	}
 
 
@@ -85,12 +85,11 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 	public String voirMateriel(int id) {
 		Map<String, Integer> materiels = dtoModificationSalle.voirMateriel(id);
 		String res = "";
+		int i = 1;
 		for (Entry<String, Integer> materiel : materiels.entrySet()) {
 			res += "<tr>";
 			res += "<td>" + materiel.getKey() + "</td>";
-			res += "<td>" + materiel.getValue() + "</td>";
-			res += "<td> <button>ajouter</button> </td>";
-			res += "<td> <button>retirer</button> </td>";
+			res += "<td><input type='number' name='"+(i++)+"' value='"+materiel.getValue()+"'></td>";
 			res += "</tr>";
 		}
 		return res;
