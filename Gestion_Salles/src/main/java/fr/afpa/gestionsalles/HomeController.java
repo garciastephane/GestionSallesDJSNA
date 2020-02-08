@@ -563,7 +563,7 @@ public class HomeController {
 		mv.addObject("id", id);
 		Salle salle = serviceModificationSalle.getSalle(id);
 		if (salle != null) {
-			if ("Valider".equals(res)) {
+			if ("Reserver".equals(res)) {
 				mv.setViewName("reserverSalle");
 			} else {
 				mv.addObject("materiel", serviceModificationSalle.voirMateriel(Integer.parseInt(id)));
