@@ -564,6 +564,8 @@ public class HomeController {
 		Salle salle = serviceModificationSalle.getSalle(id);
 		if (salle != null) {
 			if ("Reserver".equals(res)) {
+				// Ajouter la fonction des reservations disponibles
+				// mv.addObject("reservations",.....);
 				mv.setViewName("reserverSalle");
 			} else {
 				mv.addObject("materiel", serviceModificationSalle.voirMateriel(Integer.parseInt(id)));
@@ -649,7 +651,7 @@ public class HomeController {
 		Salle salle = serviceModificationSalle.getSalle(id);
 		if (salle != null) {
 			mv.addObject("id", id);
-			// Ajouter la fonction des reservations disponibles
+			
 			mv.setViewName("reserverSalle");
 		} else {
 			mv.addObject("allroom", serviceModificationSalle.voirSalle());
