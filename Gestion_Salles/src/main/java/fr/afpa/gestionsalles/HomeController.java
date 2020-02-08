@@ -638,5 +638,34 @@ public class HomeController {
 	}
 	
 	
+	@RequestMapping(value = "/choixreservation", method = RequestMethod.POST)
+	public ModelAndView choixReservation(@RequestParam(value = "id") String id) {
+		ModelAndView mv = new ModelAndView();
+		Salle salle = serviceModificationSalle.getSalle(id);
+		if (salle != null) {
+			mv.addObject("id", id);
+			// Ajouter la fonction des reservations disponibles
+			mv.setViewName("reserverSalle");
+		} else {
+			mv.addObject("allroom", serviceModificationSalle.voirSalle());
+			mv.setViewName("choixsalle");
+		}
+		return mv;
+	}
+	
+	@RequestMapping(value="/Reserver", method = RequestMethod.POST)
+	public ModelAndView reserver(@RequestParam(value = "debut") String debut
+			, @RequestParam(value = "duree") String duree
+			, @RequestParam(value = "id") String id) {
+		ModelAndView mv = new ModelAndView();
+		if (false/*serviceCreation. */) {
+			mv.addObject("invalide", true);
+			mv.setViewName("reserverSalle");
+		}
+		else {
+			mv.setViewName("confirmationReservationEffectuee");
+		}
+		return mv;
+	}
 	
 }
