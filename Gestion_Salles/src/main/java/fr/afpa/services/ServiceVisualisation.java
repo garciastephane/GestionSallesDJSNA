@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import fr.afpa.dto.DTOUtilisateur;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
+import fr.afpa.entites.Reservation;
 import fr.afpa.entites.Utilisateur;
 import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.dto.IDTOUtilisateurs;
+import fr.afpa.interfaces.dto.IDTOVisualisation;
 import fr.afpa.interfaces.services.IServiceVisualisation;
 
 @Service
@@ -24,6 +26,8 @@ public class ServiceVisualisation implements IServiceVisualisation {
 	private IDTOGeneral dtoGeneral;
 	@Autowired
 	private IDTOUtilisateurs dtoUtilisateur;
+	@Autowired
+	private IDTOVisualisation dtoVisualisation;
 	
 	/**
 	 * Permet de retourner la liste des utilisateurs sous la forme d'une chaine de
@@ -93,5 +97,9 @@ public class ServiceVisualisation implements IServiceVisualisation {
 	
 	public List<Message> afficherListeMessageEnvoyer(String login){
 		return dtoGeneral.listeLoginMessageToListeMessageEnvoye(login);
+	}
+	
+	public List<Reservation> listeReservations(int id) {
+		return dtoVisualisation.listeReservationSalle(id);
 	}
 }

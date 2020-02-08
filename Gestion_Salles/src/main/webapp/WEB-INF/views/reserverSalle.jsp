@@ -15,13 +15,14 @@
 </head>
 <body>
 	<div>
-		<input hidden="" name="id" value="${ id }"/>
+		
 		<h2>Réservations de la salle</h2>
 
 		<div>
 			
 		</div>
 		<form action="Reserver" method="post">
+			<input hidden="" name="id" value="${ id }"/>
 			<div>
 				<c:if test="${ invalide != null }">
 					La salle n'a pas pu être réservée !<br/>

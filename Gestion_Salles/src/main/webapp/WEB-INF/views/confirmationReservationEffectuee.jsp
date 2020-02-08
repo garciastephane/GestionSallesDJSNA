@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<meta http-equiv="refresh" content="3;URL=menu">
+<meta http-equiv="refresh" content="3;URL=Retour">
 <title>Reservation Effectuee</title>
 </head>
 <body>
