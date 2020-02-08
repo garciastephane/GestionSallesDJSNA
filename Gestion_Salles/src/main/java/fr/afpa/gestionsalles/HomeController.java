@@ -558,18 +558,22 @@ public class HomeController {
 	
 
 	@RequestMapping(value = "/sc", method = RequestMethod.POST)
-	public ModelAndView salleChoisi(@RequestParam(name = "id") String id) {
+	public ModelAndView salleChoisi(@RequestParam(name = "id") String id, @RequestParam(name = "res") String res) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("id", id);
-		Salle salle = serviceModificationSalle.getSalle(id);
-		if (salle != null) {
-			
-			mv.addObject("materiel", serviceModificationSalle.voirMateriel(Integer.parseInt(id)));
-			mv.addObject("salle", salle);
-			mv.setViewName("modifiersalle");
+		if("Valider".equals(res)) {
+			Salle salle = serviceModificationSalle.getSalle(id);
+			if (salle != null) {
+				
+				mv.addObject("materiel", serviceModificationSalle.voirMateriel(Integer.parseInt(id)));
+				mv.addObject("salle", salle);
+				mv.setViewName("modifiersalle");
+			} else {
+				mv.addObject("allroom", serviceModificationSalle.voirSalle());
+				mv.setViewName("choixsalle");
+			}
 		} else {
-			mv.addObject("allroom", serviceModificationSalle.voirSalle());
-			mv.setViewName("choixsalle");
+			mv.setViewName("reserverSalle");			
 		}
 		return mv;
 	}

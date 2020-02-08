@@ -41,7 +41,10 @@
 					<input class="form-control" type="number" name="id">
 				</div>
 				<div class="col-md-2 mb-3">
-					<button class="btn btn-success" type="submit" value="Valider">Valider</button>
+					<button class="btn btn-success" type="submit" name="res" value="Valider">Valider</button>
+				</div>
+				<div class="col-md-2 mb-3">
+					<button class="btn btn-success" type="submit" name="res" value="Reserver">Reserver</button>
 				</div>
 			</div>
 		</form>
