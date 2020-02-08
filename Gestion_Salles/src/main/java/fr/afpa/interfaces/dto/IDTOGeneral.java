@@ -33,6 +33,8 @@ public interface IDTOGeneral {
 	
 	public MessageBDD messageToMessageBDD(Message message);
 	
+	public ReservationBDD reservationToReservationBDD(Reservation reservation, int idSalle);
+	
 	public List<LoginMessageBDD> listeLoginsToListeLoginMessageBDD(
 			List<String> destinataires, String expediteur);
 	
@@ -56,4 +58,5 @@ public interface IDTOGeneral {
 	public List<Reservation> listReservationBDDToListReservation(List<ReservationBDD> listReservationBDD);
 	
 	public Reservation reservationBDDToReservation(ReservationBDD reservationBDD);
+	
 }

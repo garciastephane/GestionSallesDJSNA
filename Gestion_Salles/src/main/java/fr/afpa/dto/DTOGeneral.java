@@ -35,6 +35,8 @@ import fr.afpa.interfaces.services.IServiceGeneral;
 import fr.afpa.repositories.ILogRepository;
 import fr.afpa.repositories.ILoginMessageRepository;
 import fr.afpa.repositories.IMessageRepository;
+import fr.afpa.repositories.IReservationRepositoriy;
+import fr.afpa.repositories.ISalleRepository;
 
 @Service
 public class DTOGeneral implements IDTOGeneral {
@@ -47,6 +49,8 @@ public class DTOGeneral implements IDTOGeneral {
 	private ILogRepository loginRepository;
 	@Autowired
 	private IMessageRepository messageRepository;
+	@Autowired
+	private ISalleRepository salleRepository;
 	
 	
 	/**
@@ -316,6 +320,16 @@ public class DTOGeneral implements IDTOGeneral {
 		bat.setId(batimentBDD.getId());
 		bat.setNom(batimentBDD.getNom());
 		return bat;
+	}
+
+	@Override
+	public ReservationBDD reservationToReservationBDD(Reservation reservation, int idSalle) {
+		ReservationBDD reservBDD = new ReservationBDD();
+		reservBDD.setDateDebut(reservation.getDateDebut());
+		reservBDD.setDateFin(reservation.getDateFin());
+		reservBDD.setIntitule(reservation.getIntitule());
+		reservBDD.setSalle(salleRepository.findById(idSalle).get());
+		return reservBDD;
 	}
 
 

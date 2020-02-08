@@ -647,13 +647,29 @@ public class HomeController {
 
 	@RequestMapping(value = "/Reserver", method = RequestMethod.POST)
 	public ModelAndView reserver(@RequestParam(value = "debut") String debut,
-			@RequestParam(value = "duree") String duree, @RequestParam(value = "id") String id) {
+			@RequestParam(value = "duree") String duree,
+			@RequestParam(value = "id") String idSalle,
+			@RequestParam(value = "intitule") String intitule) {
 		ModelAndView mv = new ModelAndView();
-		if (false/* serviceCreation. */) {
+		if (controleGeneral.controleDateDeNaissance(debut) 
+				&& controleGeneral.controleTailleObjetMesage(intitule)
+				&& controleChoixUtilisateur.verificationChoix(duree)) {
+			if (serviceCreationSalle.creationReservation(intitule, serviceGeneral.conversionDate(debut)
+					, Integer.parseInt(duree), Integer.parseInt(idSalle))) {
+				mv.setViewName("confirmationReservationEffectuee");
+			} 
+			else {
+				mv.addObject("id", idSalle);
+				mv.addObject("reservations", serviceVisualisation.listeReservations(Integer.parseInt(idSalle)));
+				mv.addObject("invalide", true);
+				mv.setViewName("reserverSalle");
+			}
+		}
+		else {
+			mv.addObject("id", idSalle);
+			mv.addObject("reservations", serviceVisualisation.listeReservations(Integer.parseInt(idSalle)));
 			mv.addObject("invalide", true);
 			mv.setViewName("reserverSalle");
-		} else {
-			mv.setViewName("confirmationReservationEffectuee");
 		}
 		return mv;
 	}
