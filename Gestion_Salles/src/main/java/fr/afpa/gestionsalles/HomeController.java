@@ -55,7 +55,7 @@ public class HomeController {
 	private IServiceUtilisateur serviceUtilisateur;
 	@Autowired
 	private IServiceCreation serviceCreation;
-	
+
 	@Autowired
 	private IDTOUtilisateurs dtoUtilisateur;
 
@@ -238,13 +238,16 @@ public class HomeController {
 			}
 		} else {
 			if ("user".equals(create)) {
-				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login, password, false);
+				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login,
+						password, false);
 				mv.setViewName("gestionuser");
 			} else if ("admin".equals(create)) {
-				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login, password, true);
+				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login,
+						password, true);
 				mv.setViewName("gestionuser");
 			} else if ("pageUser".equals(create)) {
-				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, false, roleOk, login, password, false);
+				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, false, roleOk, login,
+						password, false);
 				mv.setViewName("index");
 			}
 		}
@@ -545,8 +548,7 @@ public class HomeController {
 		mv.setViewName("choixsalle");
 		return mv;
 	}
-	
-	
+
 	@RequestMapping(value = "/vs", method = RequestMethod.GET)
 	public ModelAndView voirSalle() {
 		ModelAndView mv = new ModelAndView();
@@ -555,25 +557,22 @@ public class HomeController {
 		return mv;
 	}
 
-	
-
 	@RequestMapping(value = "/sc", method = RequestMethod.POST)
 	public ModelAndView salleChoisi(@RequestParam(name = "id") String id, @RequestParam(name = "res") String res) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("id", id);
-		if("Valider".equals(res)) {
-			Salle salle = serviceModificationSalle.getSalle(id);
-			if (salle != null) {
-				
+		Salle salle = serviceModificationSalle.getSalle(id);
+		if (salle != null) {
+			if ("Valider".equals(res)) {
+				mv.setViewName("reserverSalle");
+			} else {
 				mv.addObject("materiel", serviceModificationSalle.voirMateriel(Integer.parseInt(id)));
 				mv.addObject("salle", salle);
 				mv.setViewName("modifiersalle");
-			} else {
-				mv.addObject("allroom", serviceModificationSalle.voirSalle());
-				mv.setViewName("choixsalle");
 			}
 		} else {
-			mv.setViewName("reserverSalle");			
+			mv.addObject("allroom", serviceModificationSalle.voirSalle());
+			mv.setViewName("choixsalle");
 		}
 		return mv;
 	}
@@ -600,14 +599,17 @@ public class HomeController {
 	public ModelAndView redirectionModifSalle(@RequestParam(value = "numsalle") String numsalle,
 			@RequestParam(value = "nomsalle") String nomsalle, @RequestParam(value = "surface") String surface,
 			@RequestParam(value = "capacite") String capacite, @RequestParam(value = "type") String type,
-			@RequestParam(value = "modif") String modif, @RequestParam(value = "id") String id) {
+			@RequestParam(value = "modif") String modif, @RequestParam(value = "id") String id,
+			@RequestParam(name = "1") String retro, @RequestParam(name = "2") String ordi,
+			@RequestParam(name = "3") String reseau) {
 		ModelAndView mv = new ModelAndView();
 		switch (modif) {
 		case "valider":
 			Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),
 					TypeSalle.valueOf(type.toUpperCase()));
 			salle.setId(Integer.parseInt(id));
-			serviceModificationSalle.updateSalle(salle);
+			serviceModificationSalle.updateSalle(salle, Integer.parseInt(retro), Integer.parseInt(ordi),
+					Integer.parseInt(reseau));
 			break;
 		case "supprimer":
 			serviceModificationSalle.supprimerSalle(Integer.parseInt(id));
@@ -640,8 +642,7 @@ public class HomeController {
 		serviceCreationSalle.ajoutSalleBdd(salle, batiment, type);
 		return "creationSalle";
 	}
-	
-	
+
 	@RequestMapping(value = "/choixreservation", method = RequestMethod.POST)
 	public ModelAndView choixReservation(@RequestParam(value = "id") String id) {
 		ModelAndView mv = new ModelAndView();
@@ -656,20 +657,18 @@ public class HomeController {
 		}
 		return mv;
 	}
-	
-	@RequestMapping(value="/Reserver", method = RequestMethod.POST)
-	public ModelAndView reserver(@RequestParam(value = "debut") String debut
-			, @RequestParam(value = "duree") String duree
-			, @RequestParam(value = "id") String id) {
+
+	@RequestMapping(value = "/Reserver", method = RequestMethod.POST)
+	public ModelAndView reserver(@RequestParam(value = "debut") String debut,
+			@RequestParam(value = "duree") String duree, @RequestParam(value = "id") String id) {
 		ModelAndView mv = new ModelAndView();
-		if (false/*serviceCreation. */) {
+		if (false/* serviceCreation. */) {
 			mv.addObject("invalide", true);
 			mv.setViewName("reserverSalle");
-		}
-		else {
+		} else {
 			mv.setViewName("confirmationReservationEffectuee");
 		}
 		return mv;
 	}
-	
+
 }
