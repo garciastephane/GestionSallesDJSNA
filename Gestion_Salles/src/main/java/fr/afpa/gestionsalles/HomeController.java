@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
+import fr.afpa.entites.Reservation;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Salle;
 import fr.afpa.entites.TypeSalle;
@@ -652,18 +653,14 @@ public class HomeController {
 			@RequestParam(value = "intitule") String intitule) {
 		ModelAndView mv = new ModelAndView();
 		if (controleGeneral.controleDateDeNaissance(debut) 
-				&& controleGeneral.controleTailleObjetMesage(intitule)
-				&& controleChoixUtilisateur.verificationChoix(duree)) {
-			if (serviceCreationSalle.creationReservation(intitule, serviceGeneral.conversionDate(debut)
+			&& controleGeneral.controleTailleObjetMesage(intitule)
+			&& controleChoixUtilisateur.verificationChoix(duree)
+			&& controleGeneral.controleDateObsolete(serviceGeneral.conversionDate(debut))
+			&& controleGeneral.controleCollisionDates(serviceVisualisation.listeReservations(Integer.parseInt(idSalle))
+					, serviceGeneral.conversionDate(debut), Integer.parseInt(duree))
+			&& serviceCreationSalle.creationReservation(intitule, serviceGeneral.conversionDate(debut)
 					, Integer.parseInt(duree), Integer.parseInt(idSalle))) {
 				mv.setViewName("confirmationReservationEffectuee");
-			} 
-			else {
-				mv.addObject("id", idSalle);
-				mv.addObject("reservations", serviceVisualisation.listeReservations(Integer.parseInt(idSalle)));
-				mv.addObject("invalide", true);
-				mv.setViewName("reserverSalle");
-			}
 		}
 		else {
 			mv.addObject("id", idSalle);

@@ -28,6 +28,7 @@
 		
 		<form action="Reserver" method="post">
 			<input hidden="" name="id" value="${ id }" />
+			<input hidden="" name="reservations" value=${ reservations } />
 			<div>
 				<h5>Liste des réservations déjà effectuées :</h5>
 				<c:forEach items="${ reservations }" var="reserv">
