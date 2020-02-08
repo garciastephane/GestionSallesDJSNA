@@ -184,7 +184,6 @@ public class HomeController {
 			@RequestParam(value = "password") String password, @RequestParam(value = "password2") String password2,
 			@RequestParam(value = "login") String login, @RequestParam(value = "create") String create) {
 
-		ServiceCreation sc = new ServiceCreation();
 		ModelAndView mv = new ModelAndView();
 		String nomOk = "";
 		String prenomOk = "";

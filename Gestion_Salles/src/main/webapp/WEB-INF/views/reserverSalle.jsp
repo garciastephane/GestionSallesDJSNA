@@ -40,15 +40,15 @@
 			<hr/>
 			<br />
 			<div class="col-md-7">
-				Date de début : <input name="debut" type="date" />
+				Date de début (jj/mm/aaaa) : <input name="debut" type="date" />
 			</div>
 			<br />
 			<div class="col-md-7">
-				Durée : <input name="duree" type="number" />
+				Durée (en jours) : <input name="duree" type="number" />
 			</div>
 			<br />
 			<div class="col-md-7">
-				Intitulé : <input name="intitule" type="text" />
+				Intitulé (limité à 50 caractères) : <input name="intitule" type="text" />
 			</div>
 			<br />
 			<div class="col-md-7">
