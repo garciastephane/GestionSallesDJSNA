@@ -62,6 +62,14 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 		else
 			return null;
 	}
+	
+	@Override
+	public Salle choixSalle2(String id) {
+		if (modificationSalleRepository.existsById(Integer.parseInt(id)))
+			return dtoGeneral.salleBDDToSalle2(modificationSalleRepository.findById(Integer.parseInt(id)).get());
+		else
+			return null;
+	}
 
 	@Override
 	public ArrayList<Batiment> listerBatiment() {

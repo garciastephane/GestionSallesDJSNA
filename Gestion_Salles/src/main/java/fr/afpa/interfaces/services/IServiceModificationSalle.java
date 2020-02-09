@@ -21,4 +21,6 @@ public interface IServiceModificationSalle {
 
 	String listeSalle2();
 
+	Salle getSalle2(String id);
+
 }

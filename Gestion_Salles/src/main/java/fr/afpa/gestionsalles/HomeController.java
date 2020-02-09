@@ -556,6 +556,14 @@ public class HomeController {
 		mv.setViewName("visualisationrsalle");
 		return mv;
 	}
+	
+	@RequestMapping(value = "/vrc", method = RequestMethod.GET)
+	public ModelAndView voirSalleComplete(@RequestParam(name = "id") String id) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("id", serviceModificationSalle.getSalle2(id));
+		mv.setViewName("visualisationrsallecomplete");
+		return mv;
+	}
 
 	@RequestMapping(value = "/sc", method = RequestMethod.POST)
 	public ModelAndView salleChoisi(@RequestParam(name = "id") String id, @RequestParam(name = "res") String res) {

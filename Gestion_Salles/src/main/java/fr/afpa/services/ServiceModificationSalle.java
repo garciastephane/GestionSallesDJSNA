@@ -53,7 +53,7 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 			res += "<td>" + salle.getCapacite() + "</td>";
 			res += "<td>" + salle.getSurface() + "</td>";
 			res += "<td>" + salle.getBatiment().getNom() + "</td>";
-			res += "<td><button>voir</button></td>";
+			res += "<form action=\"vrc\" ><input type=\"hidden\" name=\"id\" value=\""+salle.getId()+"\"><td><input type=\"submit\" value=\"VOIR\"></td></form>";
 			res += "</tr>";
 		}
 		return res;
@@ -70,6 +70,11 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 		return dtoModificationSalle.choixSalle(id);
 	}
 
+	@Override
+	public Salle getSalle2(String id) {
+		return dtoModificationSalle.choixSalle2(id);
+	}
+	
 	@Override
 	public boolean updateSalle(Salle salle, int retro, int ordi, int reseau) {
 		return dtoModificationSalle.updateSalle(salle, retro, ordi, reseau);
