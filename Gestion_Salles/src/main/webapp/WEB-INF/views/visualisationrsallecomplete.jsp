@@ -45,7 +45,7 @@
 				<h2>Surface : <c:out value="${ id.surface }" /> m²</h2>
 			</div>
 			<div class="col">
-				<h2>Capacité : <c:out value="${ id.capacite }" /> personne</h2>
+				<h2>Capacité : <c:out value="${ id.capacite }" /> personnes</h2>
 			</div>
 		</div>
 		<br>
