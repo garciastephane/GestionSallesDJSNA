@@ -11,13 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.afpa.entites.Administrateur;
@@ -46,8 +42,6 @@ import fr.afpa.services.ServiceModification;
  */
 @Controller
 public class HomeController {
-
-	//private static String loginCourant;
 
 	@Autowired
 	private IServiceGeneral serviceGeneral;
@@ -113,8 +107,6 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 
 		if (controleAuthentificationUtilisateur.controlePersonneInscrite(login, password)) {
-
-			//loginCourant = login;
 			Personne personne = serviceUtilisateur.utilisateur(login, password);
 			request.getSession().setAttribute("personneCourante", personne);
 			request.getSession().setAttribute("loginCourant", login);
@@ -145,6 +137,10 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 		if (request.getSession().getAttribute("personneCourante") == null) {
 			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
 			return mv;
 		}
 		
@@ -201,10 +197,6 @@ public class HomeController {
 			HttpServletRequest request) {
 
 		ModelAndView mv = new ModelAndView();
-		if (request.getSession().getAttribute("personneCourante") == null) {
-			mv.setViewName("index");
-			return mv;
-		}
 		
 		String nomOk = "";
 		String prenomOk = "";
@@ -315,7 +307,10 @@ public class HomeController {
 			mv.setViewName("index");
 			return mv;
 		}
-		
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		String req = modif;
 		switch (req) {
 		case "valider":
@@ -355,6 +350,10 @@ public class HomeController {
 			mv.setViewName("index");
 			return mv;
 		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		mv.addObject("choix", ServiceModification.CHOIX);
 		mv.addObject("alluser", serviceVisualisation.afficherUser());
 
@@ -373,6 +372,9 @@ public class HomeController {
 		if (request.getSession().getAttribute("personneCourante") == null) {
 			return "index";
 		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			return retour(request);
+		}
 		return "creationutilisateur";
 
 	}
@@ -387,7 +389,6 @@ public class HomeController {
 		if (request.getSession().getAttribute("personneCourante") == null) {
 			return "index";
 		}
-		//if (controleAuthentificationUtilisateur.controleAdmin(loginCourant)) {
 		if (request.getSession().getAttribute("personneCourante") instanceof Administrateur) {
 			return "gestionuser";
 		} else {
@@ -409,6 +410,10 @@ public class HomeController {
 			mv.setViewName("index");
 			return mv;
 		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		Map<Integer, Personne> listePersonnes = serviceVisualisation.listeTousPersonnes();
 		mv.addObject("listePersonnes", listePersonnes);
 		mv.setViewName("visualisationutilisateur");
@@ -422,10 +427,8 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/CCPU", method = RequestMethod.GET)
-	public String creationCompteParUtilisateur(HttpServletRequest request) {
-		if (request.getSession().getAttribute("personneCourante") == null) {
-			return "index";
-		}
+	public String creationCompteParUtilisateur() {
+		
 		return "creationCompte";
 	}
 
@@ -617,6 +620,10 @@ public class HomeController {
 			mv.setViewName("index");
 			return mv;
 		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		mv.addObject("allroom", serviceModificationSalle.voirSalle());
 		mv.setViewName("choixsalle");
 		return mv;
@@ -653,6 +660,10 @@ public class HomeController {
 			mv.setViewName("index");
 			return mv;
 		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		mv.addObject("id", id);
 		Salle salle = serviceModificationSalle.getSalle(id);
 		if (salle != null) {
@@ -679,6 +690,9 @@ public class HomeController {
 		if (request.getSession().getAttribute("personneCourante") == null) {
 			return "index";
 		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			return retour(request);
+		}
 		return "modifiersalle";
 	}
 
@@ -687,6 +701,10 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 		if (request.getSession().getAttribute("personneCourante") == null) {
 			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
 			return mv;
 		}
 		mv.addObject("listebatiment", serviceModificationSalle.listerBatiment());
@@ -705,6 +723,10 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 		if (request.getSession().getAttribute("personneCourante") == null) {
 			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
 			return mv;
 		}
 		switch (modif) {
@@ -743,6 +765,9 @@ public class HomeController {
 		if (request.getSession().getAttribute("personneCourante") == null) {
 			return "index";
 		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			return retour(request);
+		}
 		Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),
 				TypeSalle.values()[Integer.parseInt(type)]);
 		serviceCreationSalle.ajoutSalleBdd(salle, batiment, type);
@@ -758,6 +783,10 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 		if (request.getSession().getAttribute("personneCourante") == null) {
 			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
 			return mv;
 		}
 		if (controleGeneral.controleDateDeNaissance(debut) 
