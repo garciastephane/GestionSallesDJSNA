@@ -617,8 +617,8 @@ public class HomeController {
 			Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),
 					TypeSalle.valueOf(type.toUpperCase()));
 			salle.setId(Integer.parseInt(id));
-			serviceModificationSalle.updateSalle(salle, Integer.parseInt(retro), Integer.parseInt(ordi),
-					Integer.parseInt(reseau));
+			serviceModificationSalle.updateSalle(salle, Integer.parseInt(ordi), Integer.parseInt(reseau),
+					Integer.parseInt(retro));
 			break;
 		case "supprimer":
 			serviceModificationSalle.supprimerSalle(Integer.parseInt(id));

@@ -15,14 +15,14 @@ import fr.afpa.interfaces.services.IServiceModificationSalle;
 
 @Service
 public class ServiceModificationSalle implements IServiceModificationSalle {
-	
+
 	@Autowired
 	private IDTOModificationSalle dtoModificationSalle;
-	
+
 	public boolean choixSalle(int id) {
 		return false;
 	}
-	
+
 	@Override
 	public String voirSalle() {
 		List<Salle> listeSalles = dtoModificationSalle.listeSalles();
@@ -53,17 +53,17 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 			res += "<td>" + salle.getCapacite() + "</td>";
 			res += "<td>" + salle.getSurface() + "</td>";
 			res += "<td>" + salle.getBatiment().getNom() + "</td>";
-			res += "<form action=\"vrc\" ><input type=\"hidden\" name=\"id\" value=\""+salle.getId()+"\"><td><input type=\"submit\" value=\"VOIR\"></td></form>";
+			res += "<form action=\"vrc\" ><input type=\"hidden\" name=\"id\" value=\"" + salle.getId()
+					+ "\"><td><input type=\"submit\" value=\"VOIR\"></td></form>";
 			res += "</tr>";
 		}
 		return res;
 	}
-	
+
 	@Override
 	public ArrayList<Batiment> listerBatiment() {
 		return dtoModificationSalle.listerBatiment();
 	}
-	
 
 	@Override
 	public Salle getSalle(String id) {
@@ -74,12 +74,11 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 	public Salle getSalle2(String id) {
 		return dtoModificationSalle.choixSalle2(id);
 	}
-	
+
 	@Override
 	public boolean updateSalle(Salle salle, int retro, int ordi, int reseau) {
 		return dtoModificationSalle.updateSalle(salle, retro, ordi, reseau);
 	}
-
 
 	@Override
 	public boolean supprimerSalle(int parseInt) {
@@ -94,11 +93,9 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 		for (Entry<String, Integer> materiel : materiels.entrySet()) {
 			res += "<tr>";
 			res += "<td>" + materiel.getKey() + "</td>";
-			res += "<td><input type='number' name='"+(i++)+"' value='"+materiel.getValue()+"'></td>";
+			res += "<td><input type='number' name='" + (i++) + "' value='" + materiel.getValue() + "'></td>";
 			res += "</tr>";
 		}
 		return res;
 	}
-
-	
 }

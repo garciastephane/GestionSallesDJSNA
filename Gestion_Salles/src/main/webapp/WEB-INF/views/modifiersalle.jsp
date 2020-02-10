@@ -54,27 +54,20 @@
 
 			</div>
 			<div class="form-row">
-			<div class="col-md-5 mb-3">
-				<table class="table">
-					<thead>
-						<tr class="table table-primary">
-							<td>type</td>
-							<td>quantité</td>
-						</tr>
-					</thead>
-					<tbody>
-					<c:forEach var="mat" items="${ materiel }">
-						<tr>
-							<td><c:out value="${ mat.key }"></c:out></td>
-							<td><c:out value="${ mat.value }"></c:out></td>
-							<td><input type="submit" value="Ajouter"></td>
-							<td><input type="submit" value="Retirer"></td>
-						</tr>
-					</c:forEach>
-					</tbody>
-				</table>
+				<div class="col-md-5 mb-3">
+					<table class="table">
+						<thead>
+							<tr class="table table-primary">
+								<td>type</td>
+								<td>quantité</td>
+							</tr>
+						</thead>
+						<tbody>
+							<c:out value="${ materiel }" escapeXml="false"></c:out>
+						</tbody>
+					</table>
+				</div>
 			</div>
-		</div>
 			<br>
 			<div>
 				<button name="modif" class="btn btn-success" value="valider">valider</button>
