@@ -636,7 +636,7 @@ public class HomeController {
 			mv.setViewName("index");
 			return mv;
 		}
-		mv.addObject("allroom", serviceModificationSalle.listeSalle2());
+		mv.addObject("allroom", serviceModificationSalle.listeSalleComplete());
 		mv.setViewName("visualisationrsalle");
 		return mv;
 	}
@@ -648,7 +648,7 @@ public class HomeController {
 			mv.setViewName("index");
 			return mv;
 		}
-		mv.addObject("id", serviceModificationSalle.getSalle2(id));
+		mv.addObject("id", serviceModificationSalle.getSalleComplete(id));
 		mv.setViewName("visualisationrsallecomplete");
 		return mv;
 	}

@@ -21,8 +21,8 @@ public interface IServiceModificationSalle {
 
 	String voirMateriel(int id);
 
-	String listeSalle2();
+	String listeSalleComplete();
 
-	Salle getSalle2(String id);
+	Salle getSalleComplete(String id);
 
 }

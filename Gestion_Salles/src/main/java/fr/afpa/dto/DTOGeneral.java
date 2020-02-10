@@ -282,7 +282,7 @@ public class DTOGeneral implements IDTOGeneral {
 	}
 
 	@Override
-	public List<Reservation> listReservationBDDToListReservation2(SalleBDD salleBDD) {
+	public List<Reservation> listReservationBDDToListReservationComplete(SalleBDD salleBDD) {
 		List<ReservationBDD> listReservationBDD = reservationRepository.findBySalle(salleBDD);
 		List<Reservation> listReservation = new ArrayList<Reservation>();
 		for (ReservationBDD reservationBDD : listReservationBDD) {
@@ -315,7 +315,7 @@ public class DTOGeneral implements IDTOGeneral {
 	}
 	
 	@Override
-	public Salle salleBDDToSalle2(SalleBDD salleBDD) {
+	public Salle salleBDDToSalleComplete(SalleBDD salleBDD) {
 		Salle salle = new Salle();
 		salle.setId(salleBDD.getId());
 		salle.setNom(salleBDD.getNom());
@@ -325,7 +325,7 @@ public class DTOGeneral implements IDTOGeneral {
 		salle.setTypeSalle(typeSalleBDDToTypeSalle(salleBDD.getTypeSalle()));
 		salle.setBatiment(batimentBDDToBatiment(salleBDD.getBatiment()));
 		salle.setListeMateriels(listMaterielBDDToListMateriel(salleBDD.getId()));
-		salle.setListeReservations(listReservationBDDToListReservation2(salleBDD));
+		salle.setListeReservations(listReservationBDDToListReservationComplete(salleBDD));
 		return salle;
 	}
 

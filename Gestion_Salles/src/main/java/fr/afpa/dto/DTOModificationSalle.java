@@ -50,7 +50,7 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 		List<Salle> listeSalle = new ArrayList<Salle>();
 		List<SalleBDD> listeSalles = modificationSalleRepository.findAll();
 		for (SalleBDD salleBDD : listeSalles) {
-			listeSalle.add(dtoGeneral.salleBDDToSalle2(salleBDD));
+			listeSalle.add(dtoGeneral.salleBDDToSalleComplete(salleBDD));
 		}
 		return listeSalle;
 	}
@@ -64,9 +64,9 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 	}
 	
 	@Override
-	public Salle choixSalle2(String id) {
+	public Salle choixSalleComplete(String id) {
 		if (modificationSalleRepository.existsById(Integer.parseInt(id)))
-			return dtoGeneral.salleBDDToSalle2(modificationSalleRepository.findById(Integer.parseInt(id)).get());
+			return dtoGeneral.salleBDDToSalleComplete(modificationSalleRepository.findById(Integer.parseInt(id)).get());
 		else
 			return null;
 	}

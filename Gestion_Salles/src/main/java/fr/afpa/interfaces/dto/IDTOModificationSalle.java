@@ -26,6 +26,6 @@ public interface IDTOModificationSalle {
 	
 	public List<Salle> voirSalles();
 
-	Salle choixSalle2(String id);
+	Salle choixSalleComplete(String id);
 
 }
