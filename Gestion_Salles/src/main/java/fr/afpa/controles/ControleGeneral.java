@@ -1,7 +1,11 @@
 package fr.afpa.controles;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import fr.afpa.entites.Reservation;
 import fr.afpa.interfaces.controles.IControleGeneral;
 
 @Service
@@ -83,5 +87,23 @@ public class ControleGeneral implements IControleGeneral {
 			return objet.length() <= 50;
 		}
 		return false;
+	}
+	
+	
+	public boolean controleCollisionDates(List<Reservation> reservations, LocalDate date, int duree) {
+		for (Reservation reservation : reservations) {
+			if ((date.isAfter(reservation.getDateDebut()) && date.isBefore(reservation.getDateFin()))
+					|| (date.plusDays(duree).isAfter(reservation.getDateDebut()) && date.plusDays(duree).isBefore(reservation.getDateFin()))
+					|| (reservation.getDateDebut().isAfter(date) && reservation.getDateFin().isBefore(date))
+					|| (reservation.getDateDebut().isAfter(date.plusDays(duree)) && reservation.getDateFin().isBefore(date.plusDays(duree)))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean controleDateObsolete(LocalDate date) {
+		return date.isAfter(LocalDate.now());
 	}
 }

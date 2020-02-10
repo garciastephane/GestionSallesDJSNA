@@ -1,6 +1,7 @@
 package fr.afpa.dto;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import fr.afpa.entites.Batiment;
 import fr.afpa.entites.Salle;
 import fr.afpa.entites.TypeMateriel;
 import fr.afpa.entitespersistees.BatimentBDD;
+import fr.afpa.entitespersistees.MaterielBDD;
 import fr.afpa.entitespersistees.SalleBDD;
 import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.dto.IDTOModificationSalle;
@@ -60,6 +62,14 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 		else
 			return null;
 	}
+	
+	@Override
+	public Salle choixSalle2(String id) {
+		if (modificationSalleRepository.existsById(Integer.parseInt(id)))
+			return dtoGeneral.salleBDDToSalle2(modificationSalleRepository.findById(Integer.parseInt(id)).get());
+		else
+			return null;
+	}
 
 	@Override
 	public ArrayList<Batiment> listerBatiment() {
@@ -72,13 +82,23 @@ public class DTOModificationSalle implements IDTOModificationSalle {
 	}
 
 	@Override
-	public boolean updateSalle(Salle salle) {
+	public boolean updateSalle(Salle salle, int retro, int ordi, int reseau) {
 		SalleBDD salleBDD = modificationSalleRepository.findById(salle.getId()).get();
 		salleBDD.setCapacite(salle.getCapacite());
 		salleBDD.setNom(salle.getNom());
 		salleBDD.setNumero(salle.getNumero());
 		salleBDD.setSurface(salle.getSurface());
 		modificationSalleRepository.save(salleBDD);
+		List<MaterielBDD> materiel = materielRepository.findBySalleOrderByTypemateriel(salleBDD.getId());
+		MaterielBDD retroprojecteur = materielRepository.findById(materiel.get(0).getId()).get();
+		retroprojecteur.setQuantite(retro);
+		materielRepository.save(retroprojecteur);
+		MaterielBDD ordinateur = materielRepository.findById(materiel.get(1).getId()).get();
+		ordinateur.setQuantite(ordi);
+		materielRepository.save(ordinateur);
+		MaterielBDD priseReseau = materielRepository.findById(materiel.get(2).getId()).get();
+		priseReseau.setQuantite(reseau);
+		materielRepository.save(priseReseau);
 		// TYPE SALLE
 		return false;
 	}

@@ -15,12 +15,14 @@ public interface IServiceModificationSalle {
 
 	Object listerBatiment();
 
-	boolean updateSalle(Salle salle);
+	boolean updateSalle(Salle salle, int i, int j, int k);
 
 	boolean supprimerSalle(int parseInt);
 
 	Map<String, Integer> voirMateriel(int id);
 
 	String listeSalle2();
+
+	Salle getSalle2(String id);
 
 }

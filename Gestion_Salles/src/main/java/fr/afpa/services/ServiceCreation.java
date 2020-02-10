@@ -96,4 +96,9 @@ public class ServiceCreation implements IServiceCreation {
 		}
 		return false;
 	}
+	
+	
+	//public boolean creationReservation(String ) {
+		
+	//}
 }

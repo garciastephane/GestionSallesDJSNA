@@ -35,7 +35,7 @@
 
 		<div class="card text-center" style="width: 18rem;">
 			<div class="card-body">
-				<a href="cs">Liste des Salle</a>
+				<a href="vs">Liste des Salle</a>
 			</div>
 		</div>
 

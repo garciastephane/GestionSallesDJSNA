@@ -35,7 +35,6 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 			res += "<td>" + salle.getNom() + "</td>";
 			res += "<td>" + salle.getCapacite() + "</td>";
 			res += "<td>" + salle.getSurface() + "</td>";
-			res += "<td><button>Reserver</button></td>";
 			res += "</tr>";
 		}
 		return res;
@@ -54,7 +53,7 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 			res += "<td>" + salle.getCapacite() + "</td>";
 			res += "<td>" + salle.getSurface() + "</td>";
 			res += "<td>" + salle.getBatiment().getNom() + "</td>";
-			res += "<td><button>voir</button></td>";
+			res += "<form action=\"vrc\" ><input type=\"hidden\" name=\"id\" value=\""+salle.getId()+"\"><td><input type=\"submit\" value=\"VOIR\"></td></form>";
 			res += "</tr>";
 		}
 		return res;
@@ -72,8 +71,13 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 	}
 
 	@Override
-	public boolean updateSalle(Salle salle) {
-		return dtoModificationSalle.updateSalle(salle);
+	public Salle getSalle2(String id) {
+		return dtoModificationSalle.choixSalle2(id);
+	}
+	
+	@Override
+	public boolean updateSalle(Salle salle, int retro, int ordi, int reseau) {
+		return dtoModificationSalle.updateSalle(salle, retro, ordi, reseau);
 	}
 
 
@@ -83,8 +87,17 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 	}
 
 	@Override
-	public Map<String, Integer> voirMateriel(int id) {
-		return dtoModificationSalle.voirMateriel(id);
+	public String voirMateriel(int id) {
+		Map<String, Integer> materiels = dtoModificationSalle.voirMateriel(id);
+		String res = "";
+		int i = 1;
+		for (Entry<String, Integer> materiel : materiels.entrySet()) {
+			res += "<tr>";
+			res += "<td>" + materiel.getKey() + "</td>";
+			res += "<td><input type='number' name='"+(i++)+"' value='"+materiel.getValue()+"'></td>";
+			res += "</tr>";
+		}
+		return res;
 	}
 
 	

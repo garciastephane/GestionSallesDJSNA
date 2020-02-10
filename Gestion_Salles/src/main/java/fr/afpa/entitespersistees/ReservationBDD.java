@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity(name = "reservation")
+@SequenceGenerator(name = "RESERVATION_SEQ", allocationSize = 1)
 public class ReservationBDD {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RESERVATION_SEQ")

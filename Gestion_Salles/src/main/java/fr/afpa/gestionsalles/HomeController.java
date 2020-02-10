@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
+import fr.afpa.entites.Reservation;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Salle;
 import fr.afpa.entites.TypeSalle;
@@ -55,7 +56,7 @@ public class HomeController {
 	private IServiceUtilisateur serviceUtilisateur;
 	@Autowired
 	private IServiceCreation serviceCreation;
-	
+
 	@Autowired
 	private IDTOUtilisateurs dtoUtilisateur;
 
@@ -183,7 +184,6 @@ public class HomeController {
 			@RequestParam(value = "password") String password, @RequestParam(value = "password2") String password2,
 			@RequestParam(value = "login") String login, @RequestParam(value = "create") String create) {
 
-		ServiceCreation sc = new ServiceCreation();
 		ModelAndView mv = new ModelAndView();
 		String nomOk = "";
 		String prenomOk = "";
@@ -238,13 +238,16 @@ public class HomeController {
 			}
 		} else {
 			if ("user".equals(create)) {
-				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login, password, false);
+				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login,
+						password, false);
 				mv.setViewName("gestionuser");
 			} else if ("admin".equals(create)) {
-				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login, password, true);
+				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, true, roleOk, login,
+						password, true);
 				mv.setViewName("gestionuser");
 			} else if ("pageUser".equals(create)) {
-				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, false, roleOk, login, password, false);
+				serviceCreation.creationPersonne(nom, prenom, dateNaissance, mail, adresse, false, roleOk, login,
+						password, false);
 				mv.setViewName("index");
 			}
 		}
@@ -545,8 +548,7 @@ public class HomeController {
 		mv.setViewName("choixsalle");
 		return mv;
 	}
-	
-	
+
 	@RequestMapping(value = "/vs", method = RequestMethod.GET)
 	public ModelAndView voirSalle() {
 		ModelAndView mv = new ModelAndView();
@@ -554,19 +556,29 @@ public class HomeController {
 		mv.setViewName("visualisationrsalle");
 		return mv;
 	}
-
 	
+	@RequestMapping(value = "/vrc", method = RequestMethod.GET)
+	public ModelAndView voirSalleComplete(@RequestParam(name = "id") String id) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("id", serviceModificationSalle.getSalle2(id));
+		mv.setViewName("visualisationrsallecomplete");
+		return mv;
+	}
 
 	@RequestMapping(value = "/sc", method = RequestMethod.POST)
-	public ModelAndView salleChoisi(@RequestParam(name = "id") String id) {
+	public ModelAndView salleChoisi(@RequestParam(name = "id") String id, @RequestParam(name = "res") String res) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("id", id);
 		Salle salle = serviceModificationSalle.getSalle(id);
 		if (salle != null) {
-			
-			mv.addObject("materiel", serviceModificationSalle.voirMateriel(Integer.parseInt(id)));
-			mv.addObject("salle", salle);
-			mv.setViewName("modifiersalle");
+			if ("Reserver".equals(res)) {
+				mv.addObject("reservations", serviceVisualisation.listeReservations(Integer.parseInt(id)));
+				mv.setViewName("reserverSalle");
+			} else {
+				mv.addObject("materiel", serviceModificationSalle.voirMateriel(Integer.parseInt(id)));
+				mv.addObject("salle", salle);
+				mv.setViewName("modifiersalle");
+			}
 		} else {
 			mv.addObject("allroom", serviceModificationSalle.voirSalle());
 			mv.setViewName("choixsalle");
@@ -596,14 +608,17 @@ public class HomeController {
 	public ModelAndView redirectionModifSalle(@RequestParam(value = "numsalle") String numsalle,
 			@RequestParam(value = "nomsalle") String nomsalle, @RequestParam(value = "surface") String surface,
 			@RequestParam(value = "capacite") String capacite, @RequestParam(value = "type") String type,
-			@RequestParam(value = "modif") String modif, @RequestParam(value = "id") String id) {
+			@RequestParam(value = "modif") String modif, @RequestParam(value = "id") String id,
+			@RequestParam(name = "1") String retro, @RequestParam(name = "2") String ordi,
+			@RequestParam(name = "3") String reseau) {
 		ModelAndView mv = new ModelAndView();
 		switch (modif) {
 		case "valider":
 			Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),
 					TypeSalle.valueOf(type.toUpperCase()));
 			salle.setId(Integer.parseInt(id));
-			serviceModificationSalle.updateSalle(salle);
+			serviceModificationSalle.updateSalle(salle, Integer.parseInt(retro), Integer.parseInt(ordi),
+					Integer.parseInt(reseau));
 			break;
 		case "supprimer":
 			serviceModificationSalle.supprimerSalle(Integer.parseInt(id));
@@ -636,7 +651,31 @@ public class HomeController {
 		serviceCreationSalle.ajoutSalleBdd(salle, batiment, type);
 		return "creationSalle";
 	}
-	
-	
-	
+
+
+	@RequestMapping(value = "/Reserver", method = RequestMethod.POST)
+	public ModelAndView reserver(@RequestParam(value = "debut") String debut,
+			@RequestParam(value = "duree") String duree,
+			@RequestParam(value = "id") String idSalle,
+			@RequestParam(value = "intitule") String intitule) {
+		ModelAndView mv = new ModelAndView();
+		if (controleGeneral.controleDateDeNaissance(debut) 
+			&& controleGeneral.controleTailleObjetMesage(intitule)
+			&& controleChoixUtilisateur.verificationChoix(duree)
+			&& controleGeneral.controleDateObsolete(serviceGeneral.conversionDate(debut))
+			&& controleGeneral.controleCollisionDates(serviceVisualisation.listeReservations(Integer.parseInt(idSalle))
+					, serviceGeneral.conversionDate(debut), Integer.parseInt(duree))
+			&& serviceCreationSalle.creationReservation(intitule, serviceGeneral.conversionDate(debut)
+					, Integer.parseInt(duree), Integer.parseInt(idSalle))) {
+				mv.setViewName("confirmationReservationEffectuee");
+		}
+		else {
+			mv.addObject("id", idSalle);
+			mv.addObject("reservations", serviceVisualisation.listeReservations(Integer.parseInt(idSalle)));
+			mv.addObject("invalide", true);
+			mv.setViewName("reserverSalle");
+		}
+		return mv;
+	}
+
 }

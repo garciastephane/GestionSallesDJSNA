@@ -34,7 +34,10 @@ import fr.afpa.interfaces.dto.IDTOGeneral;
 import fr.afpa.interfaces.services.IServiceGeneral;
 import fr.afpa.repositories.ILogRepository;
 import fr.afpa.repositories.ILoginMessageRepository;
+import fr.afpa.repositories.IMaterielRepository;
 import fr.afpa.repositories.IMessageRepository;
+import fr.afpa.repositories.IReservationRepositoriy;
+import fr.afpa.repositories.ISalleRepository;
 
 @Service
 public class DTOGeneral implements IDTOGeneral {
@@ -47,7 +50,12 @@ public class DTOGeneral implements IDTOGeneral {
 	private ILogRepository loginRepository;
 	@Autowired
 	private IMessageRepository messageRepository;
-	
+	@Autowired
+	private ISalleRepository salleRepository;
+	@Autowired
+	private IMaterielRepository materielRepository;
+	@Autowired
+	private IReservationRepositoriy reservationRepository;
 	
 	/**
 	 * Permet de transformer une instance de RoleBDD en instance de RolePersonne
@@ -254,7 +262,8 @@ public class DTOGeneral implements IDTOGeneral {
 	}
 	
 	@Override
-	public List<Materiel> listMaterielBDDToListMateriel(List<MaterielBDD> listMaterielBDD) {
+	public List<Materiel> listMaterielBDDToListMateriel(int id) {
+		List<MaterielBDD> listMaterielBDD = materielRepository.findBySalleOrderByTypemateriel(id);
 		List<Materiel> listeMat = new ArrayList<Materiel>();
 		for (MaterielBDD materielBDD : listMaterielBDD) {
 			listeMat.add(materielBDDToMateriel(materielBDD));
@@ -272,6 +281,16 @@ public class DTOGeneral implements IDTOGeneral {
 		return listReservation;
 	}
 
+	@Override
+	public List<Reservation> listReservationBDDToListReservation2(SalleBDD salleBDD) {
+		List<ReservationBDD> listReservationBDD = reservationRepository.findBySalle(salleBDD);
+		List<Reservation> listReservation = new ArrayList<Reservation>();
+		for (ReservationBDD reservationBDD : listReservationBDD) {
+			listReservation.add(reservationBDDToReservation(reservationBDD));
+		}
+		return listReservation;
+	}
+	
 	@Override
 	public Reservation reservationBDDToReservation(ReservationBDD reservationBDD) {
 		Reservation reservation = new Reservation();
@@ -291,10 +310,7 @@ public class DTOGeneral implements IDTOGeneral {
 		salle.setCapacite(salleBDD.getCapacite());
 		salle.setNumero(salleBDD.getNumero());
 		salle.setSurface(salleBDD.getSurface());
-		salle.setTypeSalle(TypeSalle.valueOf(salleBDD.getTypeSalle().getType()));
-		salle.setBatiment(batimentBDDToBatiment(salleBDD.getBatiment()));
-		//salle.setListeMateriels(listMaterielBDDToListMateriel(salleBDD.getMateriel()));
-		//salle.setListeReservations(listReservationBDDToListReservation(salleBDD.getReservation()));
+		salle.setTypeSalle(TypeSalle.valueOf(salleBDD.getTypeSalle().getType().toUpperCase()));
 		return salle;
 	}
 	
@@ -308,8 +324,8 @@ public class DTOGeneral implements IDTOGeneral {
 		salle.setSurface(salleBDD.getSurface());
 		salle.setTypeSalle(typeSalleBDDToTypeSalle(salleBDD.getTypeSalle()));
 		salle.setBatiment(batimentBDDToBatiment(salleBDD.getBatiment()));
-		//salle.setListeMateriels(listMaterielBDDToListMateriel(salleBDD.getMateriel()));
-		//salle.setListeReservations(listReservationBDDToListReservation(salleBDD.getReservation()));
+		salle.setListeMateriels(listMaterielBDDToListMateriel(salleBDD.getId()));
+		salle.setListeReservations(listReservationBDDToListReservation2(salleBDD));
 		return salle;
 	}
 
@@ -319,6 +335,16 @@ public class DTOGeneral implements IDTOGeneral {
 		bat.setId(batimentBDD.getId());
 		bat.setNom(batimentBDD.getNom());
 		return bat;
+	}
+
+	@Override
+	public ReservationBDD reservationToReservationBDD(Reservation reservation, int idSalle) {
+		ReservationBDD reservBDD = new ReservationBDD();
+		reservBDD.setDateDebut(reservation.getDateDebut());
+		reservBDD.setDateFin(reservation.getDateFin());
+		reservBDD.setIntitule(reservation.getIntitule());
+		reservBDD.setSalle(salleRepository.findById(idSalle).get());
+		return reservBDD;
 	}
 
 
