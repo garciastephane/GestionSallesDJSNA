@@ -19,7 +19,7 @@ public interface IServiceModificationSalle {
 
 	boolean supprimerSalle(int parseInt);
 
-	Map<String, Integer> voirMateriel(int id);
+	String voirMateriel(int id);
 
 	String listeSalle2();
 
