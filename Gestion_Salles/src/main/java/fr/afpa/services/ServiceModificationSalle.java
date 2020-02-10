@@ -41,7 +41,7 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 	}
 
 	@Override
-	public String listeSalle2() {
+	public String listeSalleComplete() {
 		List<Salle> listeSalles = dtoModificationSalle.voirSalles();
 		String res = "";
 		for (Salle salle : listeSalles) {
@@ -71,8 +71,8 @@ public class ServiceModificationSalle implements IServiceModificationSalle {
 	}
 
 	@Override
-	public Salle getSalle2(String id) {
-		return dtoModificationSalle.choixSalle2(id);
+	public Salle getSalleComplete(String id) {
+		return dtoModificationSalle.choixSalleComplete(id);
 	}
 	
 	@Override

@@ -45,7 +45,7 @@ public interface IDTOGeneral {
 	
 	public Salle salleBDDToSalle(SalleBDD salleBDD);
 	
-	public Salle salleBDDToSalle2(SalleBDD salleBDD) ;
+	public Salle salleBDDToSalleComplete(SalleBDD salleBDD) ;
 
 	public Batiment batimentBDDToBatiment(BatimentBDD batimentBDD);
 	
@@ -59,7 +59,7 @@ public interface IDTOGeneral {
 	
 	public Reservation reservationBDDToReservation(ReservationBDD reservationBDD);
 
-	List<Reservation> listReservationBDDToListReservation2(SalleBDD salleBDD);
+	List<Reservation> listReservationBDDToListReservationComplete(SalleBDD salleBDD);
 	
 	
 	
