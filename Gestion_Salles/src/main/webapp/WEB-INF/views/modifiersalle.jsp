@@ -73,8 +73,14 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:out value="${ materiel }" escapeXml="false"></c:out>
-
+					<c:forEach var="mat" items="${ materiel }">
+						<tr>
+							<td><c:out value="${ mat.key }"></c:out></td>
+							<td><c:out value="${ mat.value }"></c:out></td>
+							<td><input type="submit" value="Ajouter"></td>
+							<td><input type="submit" value="Retirer"></td>
+						</tr>
+					</c:forEach>
 					</tbody>
 				</table>
 			</div>
