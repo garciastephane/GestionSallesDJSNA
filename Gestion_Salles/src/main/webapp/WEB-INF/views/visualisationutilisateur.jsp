@@ -15,14 +15,14 @@
 </head>
 <body>
 
-	<%-- <c:choose>
-		<c:when test="${ empty sessionScope.authentification }">
+	<c:choose>
+		<c:when test="${ empty sessionScope.personneCourante }">
 			<c:redirect url="index.jsp" />
 		</c:when>
-		<c:when test="${ not empty sessionScope.authentification }">
-			<c:set scope="session" var="authentification" value="true" />
-		</c:when>
-	</c:choose>--%>
+		<%--<c:when test="${ not empty sessionScope.personneCourante }">
+			<c:set scope="session" var="personneCourante" value="true" />
+		</c:when>--%>
+	</c:choose>
 	
 <div class="container">
 	<br/>
