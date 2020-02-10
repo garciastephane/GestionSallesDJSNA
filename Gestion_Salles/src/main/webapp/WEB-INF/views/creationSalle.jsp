@@ -14,6 +14,16 @@
 	href="${pageContext.request.contextPath}/resources/css/styles.css">
 
 <body>
+	
+	<c:choose>
+		<c:when test="${ empty sessionScope.personneCourante }">
+			<c:redirect url="index.jsp" />
+		</c:when>
+		<%--<c:when test="${ not empty sessionScope.personneCourante }">
+			<c:set scope="session" var="personneCourante" value="true" />
+		</c:when>--%>
+	</c:choose>
+
 	<div>
 		<div class="alert alert-info" role="alert">
 			<br>

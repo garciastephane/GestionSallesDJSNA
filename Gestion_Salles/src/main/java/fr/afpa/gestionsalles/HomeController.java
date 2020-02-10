@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.afpa.entites.Administrateur;
 import fr.afpa.entites.Message;
 import fr.afpa.entites.Personne;
-import fr.afpa.entites.Reservation;
 import fr.afpa.entites.RolePersonne;
 import fr.afpa.entites.Salle;
 import fr.afpa.entites.TypeSalle;
@@ -33,7 +35,6 @@ import fr.afpa.interfaces.services.IServiceModificationSalle;
 import fr.afpa.interfaces.services.IServiceUtilisateur;
 import fr.afpa.interfaces.services.IServiceVisualisation;
 import fr.afpa.interfaces.services.IServicesCreationSalle;
-import fr.afpa.services.ServiceCreation;
 import fr.afpa.services.ServiceModification;
 
 /**
@@ -41,8 +42,6 @@ import fr.afpa.services.ServiceModification;
  */
 @Controller
 public class HomeController {
-
-	private static String loginCourant;
 
 	@Autowired
 	private IServiceGeneral serviceGeneral;
@@ -85,9 +84,13 @@ public class HomeController {
 	 * @return la page
 	 */
 	@RequestMapping(value = "/menu", method = RequestMethod.GET)
-	public String home2() {
+	public String home2(HttpServletRequest request) {
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			return "index";
+		}
 		return "menu";
 	}
+	
 
 	/**
 	 * Controller permettant de logguer la personne en fonction de son type de
@@ -100,13 +103,13 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/SAP", method = RequestMethod.POST)
 	public ModelAndView authentificationPersonne(@RequestParam(value = "login") String login,
-			@RequestParam(value = "password") String password) {
+			@RequestParam(value = "password") String password, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 
 		if (controleAuthentificationUtilisateur.controlePersonneInscrite(login, password)) {
-
-			loginCourant = login;
 			Personne personne = serviceUtilisateur.utilisateur(login, password);
+			request.getSession().setAttribute("personneCourante", personne);
+			request.getSession().setAttribute("loginCourant", login);
 			if (personne instanceof Utilisateur) {
 				mv.addObject("personne", personne);
 				mv.setViewName("menuUser");
@@ -130,9 +133,17 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/SChU", method = RequestMethod.POST)
-	public ModelAndView choixUser(@RequestParam(value = "choix") String choix) {
+	public ModelAndView choixUser(@RequestParam(value = "choix") String choix, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
+		
 		Map<Integer, Personne> listePersonnes = dtoUtilisateur.listePersonnes();
 		if (controleChoixUtilisateur.verificationChoix(choix)) {
 			Personne personne = listePersonnes.get(Integer.parseInt(choix));
@@ -182,9 +193,11 @@ public class HomeController {
 			@RequestParam(value = "adresse") String adresse, @RequestParam(value = "role") String role,
 			@RequestParam(value = "datenaissance") String datenaissance,
 			@RequestParam(value = "password") String password, @RequestParam(value = "password2") String password2,
-			@RequestParam(value = "login") String login, @RequestParam(value = "create") String create) {
+			@RequestParam(value = "login") String login, @RequestParam(value = "create") String create,
+			HttpServletRequest request) {
 
 		ModelAndView mv = new ModelAndView();
+		
 		String nomOk = "";
 		String prenomOk = "";
 		String mailOk;
@@ -262,8 +275,8 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/SD", method = RequestMethod.POST)
-	public String deconnexion() {
-
+	public String deconnexion(HttpServletRequest request) {
+		request.getSession().invalidate();
 		return "index";
 
 	}
@@ -287,9 +300,17 @@ public class HomeController {
 			@RequestParam(value = "password") String password, @RequestParam(value = "password2") String password2,
 			@RequestParam(value = "nom") String nom, @RequestParam(value = "prenom") String prenom,
 			@RequestParam(value = "mail") String mail, @RequestParam(value = "adresse") String adresse,
-			@RequestParam(value = "datenaissance") String datenaissance, @RequestParam(value = "id") String id) {
+			@RequestParam(value = "datenaissance") String datenaissance, @RequestParam(value = "id") String id,
+			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		String req = modif;
 		switch (req) {
 		case "valider":
@@ -323,9 +344,16 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/SRCU", method = RequestMethod.GET)
-	public ModelAndView redirectionChoixUser() {
+	public ModelAndView redirectionChoixUser(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		mv.addObject("choix", ServiceModification.CHOIX);
 		mv.addObject("alluser", serviceVisualisation.afficherUser());
 
@@ -340,8 +368,13 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/SRC", method = RequestMethod.GET)
-	public String redirectionCreation() {
-
+	public String redirectionCreation(HttpServletRequest request) {
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			return "index";
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			return retour(request);
+		}
 		return "creationutilisateur";
 
 	}
@@ -352,9 +385,11 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/Retour", method = RequestMethod.GET)
-	public String retour() {
-
-		if (controleAuthentificationUtilisateur.controleAdmin(loginCourant)) {
+	public String retour(HttpServletRequest request) {
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			return "index";
+		}
+		if (request.getSession().getAttribute("personneCourante") instanceof Administrateur) {
 			return "gestionuser";
 		} else {
 			return "menuUser";
@@ -369,9 +404,16 @@ public class HomeController {
 	 * @return la liste des personnes
 	 */
 	@RequestMapping(value = "/SVU", method = RequestMethod.GET)
-	public ModelAndView visualisationUtilisateur() {
-		// ServiceVisualisation sv = new ServiceVisualisation();
+	public ModelAndView visualisationUtilisateur(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		Map<Integer, Personne> listePersonnes = serviceVisualisation.listeTousPersonnes();
 		mv.addObject("listePersonnes", listePersonnes);
 		mv.setViewName("visualisationutilisateur");
@@ -386,6 +428,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/CCPU", method = RequestMethod.GET)
 	public String creationCompteParUtilisateur() {
+		
 		return "creationCompte";
 	}
 
@@ -409,13 +452,17 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/EM", method = RequestMethod.POST)
 	public ModelAndView envoyerMessage(@RequestParam(value = "destinataire") String destinataire,
-			@RequestParam(value = "objet") String objet, @RequestParam(value = "contenu") String contenu) {
+			@RequestParam(value = "objet") String objet, @RequestParam(value = "contenu") String contenu, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
 		mv.addObject("destinataire", destinataire);
 		mv.addObject("objet", objet);
 		mv.addObject("contenu", contenu);
 		if (controleAuthentificationUtilisateur.controleDestinataire(destinataire)) {
-			if (serviceCreation.creationMessage(loginCourant, destinataire, objet, contenu, LocalDateTime.now())) {
+			if (serviceCreation.creationMessage((String) request.getSession().getAttribute("loginCourant"), destinataire, objet, contenu, LocalDateTime.now())) {
 				mv.setViewName("confirmationMessageEnvoye");
 			} else {
 				mv.addObject("invalide", true);
@@ -436,12 +483,17 @@ public class HomeController {
 	 * @return redirection vers boite de r�ception
 	 */
 	@RequestMapping(value = "/ARC", method = RequestMethod.POST)
-	public ModelAndView archivage(@RequestParam(value = "id") int id, @RequestParam(value = "page") String page) {
+	public ModelAndView archivage(@RequestParam(value = "id") int id, @RequestParam(value = "page") String page, HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView();
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
 		serviceModification.archiverMsg(id);
 		if ("boiteReception".equals(page)) {
-			return boiteReception();
+			return boiteReception(request);
 		} else {
-			return messageEnvoye();
+			return messageEnvoye(request);
 		}
 	}
 
@@ -452,10 +504,14 @@ public class HomeController {
 	 * @return le model contenant la liste des messages archiv�s et la redirection
 	 */
 	@RequestMapping(value = "/MA", method = RequestMethod.GET)
-	public ModelAndView boiteArchive() {
+	public ModelAndView boiteArchive(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		ArrayList<Message> lm = (ArrayList<Message>) serviceVisualisation.afficherListeMessage(loginCourant);
-		lm.addAll(serviceVisualisation.afficherListeMessageEnvoyer(loginCourant));
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		ArrayList<Message> lm = (ArrayList<Message>) serviceVisualisation.afficherListeMessage((String) request.getSession().getAttribute("loginCourant"));
+		lm.addAll(serviceVisualisation.afficherListeMessageEnvoyer((String) request.getSession().getAttribute("loginCourant")));
 		mv.addObject("listeMessages", lm);
 		mv.setViewName("boiteArchives");
 		return mv;
@@ -468,9 +524,13 @@ public class HomeController {
 	 * @return les donn�es du model et la vue
 	 */
 	@RequestMapping(value = "/BR", method = RequestMethod.GET)
-	public ModelAndView boiteReception() {
+	public ModelAndView boiteReception(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		ArrayList<Message> lm = (ArrayList<Message>) serviceVisualisation.afficherListeMessage(loginCourant);
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		ArrayList<Message> lm = (ArrayList<Message>) serviceVisualisation.afficherListeMessage((String) request.getSession().getAttribute("loginCourant"));
 
 		mv.addObject("listeMessages", lm);
 		mv.setViewName("boiteReception");
@@ -483,9 +543,13 @@ public class HomeController {
 	 * @return les donn�es du model et la redirection
 	 */
 	@RequestMapping(value = "/ME", method = RequestMethod.GET)
-	public ModelAndView messageEnvoye() {
+	public ModelAndView messageEnvoye(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		ArrayList<Message> lm = (ArrayList<Message>) serviceVisualisation.afficherListeMessageEnvoyer(loginCourant);
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		ArrayList<Message> lm = (ArrayList<Message>) serviceVisualisation.afficherListeMessageEnvoyer((String) request.getSession().getAttribute("loginCourant"));
 		mv.addObject("listeMessages", lm);
 
 		mv.setViewName("messageEnvoye");
@@ -505,8 +569,12 @@ public class HomeController {
 			"date" })
 	public ModelAndView voirMessage(@RequestParam(value = "destinataire") List<String> destinataire,
 			@RequestParam(value = "objet") String objet, @RequestParam(value = "contenu") String contenu,
-			@RequestParam(value = "date") String date) {
+			@RequestParam(value = "date") String date, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
 		mv.addObject("destinataires", destinataire);
 		mv.addObject("objet", objet);
 		mv.addObject("contenu", contenu);
@@ -528,8 +596,12 @@ public class HomeController {
 	@RequestMapping(value = "/voirR", method = RequestMethod.GET, params = { "expediteur", "objet", "contenu", "date" })
 	public ModelAndView voirMessage(@RequestParam(value = "expediteur") String expediteur,
 			@RequestParam(value = "objet") String objet, @RequestParam(value = "contenu") String contenu,
-			@RequestParam(value = "date") String date) {
+			@RequestParam(value = "date") String date, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
 		mv.addObject("expediteur", expediteur);
 		mv.addObject("objet", objet);
 		mv.addObject("contenu", contenu);
@@ -542,32 +614,56 @@ public class HomeController {
 	 * Return la vue choix de la salle
 	 */
 	@RequestMapping(value = "/cs", method = RequestMethod.GET)
-	public ModelAndView choixSalle() {
+	public ModelAndView choixSalle(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		mv.addObject("allroom", serviceModificationSalle.voirSalle());
 		mv.setViewName("choixsalle");
 		return mv;
 	}
 
 	@RequestMapping(value = "/vs", method = RequestMethod.GET)
-	public ModelAndView voirSalle() {
+	public ModelAndView voirSalle(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("allroom", serviceModificationSalle.listeSalle2());
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		mv.addObject("allroom", serviceModificationSalle.listeSalleComplete());
 		mv.setViewName("visualisationrsalle");
 		return mv;
 	}
 	
 	@RequestMapping(value = "/vrc", method = RequestMethod.GET)
-	public ModelAndView voirSalleComplete(@RequestParam(name = "id") String id) {
+	public ModelAndView voirSalleComplete(@RequestParam(name = "id") String id, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("id", serviceModificationSalle.getSalle2(id));
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		mv.addObject("id", serviceModificationSalle.getSalleComplete(id));
 		mv.setViewName("visualisationrsallecomplete");
 		return mv;
 	}
 
 	@RequestMapping(value = "/sc", method = RequestMethod.POST)
-	public ModelAndView salleChoisi(@RequestParam(name = "id") String id, @RequestParam(name = "res") String res) {
+	public ModelAndView salleChoisi(@RequestParam(name = "id") String id, @RequestParam(name = "res") String res, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		mv.addObject("id", id);
 		Salle salle = serviceModificationSalle.getSalle(id);
 		if (salle != null) {
@@ -590,14 +686,27 @@ public class HomeController {
 	 * Return la vue modification de la salle
 	 */
 	@RequestMapping(value = "/ms", method = RequestMethod.POST)
-	public String modifSalle(@RequestParam String id) {
-
+	public String modifSalle(@RequestParam String id, HttpServletRequest request) {
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			return "index";
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			return retour(request);
+		}
 		return "modifiersalle";
 	}
 
 	@RequestMapping(value = "/crs", method = RequestMethod.GET)
-	public ModelAndView createSalle() {
+	public ModelAndView createSalle(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		mv.addObject("listebatiment", serviceModificationSalle.listerBatiment());
 		mv.setViewName("creationSalle");
 		mv.addObject("listeTypeSalle", TypeSalle.values());
@@ -610,8 +719,16 @@ public class HomeController {
 			@RequestParam(value = "capacite") String capacite, @RequestParam(value = "type") String type,
 			@RequestParam(value = "modif") String modif, @RequestParam(value = "id") String id,
 			@RequestParam(name = "1") String retro, @RequestParam(name = "2") String ordi,
-			@RequestParam(name = "3") String reseau) {
+			@RequestParam(name = "3") String reseau, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		switch (modif) {
 		case "valider":
 			Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),
@@ -644,8 +761,13 @@ public class HomeController {
 	public String ajoutSalleBdd(@RequestParam(value = "batiment") String batiment,
 			@RequestParam(value = "numsalle") String numsalle, @RequestParam(value = "nomsalle") String nomsalle,
 			@RequestParam(value = "surface") String surface, @RequestParam(value = "capacite") String capacite,
-			@RequestParam(value = "type") String type) {
-
+			@RequestParam(value = "type") String type, HttpServletRequest request) {
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			return "index";
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			return retour(request);
+		}
 		Salle salle = new Salle(numsalle, nomsalle, Integer.parseInt(capacite), Float.parseFloat(surface),
 				TypeSalle.values()[Integer.parseInt(type)]);
 		serviceCreationSalle.ajoutSalleBdd(salle, batiment, type);
@@ -657,8 +779,16 @@ public class HomeController {
 	public ModelAndView reserver(@RequestParam(value = "debut") String debut,
 			@RequestParam(value = "duree") String duree,
 			@RequestParam(value = "id") String idSalle,
-			@RequestParam(value = "intitule") String intitule) {
+			@RequestParam(value = "intitule") String intitule, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		if (request.getSession().getAttribute("personneCourante") == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		else if (request.getSession().getAttribute("personneCourante") instanceof Utilisateur) {
+			mv.setViewName(retour(request));
+			return mv;
+		}
 		if (controleGeneral.controleDateDeNaissance(debut) 
 			&& controleGeneral.controleTailleObjetMesage(intitule)
 			&& controleChoixUtilisateur.verificationChoix(duree)
